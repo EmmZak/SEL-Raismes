@@ -1,0 +1,13 @@
+#!/bin/bash
+
+rm -rf dist
+npm run build
+
+cp .firebase dist
+cp .firebaserc dist
+cp firebase.json dist
+
+cd dist
+firebase deploy
+
+google-chrome https://sel-raismes.web.app/
