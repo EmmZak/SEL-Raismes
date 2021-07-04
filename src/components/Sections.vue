@@ -33,20 +33,27 @@
       </v-card>
     </v-tab-item>
   </v-tabs-items>
+
+  publications
+  <Publications />
+
 </v-card>
+
 
 </template>
 
 <script>
 import Offres from './Offres.vue';
 import Demandes from './Demandes.vue';
+import Publications from './PublicationsList.vue';
 
 export default {
     name: "Sections",
 
     components: {
       Offres,
-      Demandes
+      Demandes,
+      Publications
     },
 
     data() {

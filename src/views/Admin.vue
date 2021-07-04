@@ -38,21 +38,21 @@
 </template>
 
 <script>
-import Users from './../components/Users.vue'
-import Publications from './../components/Publications.vue'
+import UsersList from '../components/UsersList.vue'
+import PublicationsList from '../components/PublicationsList.vue'
 
 export default {
     name: 'Admin',
 
     components: {
-        Users,
-        Publications
+        UsersList,
+        PublicationsList
     },
     data() {
         return {
             currentSection: "Offres",
-            sectionsList: [Users, Publications],
-            sections: ["Users", "Publications"]
+            sectionsList: [UsersList, PublicationsList],
+            sections: ["Sélistes", "Publications"]
         };
     },
     mounted() {

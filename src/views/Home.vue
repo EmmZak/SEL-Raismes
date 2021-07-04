@@ -1,15 +1,15 @@
 <template>
-  <Sections />
+  <PublicationsList />
 </template>
 
 <script>
-  import Sections from '../components/Sections'
+  import PublicationsList from '../components/PublicationsList'
 
   export default {
     name: 'Home',
 
     components: {
-      Sections,
+      PublicationsList,
     },
   }
 </script>
