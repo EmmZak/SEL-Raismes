@@ -31,50 +31,74 @@ const store = new Vuex.Store({
         // create
         dispatch('createUser', user)
       }
-
     },
     getUser({state}, id) {
-      return state.userService.getUser(id)
+      return state.userService.get(id)
     },
-    async fetchUsers({state}) {
-      var users = await state.userService.getUsers()
-      console.log("fetchUsers.commit.users", users)
+    fetchUsers({state}) {
+      var users = state.userService.getAll()
       this.commit("setUsers", users)
     },
     createUser({state}, user) {
-      state.users.push(user)
-      return state.userService.createUser(user)
+      state.userService.create(user)
+        .then((doc) => {
+          console.log("doc.id", doc.id)
+          user.id = doc.id
+          state.users.push(user)
+        })
     },
     // find user by ID, get Index and modify in state.users
     updateUser({state}, user) {
-      console.log("user", user)
       var userObject = state.users.find(item => item.id == user.id)
-      console.log("userObject", userObject)
       var index = state.users.indexOf(userObject)
       Object.assign(state.users[index], user) 
-      return state.userService.updateUser(user)
+      return state.userService.update(user)
     },
     removeUser({state}, user) {
-      state.users.splice(state.users.indexOf(user, 1))
-      return state.userService.removeUser(user)
-    },
-    /****** UsPublicationer CRUD *******/
-    savePublication() {
+      state.users = state.users.filter(function(item) {
+        return item.id != user.id
+      })
 
+      return state.userService.remove(user)
+    },
+    /****** Publication CRUD *******/
+    savePublication({dispatch}, item) {
+      if (item.id != "") {
+        // update
+        dispatch('updatePublication',  item)
+      } else {
+        // create
+        dispatch('createPublication', item)
+      }
     },
     getPublication({state}, id) {
-      return state.publicationService.getPublication(id)
+      return state.publicationService.get(id)
     },
-    async fetchPublications({state}) {
-      var publications = await state.publicationService.getPublications()
+    fetchPublications({state}) {
+      var publications = state.publicationService.getAll()
       this.commit("setPublications", publications)
     },
     createPublication({state}, item) {
-      return state.publicationService.createUser(item)
+      state.publicationService.create(item)
+        .then((doc) => {
+          console.log("doc.id", doc.id)
+          item.id = doc.id
+          state.publications.push(item)
+        })
     },
-    updatePublication({state}, item) {
-      return state.publicationService.update(item)
-    }
+    updatePublication({state}, pub) {
+      var pubObject = state.publications.find(item => item.id == pub.id)
+      var index = state.publications.indexOf(pubObject)
+      Object.assign(state.publications[index], pub) 
+      return state.publicationService.update(pub)
+    },
+    removePublication({state}, item) {
+      state.publications = state.publications.filter(function(pub) {
+        return pub.id != item.id
+      })
+
+      return state.publicationService.remove(item)
+    },
   },
   modules: {
   }, 

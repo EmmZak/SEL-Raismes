@@ -6,7 +6,7 @@ export default class User {
         this.db = firebase.firestore();
     }
 
-    getUser(id) {
+    get(id) {
         this.db.collection("users")
           .doc(id)
           .get()
@@ -19,9 +19,8 @@ export default class User {
           })
     }
 
-    getUsers() {
+    getAll() {
         var users = []
-        
         this.db.collection("users")
           .get()
           .then((query) => {
@@ -40,22 +39,37 @@ export default class User {
         return users
     }
 
-    createUser(user) {
-      this.db.collection("users")
-        .doc()
-        .set(user)
+    create(user) {
+      console.log("service.createUser")
+      //var id = null
+      return this.db.collection("users")
+        .add(user)
+        /*
+        .then((doc) => {
+          console.log("UserService.createUser.doc.id", doc.id)
+          
+          return doc.id
+        })
+        .catch((err) => {
+          console.log("err", err)
+          return null
+        })
+        console.log("returning service.createUser")
+        //return id
+        */
     }
 
     /**
      * user.id is the ID of generated document
      */
-    updateUser(user) {
+    update(user) {
       this.db.collection("users")
         .doc(user.id)
         .update(user)
     }
 
-    removeUser(user) {
+    remove(user) {
+      console.log("UserService.removeUser")
       this.db.collection("users")
         .doc(user.id)
         .delete(user)

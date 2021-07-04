@@ -126,7 +126,7 @@
         </v-dialog>
         <v-dialog v-model="dialogDelete" max-width="500px">
           <v-card>
-            <v-card-title class="text-h5">Vous êtes sûr de vouloir supprimer le séliste ?</v-card-title>
+            <v-card-title class="text-h10">Vous êtes sûr de vouloir supprimer le séliste ?</v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="closeDelete">Annuler</v-btn>
@@ -137,7 +137,7 @@
         </v-dialog>
       </v-toolbar>
     </template>
-    <template v-slot:item.actions="{ item }">
+    <template v-slot:[`item.actions`]="{ item }">
       <v-icon
         small
         class="mr-2"
@@ -165,7 +165,6 @@ import { mapActions } from 'vuex'
 export default {
     name: "UsersList",
     mixins: [DateHandler],
-    users: [],
     data() {
         return {
             dialog: false,
@@ -173,6 +172,7 @@ export default {
             search: "",
             loadedUsers: [],
             headers: [
+              { text: "ID", value: "id" },
               { text: "Nom", value: "nom" },
               { text: "Prénom", value: "prenom" },
               { text: "Adresse", value: "adresse" },
@@ -199,58 +199,56 @@ export default {
               number: "",
               date: "",
               credit: "",
-            }
+            },
+            itemToDelete: {}
         };
     },
     methods: {
-      ...mapActions(["fetchUsers", "createUser", "updateUser", "removeUser", "saveUser"]),
+      ...mapActions(["fetchUsers", "removeUser", "saveUser"]),
       save () {
         this.saveUser(this.editedItem)
         this.close()
       },
+      // UPDATE
       editItem (item) {
         console.log("editItem.item", item)
         this.editedIndex = this.users.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialog = true
       },
+      // DELETE
       deleteItem (item) {
         console.log("deleteItem.item", item)
+        this.itemToDelete = item
         this.editedIndex = this.users.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialogDelete = true
       },
       deleteItemConfirm () {
         console.log("deleteItemCOndifrm")
-        //this.users.splice(this.editedIndex, 1)  
-        //this.closeDelete()
-        
+        this.removeUser(this.itemToDelete)
+        this.itemToDelete = {}
+        this.closeDelete()
       },
       close() {
         this.dialog = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
+        this.editedItem = Object.assign({}, this.defaultItem)
+        this.editedIndex = -1
       },
       closeDelete () {
+        // cancel deleting
+        console.log("closeDelete")
         this.dialogDelete = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
+        this.close()
       },
       test() {
         console.log("test.users", this.users[0])
       }
     },
     computed: {
-      //...mapGetters(["users"]),
       users() {
-        console.log("store.state.users", this.$store.state.users)
         return this.$store.getters.users
       },
-
       formTitle () {
         return this.editedIndex === -1 ? 'Création Séliste' : 'Modification Séliste'
       },
@@ -263,8 +261,8 @@ export default {
         val || this.closeDelete()
       },
     },
-    created() {
-      this.fetchUsers()
+    async mounted() {
+      await this.fetchUsers()
     }
     
 }

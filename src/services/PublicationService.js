@@ -6,8 +6,8 @@ export default class Publication {
         this.db = firebase.firestore();
     }
 
-    getPublication(id) {
-        return this.db.collection("publications")
+    get(id) {
+        this.db.collection("publications")
           .doc(id)
           .get()
           .then((res) => {
@@ -19,42 +19,41 @@ export default class Publication {
           })
     }
 
-    getPublications() {
-        var publications = []
-
+    getAll() {
+        var pubs = []
         this.db.collection("publications")
           .get()
           .then((query) => {
             query.forEach((doc) => {
 
               var pub = doc.data()
+              pub["id"] = doc.id
               //user.date = this.formatDDMMYYYY(user.date)
-              publications.push(pub)
+              pubs.push(pub)
             })
 
           })
           .catch((error) => {
             console.log("Error getting documents: ", error);
           });
-        return publications
+        return pubs
     }
 
-    createPublication(item) {
-        this.db.collection("publications")
-          .doc()
-          .set(item)
+    create(item) {
+        return this.db.collection("publications")
+          .add(item)
     }
 
     /**
      * publication.id is the ID of generated document
      */
-    updatePublication(item) {
+    update(item) {
         this.db.collection("publications")
         .doc(item.id)
         .update(item)
     }
 
-    removePublication(item) {
+    remove(item) {
         this.db.collection("publications")
         .doc(item.id)
         .delete(item)
