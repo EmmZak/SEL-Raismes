@@ -4,9 +4,12 @@
     <!-- header -->
     <Header />
 
-    <v-main>
-      <router-view/>
-    </v-main>
+    <div id="router_div">
+      <v-main>
+        <router-view/>
+      </v-main>
+    </div>
+
 
     <!-- footer -->
     <Footer/>
@@ -30,3 +33,8 @@ export default {
   }),
 };
 </script>
+
+<style scoped>
+
+
+</style>

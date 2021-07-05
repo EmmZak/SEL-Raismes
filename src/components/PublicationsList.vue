@@ -1,9 +1,25 @@
 <template>
+<v-card>
+  <v-card-title>
+    <v-text-field
+      v-model="search"
+      append-icon="mdi-magnify"
+      label="Rechercher"
+      single-line
+      hide-details
+    ></v-text-field>
+  </v-card-title>
+
+        <v-btn @click="test()">test</v-btn>
   <v-data-table
     :headers="headers"
     :items="publications"
+    :search="search"
     class="elevation-1"
   >
+    <template v-slot:[`item.date`]="{ item }">
+      <span>{{ formatDDMMYYYY(item.date) }}</span>
+    </template>
     <template v-slot:top>
       <v-toolbar
         flat
@@ -20,9 +36,6 @@
           max-width="500px"
         >
           <template v-slot:activator="{ on, attrs }">
-
-
-<v-btn @click=test>test</v-btn>
             <v-btn
               color="primary"
               dark
@@ -46,20 +59,25 @@
                     sm="6"
                     md="4"
                   >
-                    <v-text-field
-                      v-model="editedItem.categ"
+                    <v-select
+                      :items="categories"
                       label="Catégorie"
-                    ></v-text-field>
+                      v-model="editedItem.categ"
+                    ></v-select>
                   </v-col>
                   <v-col
                     cols="12"
                     sm="6"
                     md="4"
                   >
-                    <v-text-field
-                      v-model="editedItem.user"
+                    <v-select
+                      :items="users"
                       label="Séliste"
-                    ></v-text-field>
+                      v-model="editedItem.user"
+                      item-text="nom"
+                      item-value="user"
+                      return-object
+                    ></v-select>
                   </v-col>
                   <v-col
                     cols="12"
@@ -79,16 +97,6 @@
                     <v-text-field
                       v-model="editedItem.slots"
                       label="Créneaux"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.date"
-                      label="Date"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -153,7 +161,7 @@
       </v-icon>
     </template>
   </v-data-table>
-  
+</v-card>
 </template>
 
 <script>
@@ -166,6 +174,9 @@ export default {
     mixins: [DateHandler],
     data() {
         return {
+            // Form
+            categories: ["Jardinage", "Animaux", "Ménagers"],
+            // form dialog
             dialog: false,
             dialogDelete: false,
             search: "",
@@ -182,28 +193,28 @@ export default {
             ],
             editedIndex: -1,
             editedItem: {
-              id: "",
+              id: null,
               categ: "",
               user: "",
               adresse: "",
               slots: "",
-              date: "",
+              date: null,
               cost: "",
             },
             defaultItem: {
-              id: "",
+              id: null,
               categ: "",
               user: "",
               adresse: "",
               slots: "",
-              date: "",
+              date: null,
               cost: "",
             },
             itemToDelete: {}
         };
     },
     methods: {
-      ...mapActions(["fetchPublications", "removePublication", "savePublication"]),
+      ...mapActions(["fetchUsers", "fetchPublications", "removePublication", "savePublication"]),
       save () {
         this.savePublication(this.editedItem)
         this.close()
@@ -241,10 +252,17 @@ export default {
         this.close()
       },
       test() {
-        console.log("test.users", this.users[0])
+        this.$store.getters.publications[0].user.get()
+          .then((res) => {
+            console.log("res", res.data())
+          })
+        
       }
     },
     computed: {
+      users() {
+        return this.$store.getters.users
+      },
       publications() {
         return this.$store.getters.publications
       },
@@ -260,8 +278,8 @@ export default {
         val || this.closeDelete()
       },
     },
-    async mounted() {
-      await this.fetchPublications()
+    mounted() {
+      this.fetchPublications()
     }
 }
 </script>

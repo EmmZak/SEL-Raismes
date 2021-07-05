@@ -1,11 +1,13 @@
 <template>
-<v-card>
+<v-card id="admin_panel">
+
+  <v-btn @click="toHomePage()">Accueil</v-btn>
+
   <v-toolbar
-    color="deep-purple accent-4"
+    color="blue"
     dark
     flat
   >
-
     <template v-slot:extension>
       <v-tabs
         v-model="currentSection"
@@ -58,7 +60,19 @@ export default {
     mounted() {
     },
     methods: {
-      
+      toHomePage() {
+        this.$router.push("/")
+      }
     }
 }
 </script>
+
+<style scoped>
+
+#admin_panel {
+  width: 90%;
+  
+  left: 5%;
+}
+
+</style>

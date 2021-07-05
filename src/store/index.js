@@ -24,8 +24,14 @@ const store = new Vuex.Store({
   actions: {
     /****** User CRUD *******/
     saveUser({dispatch}, user) {
-      if (user.id != "") {
+      // creation date is not picked
+      if (user.date == null) {
+        user.date = new Date()
+      } 
+      
+      if (user.id != null) {
         // update
+        // check if object has changed to avoid useless update operation
         dispatch('updateUser',  user)
       } else {
         // create
@@ -63,7 +69,19 @@ const store = new Vuex.Store({
     },
     /****** Publication CRUD *******/
     savePublication({dispatch}, item) {
-      if (item.id != "") {
+      // creation date is set automatically
+      if (item.date == null) {
+        item.date = new Date()
+      } 
+      
+      /*
+       * item.user is the selected user
+       * so we need to point to the document
+       */
+      console.log("setting  id path wtih", item.user)
+      item.user =  this.state.userService.db.doc('users/' + item.user.id)
+
+      if (item.id != null) {
         // update
         dispatch('updatePublication',  item)
       } else {

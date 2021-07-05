@@ -1,15 +1,20 @@
 <template>
-  <PublicationsList />
+  <v-btn @click="toAdminPage()">ADMIN</v-btn>
+  
 </template>
 
 <script>
-  import PublicationsList from '../components/PublicationsList'
 
   export default {
     name: 'Home',
 
     components: {
-      PublicationsList,
     },
+    methods: {
+      toAdminPage() {
+        this.$router.push("/admin")
+      }
+    }
+    
   }
 </script>
