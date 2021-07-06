@@ -51,6 +51,7 @@ const store = new Vuex.Store({
           console.log("doc.id", doc.id)
           user.id = doc.id
           state.users.push(user)
+          console.log("created user", user)
         })
     },
     // find user by ID, get Index and modify in state.users
@@ -74,6 +75,8 @@ const store = new Vuex.Store({
         item.date = new Date()
       } 
       
+      item.userFullName = item.user.nom + " " + item.user.prenom
+
       /*
        * item.user is the selected user
        * so we need to point to the document

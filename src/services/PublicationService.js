@@ -40,8 +40,8 @@ export default class Publication {
     }
 
     create(item) {
-        return this.db.collection("publications")
-          .add(item)
+      return this.db.collection("publications")
+        .add(item)
     }
 
     /**

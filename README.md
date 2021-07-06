@@ -32,7 +32,7 @@ Publication
 * List(slot) (créneaux horaires)
 * date (date de création de l'annonce) as String
 * cost (coût du service)
-* user's name (pour éviter un autre appel à la bdd) ???
+* user's full name (pour éviter un autre appel à la bdd) ???
 
 
 ## Deploy with Firebase Hosting

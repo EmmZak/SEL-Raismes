@@ -40,8 +40,6 @@ export default class User {
     }
 
     create(user) {
-      console.log("service.createUser")
-      //var id = null
       return this.db.collection("users")
         .add(user)
         /*
@@ -73,6 +71,10 @@ export default class User {
       this.db.collection("users")
         .doc(user.id)
         .delete(user)
+    }
+
+    getTimestamp() {
+      return 
     }
 
 }

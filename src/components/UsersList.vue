@@ -16,6 +16,9 @@
     :search="search"
     class="elevation-1"
   >
+    <template v-slot:[`item.date`]="{ item }">
+      <span>{{ formatDDMMYYYY(item.date) }}</span>
+    </template>
     <template v-slot:top>
       <v-toolbar
         flat
@@ -189,7 +192,7 @@ export default {
               { text: "Crédit", value: "credit" },
               { text: "Actions", value: "actions", sortable: false },
             ],
-            // Dialog
+            // Form Dialog
             dialog: false,
             dialogDelete: false,
             editedIndex: -1,
