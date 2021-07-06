@@ -4,7 +4,7 @@ export default {
      * Takes Firestore timestamp as parameter, or Date
      */
      formatDDMMYYYY(DATE) {    
-        console.log(" DATE", DATE)
+        //console.log(" DATE", DATE)
 
         var formattedDate = ""
         var date = null

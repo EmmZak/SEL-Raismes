@@ -29,6 +29,8 @@ const store = new Vuex.Store({
         user.date = new Date()
       } 
       
+      user.fullName = user.nom + " " + user.prenom
+
       if (user.id != null) {
         // update
         // check if object has changed to avoid useless update operation
@@ -70,6 +72,7 @@ const store = new Vuex.Store({
     },
     /****** Publication CRUD *******/
     savePublication({dispatch}, item) {
+      console.log("item to save", item)
       // creation date is set automatically
       if (item.date == null) {
         item.date = new Date()
@@ -96,7 +99,16 @@ const store = new Vuex.Store({
       return state.publicationService.get(id)
     },
     fetchPublications({state}) {
+      console.log("fetching pubs")
       var publications = state.publicationService.getAll()
+
+      for (let i=0; i<publications.length; i++) {
+        var userId = publications[i].user.id
+        var user = this.state.userService.getUser(userId)
+        console.log("pub.user ", user)  
+        publications[i].user = user
+      }
+
       this.commit("setPublications", publications)
     },
     createPublication({state}, item) {

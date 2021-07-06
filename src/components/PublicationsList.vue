@@ -17,9 +17,16 @@
     :search="search"
     class="elevation-1"
   >
+    <!-- date column -->
     <template v-slot:[`item.date`]="{ item }">
       <span>{{ formatDDMMYYYY(item.date) }}</span>
     </template>
+
+    <!-- user column -->
+    <template v-slot:[`item.user`]="{ item }">
+      <span>{{ item.user.fullName }}</span>
+    </template>
+
     <template v-slot:top>
       <v-toolbar
         flat
@@ -33,7 +40,7 @@
         <v-spacer></v-spacer>
         <v-dialog
           v-model="dialog"
-          max-width="500px"
+          max-width="800px"
         >
           <template v-slot:activator="{ on, attrs }">
             <v-btn
@@ -54,59 +61,56 @@
             <v-card-text>
               <v-container>
                 <v-row>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
+                  <v-col >
                     <v-select
                       :items="categories"
                       label="Catégorie"
                       v-model="editedItem.categ"
+                      prepend-icon="mdi-shape"
                     ></v-select>
                   </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-select
-                      :items="users"
-                      label="Séliste"
+                  <v-col >
+                    <v-autocomplete
                       v-model="editedItem.user"
-                      item-text="nom"
+                      :items="users"
+                      item-text="fullName"
                       item-value="user"
                       return-object
-                    ></v-select>
+                      label="Séliste"
+                      placeholder="Taper un nom..."
+                      prepend-icon="mdi-account"
+                    ></v-autocomplete>
                   </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
+                </v-row>
+                <v-row>
+                  <v-col >
                     <v-text-field
                       v-model="editedItem.adresse"
                       label="Adresse"
+                      prepend-icon="mdi-map-marker"
                     ></v-text-field>
                   </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
+                </v-row>
+                
+                <v-row>
+                  <v-col >
+                    <v-select
                       v-model="editedItem.slots"
+                      :items="slots"
+                      attach
+                      chips
                       label="Créneaux"
-                    ></v-text-field>
+                      multiple
+                      prepend-icon="mdi-timetable"
+                    ></v-select>
                   </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
+                </v-row>
+                <v-row>
+                  <v-col >
                     <v-text-field
                       v-model="editedItem.cost"
                       label="Coût"
+                      prepend-icon="mdi-currency-eur" 
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -181,6 +185,7 @@ export default {
             dialogDelete: false,
             search: "",
             loadedPublications: [],
+            slots: [], //["8-9h", "9-10h", "10-11h", ""],
             headers: [
               { text: "ID", value: "id" },
               { text: "Catégorie", value: "categ" },
@@ -254,11 +259,26 @@ export default {
         this.close()
       },
       test() {
-        this.$store.getters.publications[0].user.get()
-          .then((res) => {
-            console.log("res", res.data())
-          })
+        console.log("pub", this.$store.getters.publications[0].user)
         
+      }, 
+      /* 
+       * a function to create time slots from a list of hours 
+       */
+      populateSlots() {
+        var hours = [7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
+
+        for (let i=0; i<hours.length; i++) {
+          var hour = hours[i]
+          var hourPlusOne = hours[i+1]
+
+          if (hourPlusOne === undefined ) {
+            break
+          }
+
+          var slot = String(hour) + "-" + String(hourPlusOne) + "h"
+          this.slots.push(slot)
+        }
       }
     },
     computed: {
@@ -266,6 +286,7 @@ export default {
         return this.$store.getters.users
       },
       publications() {
+        
         return this.$store.getters.publications
       },
       formTitle () {
@@ -282,6 +303,7 @@ export default {
     },
     mounted() {
       this.fetchPublications()
+      this.populateSlots()
     }
 }
 </script>

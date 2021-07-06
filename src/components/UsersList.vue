@@ -16,9 +16,13 @@
     :search="search"
     class="elevation-1"
   >
+    <!-- date column -->
     <template v-slot:[`item.date`]="{ item }">
       <span>{{ formatDDMMYYYY(item.date) }}</span>
     </template>
+
+   
+
     <template v-slot:top>
       <v-toolbar
         flat
@@ -200,6 +204,7 @@ export default {
               id: null,
               nom: "",
               prenom: "",
+              fullName: "",
               adresse: "",
               number: "",
               mail: "",
@@ -210,6 +215,7 @@ export default {
               id: null,
               nom: "",
               prenom: "",
+              fullName: "",
               adresse: "",
               mail: "",
               number: "",
