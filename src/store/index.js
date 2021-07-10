@@ -29,7 +29,7 @@ const store = new Vuex.Store({
         user.date = new Date()
       } 
       
-      user.fullName = user.nom + " " + user.prenom
+      //user.fullName = user.nom + " " + user.prenom
 
       if (user.id != null) {
         // update
@@ -78,7 +78,7 @@ const store = new Vuex.Store({
         item.date = new Date()
       } 
       
-      item.userFullName = item.user.nom + " " + item.user.prenom
+      item.userFullName = item.user.fullName
 
       /*
        * item.user is the selected user
@@ -99,17 +99,33 @@ const store = new Vuex.Store({
       return state.publicationService.get(id)
     },
     fetchPublications({state}) {
-      console.log("fetching pubs")
-      var publications = state.publicationService.getAll()
-
-      for (let i=0; i<publications.length; i++) {
-        var userId = publications[i].user.id
-        var user = this.state.userService.getUser(userId)
-        console.log("pub.user ", user)  
-        publications[i].user = user
-      }
-
-      this.commit("setPublications", publications)
+      //console.log("fetching pubs")
+      var pubs = []
+      state.publicationService.getAll()
+        .then((query) => {
+          query.forEach((doc) => {
+            var pub = doc.data()
+            pub["id"] = doc.id
+            //user.date = this.formatDDMMYYYY(user.date)
+            pubs.push(pub)
+          })
+          //console.log("fetching done", pubs)
+          /*
+          pubs.forEach(pub => {
+            var userId = pub.user.id
+            console.log("userId=", userId) 
+            var user = this.state.userService.get(userId)
+            console.log("pub.user ", user)  
+            pub.user = user
+          });
+          */
+          //console.log("adding users done", pubs)
+          this.commit("setPublications", pubs)
+        })
+        .catch((err) => {
+          console.log("err", err)
+        })
+      
     },
     createPublication({state}, item) {
       state.publicationService.create(item)

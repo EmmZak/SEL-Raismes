@@ -17,16 +17,16 @@
     :search="search"
     class="elevation-1"
   >
+    <!------------------------ Custom field rendering ------------------------>
     <!-- date column -->
     <template v-slot:[`item.date`]="{ item }">
       <span>{{ formatDDMMYYYY(item.date) }}</span>
     </template>
-
     <!-- user column -->
     <template v-slot:[`item.user`]="{ item }">
-      <span>{{ item.user.fullName }}</span>
-    </template>
-
+      <span>{{ item.userFullName }} </span>
+    </template> 
+    <!------------------------ Custom field rendering ------------------------>
     <template v-slot:top>
       <v-toolbar
         flat
@@ -74,12 +74,12 @@
                       v-model="editedItem.user"
                       :items="users"
                       item-text="fullName"
-                      item-value="user"
                       return-object
                       label="Séliste"
                       placeholder="Taper un nom..."
                       prepend-icon="mdi-account"
-                    ></v-autocomplete>
+                    >
+                    </v-autocomplete>
                   </v-col>
                 </v-row>
                 <v-row>
@@ -180,7 +180,7 @@ export default {
         return {
             // Form
             categories: ["Jardinage", "Animaux", "Ménagers"],
-            // form dialog
+            // Form dialog
             dialog: false,
             dialogDelete: false,
             search: "",
@@ -223,26 +223,31 @@ export default {
     methods: {
       ...mapActions(["fetchUsers", "fetchPublications", "removePublication", "savePublication"]),
       save () {
+        //console.log("method.save -> item ", this.editedItem)
         this.savePublication(this.editedItem)
         this.close()
       },
       // UPDATE
-      editItem (item) {
+      async editItem (item) {
         console.log("editItem.item", item)
+        // user is only a red for now, we need to fetch it
+        await item.user.get().then((query) => { item.user = query.data() })
+        //console.log("added user to item", item)
+        //item.user = user
         this.editedIndex = this.publications.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialog = true
       },
       // DELETE
       deleteItem (item) {
-        console.log("deleteItem.item", item)
+        //console.log("deleteItem.item", item)
         this.itemToDelete = item
         this.editedIndex = this.publications.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialogDelete = true
       },
       deleteItemConfirm () {
-        console.log("deleteItemCOndifrm")
+        //console.log("deleteItemCOndifrm")
         this.removePublication(this.itemToDelete)
         this.itemToDelete = {}
         this.closeDelete()
@@ -254,13 +259,12 @@ export default {
       },
       closeDelete () {
         // cancel deleting
-        console.log("closeDelete")
+        //console.log("closeDelete")
         this.dialogDelete = false
         this.close()
       },
       test() {
         console.log("pub", this.$store.getters.publications[0].user)
-        
       }, 
       /* 
        * a function to create time slots from a list of hours 
@@ -286,7 +290,6 @@ export default {
         return this.$store.getters.users
       },
       publications() {
-        
         return this.$store.getters.publications
       },
       formTitle () {

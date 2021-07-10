@@ -21,8 +21,6 @@
       <span>{{ formatDDMMYYYY(item.date) }}</span>
     </template>
 
-   
-
     <template v-slot:top>
       <v-toolbar
         flat
@@ -62,15 +60,9 @@
                 <v-row>
                   <v-col>
                     <v-text-field
-                      v-model="editedItem.nom"
-                      label="Nom"
+                      v-model="editedItem.fullName"
+                      label="Nom - Prénom"
                       prepend-icon="mdi-account"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col>
-                    <v-text-field
-                      v-model="editedItem.prenom"
-                      label="Prénom"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -187,8 +179,7 @@ export default {
             search: "",
             headers: [
               { text: "ID", value: "id" },
-              { text: "Nom", value: "nom" },
-              { text: "Prénom", value: "prenom" },
+              { text: "Nom - Prénom", value: "fullName" },
               { text: "Mail", value: "mail" },
               { text: "Numéro", value: "number" },
               { text: "Adresse", value: "adresse" },
@@ -202,8 +193,6 @@ export default {
             editedIndex: -1,
             editedItem: {
               id: null,
-              nom: "",
-              prenom: "",
               fullName: "",
               adresse: "",
               number: "",
@@ -213,8 +202,6 @@ export default {
             },
             defaultItem: {
               id: null,
-              nom: "",
-              prenom: "",
               fullName: "",
               adresse: "",
               mail: "",

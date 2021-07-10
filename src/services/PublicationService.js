@@ -20,9 +20,10 @@ export default class Publication {
     }
 
     getAll() {
-        var pubs = []
-        this.db.collection("publications")
+        //var pubs = []
+        return this.db.collection("publications")
           .get()
+        /*
           .then((query) => {
             query.forEach((doc) => {
 
@@ -31,12 +32,15 @@ export default class Publication {
               //user.date = this.formatDDMMYYYY(user.date)
               pubs.push(pub)
             })
-
+            console.log("getAll() fethcing done in then")
+            return pubs
           })
           .catch((error) => {
             console.log("Error getting documents: ", error);
           });
+        console.log("PublicationService.returning")
         return pubs
+        */
     }
 
     create(item) {
