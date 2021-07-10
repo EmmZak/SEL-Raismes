@@ -24,7 +24,7 @@
     </template>
     <!-- user column -->
     <template v-slot:[`item.user`]="{ item }">
-      <span>{{ item.userFullName }} </span>
+      <span>{{ item.user.fullName }} </span>
     </template> 
     <!------------------------ Custom field rendering ------------------------>
     <template v-slot:top>
@@ -201,7 +201,6 @@ export default {
               id: null,
               categ: "",
               user: "",
-              userFullName: "",
               adresse: "",
               slots: "",
               date: null,
@@ -211,7 +210,6 @@ export default {
               id: null,
               categ: "",
               user: "",
-              userFullName: "",
               adresse: "",
               slots: "",
               date: null,
@@ -222,16 +220,21 @@ export default {
     },
     methods: {
       ...mapActions(["fetchUsers", "fetchPublications", "removePublication", "savePublication"]),
-      save () {
+      async save () {
         //console.log("method.save -> item ", this.editedItem)
-        this.savePublication(this.editedItem)
+        await this.savePublication(this.editedItem)
         this.close()
       },
       // UPDATE
       async editItem (item) {
         console.log("editItem.item", item)
-        // user is only a red for now, we need to fetch it
-        await item.user.get().then((query) => { item.user = query.data() })
+        /*
+        if (!this.isUserLoaded(item.user)) {
+          await item.user.get().then((query) => { item.user = query.data() })
+        } else {
+          console.log("user already loaded", item.user, item.user.adresse)
+        }
+        */
         //console.log("added user to item", item)
         //item.user = user
         this.editedIndex = this.publications.indexOf(item)
@@ -283,6 +286,16 @@ export default {
           var slot = String(hour) + "-" + String(hourPlusOne) + "h"
           this.slots.push(slot)
         }
+      },
+      isUserLoaded(user) {
+        if (user == undefined) {
+          return false
+        }
+        if (user.adresse == undefined) {
+          return false
+        } 
+
+        return true
       }
     },
     computed: {

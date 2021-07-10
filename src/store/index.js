@@ -77,15 +77,6 @@ const store = new Vuex.Store({
       if (item.date == null) {
         item.date = new Date()
       } 
-      
-      item.userFullName = item.user.fullName
-
-      /*
-       * item.user is the selected user
-       * so we need to point to the document
-       */
-      console.log("setting  id path wtih", item.user)
-      item.user =  this.state.userService.db.doc('users/' + item.user.id)
 
       if (item.id != null) {
         // update
@@ -109,17 +100,7 @@ const store = new Vuex.Store({
             //user.date = this.formatDDMMYYYY(user.date)
             pubs.push(pub)
           })
-          //console.log("fetching done", pubs)
-          /*
-          pubs.forEach(pub => {
-            var userId = pub.user.id
-            console.log("userId=", userId) 
-            var user = this.state.userService.get(userId)
-            console.log("pub.user ", user)  
-            pub.user = user
-          });
-          */
-          //console.log("adding users done", pubs)
+
           this.commit("setPublications", pubs)
         })
         .catch((err) => {
@@ -128,6 +109,7 @@ const store = new Vuex.Store({
       
     },
     createPublication({state}, item) {
+      
       state.publicationService.create(item)
         .then((doc) => {
           console.log("doc.id", doc.id)
@@ -139,6 +121,7 @@ const store = new Vuex.Store({
       var pubObject = state.publications.find(item => item.id == pub.id)
       var index = state.publications.indexOf(pubObject)
       Object.assign(state.publications[index], pub) 
+
       return state.publicationService.update(pub)
     },
     removePublication({state}, item) {
