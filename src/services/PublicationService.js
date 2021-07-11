@@ -57,6 +57,21 @@ export default class Publication {
         .update(item)
     }
 
+    async updateUser(user) {
+      // update all publications where user is referenced
+      this.db.collection('publications')
+             .where('user.id', '==', user.id)
+             .get()
+             .then((docs) => {
+               docs.forEach((doc) => {
+                 console.log("updating doc.id", doc.id)
+                 var update = {}
+                 update[`user`] = user
+                 doc.ref.update(update)
+               })
+             })
+    }
+
     remove(item) {
         this.db.collection("publications")
         .doc(item.id)

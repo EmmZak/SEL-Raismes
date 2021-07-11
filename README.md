@@ -32,8 +32,8 @@ Publication
 * List(slot) (créneaux horaires)
 * date (date de création de l'annonce) as String
 * cost (coût du service)
-* user's full name (pour éviter un autre appel à la bdd) ???
 
+ATTENTION: l'objet utilisateur est stoqué dans l'objet publication pour réduire les léctures. En cas de mise à jour il faut modifier toutes les publications contenant l'objet
 
 ## Deploy with Firebase Hosting
 ```

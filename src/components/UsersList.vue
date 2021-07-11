@@ -40,6 +40,7 @@
           max-width="500px"
         >
           <template v-slot:activator="{ on, attrs }">
+            <v-btn @click="test() ">test</v-btn>
             <v-btn
               color="primary"
               dark
@@ -165,6 +166,7 @@
 </template>
 
 <script>
+import firebase from '../firebaseConfig';
 import DateHandler from './../helperFunctions/DateHandler'
 //import store from '@/store'
 //import { mapGetters } from 'vuex'
@@ -251,7 +253,19 @@ export default {
         this.close()
       },
       test() {
-        console.log("test.users", this.users[0])
+        let db = firebase.firestore()
+        db.collection('publications')
+             .where('user.id', '==', '1SnRxfIFsqpDYkMSeGOR')
+             .get()
+             .then((docs) => {
+               docs.forEach((doc) => {
+                 console.log("updating doc.id", doc.id)
+                 //var update = {}
+                 //update[`publications/${doc.id()}/user`] = user
+                 //doc.ref.update(update)
+               })
+               
+             })
       },
     },
     computed: {

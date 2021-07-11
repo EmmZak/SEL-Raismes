@@ -1,5 +1,8 @@
 <template>
-    <p>header</p>
+    <v-card>
+        <p>header</p>
+        <v-btn @click="toAdminPage()">ADMIN</v-btn> 
+    </v-card>
 </template>
 
 <script>
@@ -10,6 +13,9 @@ export default {
         
     }),
     methods: {
+      toAdminPage() {
+        this.$router.push("/admin")
+      }
     }
 }
 </script>

@@ -57,10 +57,14 @@ const store = new Vuex.Store({
         })
     },
     // find user by ID, get Index and modify in state.users
-    updateUser({state}, user) {
+    async updateUser({state}, user) {
       var userObject = state.users.find(item => item.id == user.id)
       var index = state.users.indexOf(userObject)
       Object.assign(state.users[index], user) 
+
+      //console.log("updating pubs")
+      await state.publicationService.updateUser(user)
+      //console.log("updating  user")
       return state.userService.update(user)
     },
     removeUser({state}, user) {

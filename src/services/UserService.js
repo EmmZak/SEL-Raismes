@@ -61,6 +61,21 @@ export default class User {
      * user.id is the ID of generated document
      */
     update(user) {
+      /*
+      // update all publications where user is referenced
+      this.db.collection('publications')
+             .where('user.id', '==', user.id)
+             .get()
+             .then((docs) => {
+               docs.forEach((doc) => {
+                 console.log("updating doc.id", doc.id)
+                 var update = {}
+                 update[`user`] = user
+                 doc.ref.update(update)
+               })
+             })
+      */
+      // update user collection
       this.db.collection("users")
         .doc(user.id)
         .update(user)
