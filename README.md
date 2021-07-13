@@ -25,6 +25,7 @@ User (séliste)
 * mail
 * number (numéro portable)
 * inscription (date d'inscription)
+* gender (m,f,_)
 
 Publication
 * categ (catégorie)
@@ -32,6 +33,7 @@ Publication
 * List(slot) (créneaux horaires)
 * date (date de création de l'annonce) as String
 * cost (coût du service)
+* adresse (demande de service ???)
 
 ATTENTION: l'objet utilisateur est stoqué dans l'objet publication pour réduire les léctures. En cas de mise à jour il faut modifier toutes les publications contenant l'objet
 

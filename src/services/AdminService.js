@@ -4,7 +4,7 @@ import firebase from '../firebaseConfig';
  * BHq2BDIL9qZ_wate3SqLHT3Kvb1etAY8EWGmSxRttAnWA1ilDEe51pBWkFG8oT69fM0dvwIJBaHavENRxN9FkWk
  */
 
-export default class User {
+export default class Admin {
 
     constructor() {
         this.db = firebase.firestore();
@@ -16,41 +16,41 @@ export default class User {
     }
 
     get(id) {
-        this.db.collection("users")
+        this.db.collection("admins")
           .doc(id)
           .get()
           .then((res) => {
             return res.data()
           })
           .catch((err) => {
-            console.log("getUser.err ", err)
+            console.log("getAdmin.err ", err)
             return {}
           })
     }
 
     getAll() {
-        var users = []
-        this.db.collection("users")
+        var admins = []
+        this.db.collection("admins")
           .get()
           .then((query) => {
             query.forEach((doc) => {
 
-              var user = doc.data()
-              user["id"] = doc.id
-              //user.date = this.formatDDMMYYYY(user.date)
-              users.push(user)
+              var admin = doc.data()
+              admin["id"] = doc.id
+              //user.date = this.formatDDMMYYYY(admin.date)
+              admins.push(admin)
             })
 
           })
           .catch((error) => {
             console.log("Error getting documents: ", error);
           });
-        return users
+        return admins
     }
 
-    create(user) {
-      return this.db.collection("users")
-        .add(user)
+    create(admin) {
+      return this.db.collection("admins")
+        .add(admin)
         /*
         .then((doc) => {
           console.log("UserService.createUser.doc.id", doc.id)
@@ -67,9 +67,9 @@ export default class User {
     }
 
     /**
-     * user.id is the ID of generated document
+     * admin.id is the ID of generated document
      */
-    update(user) {
+    update(admin) {
       /*
       // update all publications where user is referenced
       this.db.collection('publications')
@@ -85,20 +85,16 @@ export default class User {
              })
       */
       // update user collection
-      this.db.collection("users")
-        .doc(user.id)
-        .update(user)
+      this.db.collection("admins")
+        .doc(admin.id)
+        .update(admin)
     }
 
-    remove(user) {
-      console.log("UserService.removeUser")
-      this.db.collection("users")
-        .doc(user.id)
-        .delete(user)
-    }
-
-    getTimestamp() {
-      return 
+    remove(admin) {
+      console.log("adminService.removeadmin")
+      this.db.collection("admins")
+        .doc(admin.id)
+        .delete(admin)
     }
 
 }

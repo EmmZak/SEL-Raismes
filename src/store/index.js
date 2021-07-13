@@ -1,12 +1,16 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import AdminService from './../services/AdminService'
 import UserService from './../services/UserService'
 import publicationService from './../services/PublicationService'
+
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
+    adminService: new AdminService(),
+    admins: [],
     userService: new UserService(),
     users: [], 
     publicationService: new publicationService(),
@@ -14,6 +18,9 @@ const store = new Vuex.Store({
   },
   mutations: {
     // stuff to change state
+    setAdmins(state, value) {
+      state.admins = value
+    },
     setUsers(state, value) {
       state.users = value
     },
@@ -22,6 +29,57 @@ const store = new Vuex.Store({
     }
   },
   actions: {
+    /****** Admin CRUD *******/
+    saveAdmin({dispatch}, admin) {
+      // creation date is not picked
+      if (admin.date == null) {
+        admin.date = new Date()
+      } 
+      
+      //admin.fullName = user.nom + " " + user.prenom
+
+      if (admin.id != null) {
+        // update
+        // check if object has changed to avoid useless update operation
+        dispatch('updateAdmin',  admin)
+      } else {
+        // create
+        dispatch('createAdmin', admin)
+      }
+    },
+    getAdmin({state}, id) {
+      return state.adminService.get(id)
+    },
+    fetchAdmins({state}) {
+      var admins = state.adminService.getAll()
+      this.commit("setAdmins", admins)
+    },
+    createAdmin({state}, admin) {
+      state.adminService.create(admin)
+        .then((doc) => {
+          console.log("doc.id", doc.id)
+          admin.id = doc.id
+          state.admins.push(admin)
+          console.log("created admin", admin)
+        })
+    },
+    // find admin by ID, get Index and modify in state.admins
+    async updateAdmin({state}, admin) {
+      var adminObject = state.admins.find(item => item.id == admin.id)
+      var index = state.admins.indexOf(adminObject)
+      Object.assign(state.admins[index], admin) 
+
+      //console.log("updating  admin")
+      return state.adminService.update(admin)
+    },
+    removeAdmin({state}, admin) {
+      state.admins = state.admins.filter(function(item) {
+        return item.id != admin.id
+      })
+
+      return state.adminService.remove(admin)
+    },
+
     /****** User CRUD *******/
     saveUser({dispatch}, user) {
       // creation date is not picked
@@ -139,6 +197,9 @@ const store = new Vuex.Store({
   modules: {
   }, 
   getters: {
+    admins(state) {
+      return state.admins
+    },
     users(state) {
       return state.users
     },

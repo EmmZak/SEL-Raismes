@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import AdminList from '../components/AdminList.vue'
 import UsersList from '../components/UsersList.vue'
 import PublicationsList from '../components/PublicationsList.vue'
 
@@ -47,14 +48,15 @@ export default {
     name: 'Admin',
 
     components: {
+        AdminList,
         UsersList,
         PublicationsList
     },
     data() {
         return {
             currentSection: "Offres",
-            sectionsList: [UsersList, PublicationsList],
-            sections: ["Sélistes", "Publications"]
+            sectionsList: [AdminList, UsersList, PublicationsList],
+            sections: ["Admin", "Sélistes", "Publications"]
         };
     },
     mounted() {
