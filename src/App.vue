@@ -4,12 +4,12 @@
     <!-- header -->
     <Header />
 
-    <div id="router_div">
+    <!-- router -->
+    <div>
       <v-main>
         <router-view/>
       </v-main>
     </div>
-
 
     <!-- footer -->
     <Footer/>

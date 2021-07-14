@@ -8,25 +8,26 @@
           :src="require(`@/assets/${item.categ}.jpg`)"
         ></v-img>
 
-        <v-row >
-          <v-col md="8">
-            <v-card-title>
-              {{ item.categ }}
-            </v-card-title>
-          </v-col>
-          <v-col >
-            <v-card-title>
-              <span class="amber--text accent-3">
-                $ {{ item.cost }}
-              </span> 
-            </v-card-title>
-          </v-col>
+        <v-row justify="space-around">
+
+          <v-card-title class="card-title">
+            <span class="font-weight-light"> {{ item.categ }} </span>
+          </v-card-title>
+
+          <v-card-title class="card-cost">
+            <span class="amber--text accent-3">
+              $ {{ item.cost }}
+            </span> 
+          </v-card-title>
         </v-row>
 
 
 
-
-        <v-card-title>Disponibilités</v-card-title>
+        <v-card-title
+          class="card-slots-text"
+        >
+          <span class="font-weight-light"> Disponibilités </span>
+        </v-card-title>
 
         <!-- slots 
         <v-card-text>
@@ -53,26 +54,19 @@
 
         <!-- info card -->
         <v-card>
-          <v-card-actions>
-            
-            <v-list-item class="">
-              <v-list-item-avatar color="grey darken-3" >
-                <v-img
-                  class="elevation-6"
-                  alt=""
-                  :src="require(`@/assets/avatars/${item.user.gender}.png`)"
-                ></v-img>
-              </v-list-item-avatar>
-              <v-list-item-content>
-                <v-list-item-title> {{ item.user.fullName.split(" ")[0] }} </v-list-item-title> 
-              </v-list-item-content>
-              <v-list-item-content>
-                <v-icon large>
-                  mdi-phone
-                </v-icon>
-              </v-list-item-content>
-            </v-list-item>
-          </v-card-actions>
+          <v-row justify="center">
+            <v-icon large>
+              mdi-account-circle
+            </v-icon>
+
+            <v-card-title class="card-user-name"> 
+              <span class="font-weight-light"> {{ item.user.fullName.split(" ")[0] }}  </span>
+            </v-card-title>
+ 
+            <v-icon medium>
+              mdi-phone
+            </v-icon>
+          </v-row>
         </v-card>
         <!-- END info card -->
         
@@ -117,7 +111,7 @@ export default {
 <style scoped>
 
 .publication_card {
-  max-width: 300px;
+  max-width: 200px;
 }
 
 .categ_image {
@@ -125,12 +119,20 @@ export default {
   max-width: 300px;
 }
 
-.v-card--reveal {
-align-items: center;
-bottom: 0;
-justify-content: center;
-opacity: .9;
-position: absolute;
-width: 100%;
+.card-title {
+  font-size: 1em;
 }
+
+.card-cost {
+  font-size: 1em;
+}
+
+.card-slots-text {
+  font-size: 1em;
+}
+
+.card-user-name {
+  font-size: 1em;
+}
+
 </style>
