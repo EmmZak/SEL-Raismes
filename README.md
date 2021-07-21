@@ -41,3 +41,11 @@ ATTENTION: l'objet utilisateur est stoqué dans l'objet publication pour réduir
 ```
 ./deploy
 ```
+
+## Mail
+
+SendGrid is used for mailing. Basic account offers 100 mails per day
+
+## Map
+
+Mairie annexe buliding's coordinates are  { 50.403587663227206, 3.5099710163715776 }

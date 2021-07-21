@@ -4,6 +4,7 @@
     <v-footer
         dark
         padless
+        app bottom fixed
     >
     <v-card
         class="flex"
@@ -11,7 +12,7 @@
         tile
     >
         <v-card-title class="teal">
-        <strong class="subheading">Get connected with us on social networks!</strong>
+        <strong class="subheading">Nos réseaux sociaux</strong>
 
         <v-spacer></v-spacer>
 

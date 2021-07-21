@@ -102,6 +102,7 @@
                       label="Créneaux"
                       multiple
                       prepend-icon="mdi-timetable"
+                      :menu-props="selectMenuProps"
                     ></v-select>
                   </v-col>
                 </v-row>
@@ -215,7 +216,14 @@ export default {
               date: null,
               cost: "",
             },
-            itemToDelete: {}
+            itemToDelete: {},
+            selectMenuProps: {
+              auto: true,
+              overflowY: false,
+              disableKeys: true,
+              openOnClick: false,
+              maxHeight: 304
+            }
         };
     },
     methods: {

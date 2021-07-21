@@ -47,7 +47,8 @@ export default {
         menuItems: [
             { title: 'Accueil', path: '/', icon: 'mdi-home' },
             { title: 'Contact', path: '/contact', icon: '' },
-            { title: 'Actualité', path: '/news', icon: '' },
+            { title: 'à propos', path: '/about', icon: '' },
+            //{ title: 'Actualité', path: '/news', icon: '' },
             { title: 'Espace Personnel', path: '/feed', icon: 'mdi-lock', class: 'success'}
         ]
       }
@@ -62,10 +63,5 @@ export default {
 
 <style scoped>
 
-.navbar {
-    /* max-height: 100px; */
-    padding-right: 0px;
-    padding-left: 0px;
-}
 
 </style>
