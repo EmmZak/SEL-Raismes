@@ -1,6 +1,6 @@
 <template>
 <!-- list  -->
-<v-container class="grey lighten-5">
+<v-container class="pt-10">
   <v-row>
     <!-- 
     <v-col v-for="(item,i) in items" :key="i" cols="3">

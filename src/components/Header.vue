@@ -2,7 +2,6 @@
 
 <nav >
   <v-toolbar>
-    
     <!-- logo -->
     <v-img 
       contain
@@ -10,10 +9,13 @@
       max-width="100%"
       max-height="100%"
       width="0px"
+      @click="toHomePage"
     ></v-img>
     <v-spacer></v-spacer>
     <!-- name -->
-    <v-toolbar-title>
+    <v-toolbar-title
+      @click="toHomePage"
+    >
       <span class="mb-2 text-h4">SEL</span>
       <span class="font-weight-light mb-2 text-h4"> Raismes</span>
     </v-toolbar-title>
@@ -54,6 +56,9 @@ export default {
       }
     },
     methods: {
+      toHomePage() {
+        this.$router.push("/")
+      },
       toAdminPage() {
         this.$router.push("/admin")
       }
