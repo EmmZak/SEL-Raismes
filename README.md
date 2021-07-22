@@ -49,3 +49,11 @@ SendGrid is used for mailing. Basic account offers 100 mails per day
 ## Map
 
 Mairie annexe buliding's coordinates are  { 50.403587663227206, 3.5099710163715776 }
+
+## TO MODIFY
+
+SEL Raismes - ???
+Logo - ???
+PDF - ???
+
+Publications - suply, demande
