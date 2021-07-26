@@ -43,6 +43,7 @@
 import AdminList from '../components/AdminList.vue'
 import UsersList from '../components/UsersList.vue'
 import PublicationsList from '../components/PublicationsList.vue'
+import RequestsList from '../components/RequestsList.vue'
 
 export default {
     name: 'Admin',
@@ -50,13 +51,14 @@ export default {
     components: {
         AdminList,
         UsersList,
-        PublicationsList
+        PublicationsList,
+        RequestsList
     },
     data() {
         return {
             currentSection: "Offres",
-            sectionsList: [AdminList, UsersList, PublicationsList],
-            sections: ["Admin", "Sélistes", "Publications"]
+            sectionsList: [AdminList, UsersList, PublicationsList, RequestsList],
+            sections: ["Admin", "Sélistes", "Publications", "Demandes"]
         };
     },
     mounted() {

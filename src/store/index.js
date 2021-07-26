@@ -2,8 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import AdminService from './../services/AdminService'
 import UserService from './../services/UserService'
-import publicationService from './../services/PublicationService'
-
+import PublicationService from './../services/PublicationService'
+import RequsetService from '../services/RequsetService'
 
 Vue.use(Vuex)
 
@@ -13,8 +13,10 @@ const store = new Vuex.Store({
     admins: [],
     userService: new UserService(),
     users: [], 
-    publicationService: new publicationService(),
-    publications: []
+    publicationService: new PublicationService(),
+    publications: [],
+    requestService: new RequsetService(),
+    requests: []
   },
   mutations: {
     // stuff to change state
@@ -26,10 +28,15 @@ const store = new Vuex.Store({
     },
     setPublications(state, value) {
       state.publications = value
-    }
+    },
+    setRequests(state, value) {
+      state.requests = value
+    },
   },
   actions: {
-    /****** Admin CRUD *******/
+    /***********************************************************************/
+    /****** Admin CRUD *****************************************************/
+    /***********************************************************************/
     saveAdmin({dispatch}, admin) {
       // creation date is not picked
       if (admin.date == null) {
@@ -80,7 +87,9 @@ const store = new Vuex.Store({
       return state.adminService.remove(admin)
     },
 
+    /***********************************************************************/
     /****** User CRUD *******/
+    /***********************************************************************/
     saveUser({dispatch}, user) {
       // creation date is not picked
       if (user.date == null) {
@@ -132,7 +141,10 @@ const store = new Vuex.Store({
 
       return state.userService.remove(user)
     },
+
+    /***********************************************************************/
     /****** Publication CRUD *******/
+    /***********************************************************************/
     savePublication({dispatch}, item) {
       console.log("item to save", item)
       // creation date is set automatically
@@ -193,6 +205,70 @@ const store = new Vuex.Store({
 
       return state.publicationService.remove(item)
     },
+  
+    /***********************************************************************/
+    /****** Request CRUD *******/
+    /***********************************************************************/
+    saveRequest({dispatch}, item) {
+      console.log("request to save", item)
+      // creation date is set automatically
+      if (item.date == null) {
+        item.date = new Date()
+      } 
+
+      if (item.id != null) {
+        // update
+        dispatch('updateRequest',  item)
+      } else {
+        // create
+        dispatch('createRequest', item)
+      }
+    },
+    getRequest({state}, id) {
+      return state.requestService.get(id)
+    },
+    fetchRequests({state}) {
+      //console.log("fetching pubs")
+      var requests = []
+      state.requestService.getAll()
+        .then((query) => {
+          query.forEach((doc) => {
+            var req = doc.data()
+            req["id"] = doc.id
+            //user.date = this.formatDDMMYYYY(user.date)
+            requests.push(req)
+          })
+
+          this.commit("setRequests", requests)
+        })
+        .catch((err) => {
+          console.log("err", err)
+        })
+      
+    },
+    createRequest({state}, item) {
+      
+      state.requestService.create(item)
+        .then((doc) => {
+          console.log("doc.id", doc.id)
+          item.id = doc.id
+          state.requestService.push(item)
+        })
+    },
+    updateRequest({state}, req) {
+      var reqObject = state.requests.find(item => item.id == req.id)
+      var index = state.requests.indexOf(reqObject)
+      Object.assign(state.requests[index], req) 
+
+      return state.requestService.update(req)
+    },
+    removeRequest({state}, item) {
+      state.requests = state.requests.filter(function(req) {
+        return req.id != item.id
+      })
+
+      return state.requestService.remove(item)
+    },
   },
   modules: {
   }, 
@@ -205,6 +281,9 @@ const store = new Vuex.Store({
     },
     publications(state) {
       return state.publications
+    },
+    requests(state) {
+      return state.requests
     }
   }
 })

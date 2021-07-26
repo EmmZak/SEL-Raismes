@@ -16,8 +16,7 @@
     <v-toolbar-title
       @click="toHomePage"
     >
-      <span class="mb-2 text-h4">SEL</span>
-      <span class="font-weight-light mb-2 text-h4"> Raismes</span>
+      <span class="gradient-text text-h4">Troc D'Heures Raismois</span>
     </v-toolbar-title>
 
     <v-spacer></v-spacer>
@@ -68,5 +67,16 @@ export default {
 
 <style scoped>
 
+.gradient-text {
+    background-color: #f3ec78;
+    background-image: 
+        linear-gradient(45deg, 
+          #94C11E, 
+          #F29209
+          );
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent; 
+}
 
 </style>

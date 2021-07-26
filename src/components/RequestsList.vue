@@ -13,7 +13,7 @@
         <v-btn @click="test()">test</v-btn>
   <v-data-table
     :headers="headers"
-    :items="publications"
+    :items="requests"
     :search="search"
     class="elevation-1"
   >
@@ -50,7 +50,7 @@
               v-bind="attrs"
               v-on="on"
             >
-              Nouvelle Publication
+              Nouvelle Demande
             </v-btn>
           </template>
           <v-card>
@@ -82,17 +82,7 @@
                     </v-autocomplete>
                   </v-col>
                 </v-row>
-                <!-- adresse  
-                <v-row>
-                  <v-col >
-                    <v-text-field
-                      v-model="editedItem.adresse"
-                      label="Adresse"
-                      prepend-icon="mdi-map-marker"
-                    ></v-text-field>
-                  </v-col>
-                </v-row> -->
-                
+
                 <v-row>
                   <v-col >
                     <v-select
@@ -140,7 +130,7 @@
         </v-dialog>
         <v-dialog v-model="dialogDelete" max-width="500px">
           <v-card>
-            <v-card-title class="text-h10">Vous êtes sûr de vouloir supprimer l'annonce ?</v-card-title>
+            <v-card-title class="text-h10">Vous êtes sûr de vouloir supprimer la demande  ?</v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="closeDelete">Annuler</v-btn>
@@ -171,12 +161,12 @@
 </template>
 
 <script>
-import DateHandler from './../helperFunctions/DateHandler'
+import DateHandler from '../helperFunctions/DateHandler'
 //import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
 
 export default {
-    name: "PublicationsList",
+    name: "DemandesList",
     mixins: [DateHandler],
     data() {
         return {
@@ -228,24 +218,16 @@ export default {
         };
     },
     methods: {
-      ...mapActions(["fetchUsers", "fetchPublications", "removePublication", "savePublication"]),
+      ...mapActions(["fetchUsers", "fetchRequests", "removeRequest", "saveRequest"]),
       async save () {
         //console.log("method.save -> item ", this.editedItem)
-        await this.savePublication(this.editedItem)
+        await this.saveRequest(this.editedItem)
         this.close()
       },
       // UPDATE
       async editItem (item) {
         console.log("editItem.item", item)
-        /*
-        if (!this.isUserLoaded(item.user)) {
-          await item.user.get().then((query) => { item.user = query.data() })
-        } else {
-          console.log("user already loaded", item.user, item.user.adresse)
-        }
-        */
-        //console.log("added user to item", item)
-        //item.user = user
+
         this.editedIndex = this.publications.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialog = true
@@ -311,11 +293,11 @@ export default {
       users() {
         return this.$store.getters.users
       },
-      publications() {
-        return this.$store.getters.publications
+      requests() {
+        return this.$store.getters.requests
       },
       formTitle () {
-        return this.editedIndex === -1 ? 'Création Annonce' : 'Modification Annonce'
+        return this.editedIndex === -1 ? 'Création Demande' : 'Modification Demande'
       },
     },
     watch: {
@@ -327,7 +309,7 @@ export default {
       },
     },
     mounted() {
-      this.fetchPublications()
+      this.fetchRequests()
       this.populateSlots()
     }
 }

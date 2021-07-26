@@ -1,5 +1,6 @@
 <template>
-  
+
+<div>
   <!-- Carousel -->
   <v-carousel
     cycle
@@ -13,6 +14,16 @@
       :interval="interval"
     ></v-carousel-item>
   </v-carousel>
+
+  <!-- fb -->
+  fb view
+  <div style="width: 100px;">
+    <!-- Page plugin's width will be 180px -->
+    <div class="fb-page" data-href="https://m.facebook.com/Troc-dheures-raismois-108325714810910/" data-width="320"></div>
+  </div>
+  done
+</div>
+
 
 </template>
 src/

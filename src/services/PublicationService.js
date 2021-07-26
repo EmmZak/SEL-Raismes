@@ -14,7 +14,7 @@ export default class Publication {
             return res.data()
           })
           .catch((err) => {
-            console.log("getUser.err ", err)
+            console.log("getPublication.err ", err)
             return {}
           })
     }
