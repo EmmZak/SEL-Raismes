@@ -1,13 +1,13 @@
 const https = require('https');
 
-const doPostRequest = (dest, message) => {
+const doPostRequest = async (sender, message)  =>  {
 
     const DATA = {
         personalizations:[
             {
                 to:[
                     {
-                        email: dest,
+                        email: 'selraismes@gmail.com',
                         name: 'NAME'
                     }
                 ],
@@ -20,9 +20,9 @@ const doPostRequest = (dest, message) => {
             }
         ],
         from:
-            {email:'selraismes@gmail.com', name: "Troc D'Heures Raismois"},
+            {email: sender, name: ""},
         reply_to:
-            {email:"selraismes@gmail.com", name: "Troc D'Heures Raismois"}
+            {email: sender, name: ""}
     }
 
   return new Promise((resolve, reject) => {
@@ -55,20 +55,16 @@ const doPostRequest = (dest, message) => {
   });
 };
 
-/*
-exports.handler = async (event) => {
-  await doPostRequest()
-    .then(result => console.log(`Status code: ${result}`))
-    .catch(err => console.error(`Error doing the request for the event: ${JSON.stringify(event)} => ${err}`));
-};
-*/
-exports.handler = async (event) => {
-    console.log(event)
-    await doPostRequest("emmanuelzakaryan@gmail.com", "local")
-        .then((res) => {
-            console.log("res", res)
-        })
-        .catch((err) => {
-            console.log("err", err)
-        })
-}
+let sender = "emmanuelzakaryan@gmail.com"
+sender = "selraismes@gmail.com"
+const text = "test node local"
+
+doPostRequest(sender, text)
+    .then((res) => {
+        console.log(res)
+        return res
+    })
+    .catch((err) => {
+        console.log(err)
+        return err
+    })

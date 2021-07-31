@@ -1,12 +1,12 @@
 <template>
 
-<v-container class="pt-10">
+<v-container class="pt-5">
   <v-row 
     align="center"
     justify="center"
   >
   <v-card elevation="10" width="50%">
-    <br>
+    
     <v-card-title>
       <span class="text-h2">Contact</span>
     </v-card-title>
@@ -15,6 +15,17 @@
 
     <v-card-text>
       <v-container>
+        <v-row>
+          <v-col >
+            <v-select
+              :items="subjects"
+              label="Sujét"
+              v-model="subject"
+              :rules="subjectRules"
+              prepend-icon="mdi-help"
+            ></v-select>
+          </v-col>
+        </v-row>
         <v-row>
           <v-col>
             <v-text-field
@@ -59,7 +70,7 @@
 
     <v-card-actions>
       <v-btn
-      block 
+        block 
         color="success  "
         @click="send()"
         large
@@ -82,7 +93,20 @@ export default {
   name: 'Contact',
   data() {
     return {
+      
+      subjects: ["Création compte", "Renseignements", "Annonce", "Demande de service"],
+      subjectsMap: {
+        "creation": "Création compte"
+      },
+      sender: "selraismes@gmail.com",
+      AWS_LAMBDA_URL: "https://xk63di4om5.execute-api.us-east-2.amazonaws.com/default/NodeSendMail",
       valid: false,
+      
+      // mail params
+      subject: "",
+      subjectRules: [
+        v => !!v || 'Veuillez choisir un sujét',
+      ],
       name: "",
       nameRules: [
         v => !!v || 'Veuillez saisir un nom',
@@ -97,46 +121,32 @@ export default {
       messageRules: [
         v => v.length < 100 || 'Le message est très long',
       ],
-      mailHeaders: {
-        "Authorization": "Bearer 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",
-        "Content-Type": "application/json",
+      headers: {
+        'Content-Type': 'application/json',
+        "Access-Control-Allow-Headers" : "Content-Type",
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
-        'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+        "Access-Control-Allow-Credentials" : true,
+        "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
       },
-      mailData: {
-        "personalizations": [
-                {
-                  "to": [
-                      {
-                        "email": "selraismes@gmail.com",
-                        "name": "To Name"
-                      }
-                  ],
-                  "subject": "Contact Sel Raismes"
-                }
-            ],
-        "content": [
-          {
-              "type": "text/plain",
-              "value": "Heya!"
-          }
-        ],
-        "from": {
-            "email": this.email,
-            "name": this.name
-          },
-        "reply_to": {
-            "email": this.email,
-            "name": this.name
-        }
+      data: {
+        message: this.message
       }
     }
   },
+  mounted() {
+    let subjectName = this.$route.query.subject
+    this.subject = this.subjectsMap[subjectName]
+  },
   methods: {
-    send() {
-      axios 
-        .post("https://api.sendgrid.com/v2/mail/send", this.mailHeaders, this.mailData)
+    async send() {
+      await axios 
+        .post(
+          this.AWS_LAMBDA_URL, 
+          {
+            headers: this.headers
+          },
+          this.data
+        )
         .then(res => console.log(res))
         .catch(err => console.log(err))
       // sendGrid service call

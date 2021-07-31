@@ -16,21 +16,39 @@
     <v-toolbar-title
       @click="toHomePage"
     >
-      <span class="gradient-text text-h4">Troc D'Heures Raismois</span>
+      <span class="gradient-text text-h4">{{appTitle}}</span>
     </v-toolbar-title>
 
     <v-spacer></v-spacer>
     <!-- buttons -->
     <v-toolbar-items class="hidden-xs-only">
+        
         <v-btn
           text
-          v-for="item in menuItems"
-          :key="item.title"
-          :to="item.path"
-          :class="item.class"
+          to="/"
         >
-          <v-icon v-if="item.icon != ''" left dark>{{ item.icon }}</v-icon>
-          {{ item.title }}
+          <v-icon left dark>mdi-home</v-icon>
+          Accueil 
+        </v-btn>
+        <v-btn
+          text
+          to="/contact"
+        >
+          Contact
+        </v-btn>
+        <v-btn
+          text
+          to="/about"
+        >
+          à propos
+        </v-btn>
+        <v-btn
+          text
+          @click="emitAuthEvent"
+          class="success"
+        >
+          <v-icon left dark>mdi-lock</v-icon>
+          Espace Personnel
         </v-btn>
       </v-toolbar-items>
   </v-toolbar>
@@ -43,18 +61,16 @@ export default {
     name: "Header",
     data(){
       return {
-        appTitle: 'SEL Raismes',
-        sidebar: false,
-        menuItems: [
-            { title: 'Accueil', path: '/', icon: 'mdi-home' },
-            { title: 'Contact', path: '/contact', icon: '' },
-            { title: 'à propos', path: '/about', icon: '' },
-            //{ title: 'Actualité', path: '/news', icon: '' },
-            { title: 'Espace Personnel', path: '/feed', icon: 'mdi-lock', class: 'success'}
-        ]
+        appTitle: "Troc D'Heures Raismois",
+        sidebar: false
       }
     },
     methods: {
+      // trigers event to parent component for auth dialog
+      emitAuthEvent() {
+        console.log("emitting")
+        this.$emit('auth-event')
+      },
       toHomePage() {
         this.$router.push("/")
       },

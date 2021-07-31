@@ -63,7 +63,7 @@ name: SEL-Account
 Python
     https://f30vmplorj.execute-api.us-east-2.amazonaws.com/default/SendGridMailSender
 
-Node https://xumfaydul5.execute-api.us-east-2.amazonaws.com/default/NodeSendMail
+Node https://xk63di4om5.execute-api.us-east-2.amazonaws.com/default/NodeSendMail
 
 ## Mail
 
@@ -80,4 +80,11 @@ curl --request POST \
 --header 'Content-Type: application/json' \
 --data '{"personalizations":[{"to":[{"email":"emmanuelzakaryan@gmail.com","name":"John Doe"}],"subject":"Hello, World!"}],"content": [{"type": "text/plain", "value": "Heya!"}],"from":{"email":"selraismes@gmail.com","name":"SEL"},"reply_to":{"email":"selraismes@gmail.com","name":"SEL"}}'
 
-curl https://xumfaydul5.execute-api.us-east-2.amazonaws.com/default/NodeSendMail -d "dest=emmanuelzakaryan@gmail.com&text=from_curl"
+curl https://xk63di4om5.execute-api.us-east-2.amazonaws.com/default/NodeSendMail -d "message=from_curl \n age \n date \n adresse"
+
+## Authentication
+
+"Espace Personnel" button is on Header component.
+Header is on App.vue.
+
+The button trigers event catched by App to pop up auth dialog

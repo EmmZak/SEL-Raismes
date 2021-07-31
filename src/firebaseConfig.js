@@ -1,4 +1,6 @@
-import firebase from "firebase";
+import firebase from "firebase/app";
+//import "firebase/auth";
+//import "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -11,5 +13,18 @@ const firebaseConfig = {
     measurementId: "G-T85X0MRFMM"
 };
 
+const FirebaseRef = firebase.initializeApp(firebaseConfig);
+const Firestore = FirebaseRef.firestore();
+const FirebaseAuth = FirebaseRef.auth();
+const FirebaseRefForAuth = firebase.initializeApp(firebaseConfig, 'authManager').auth(); 
+
+export {
+    firebaseConfig,
+    FirebaseRefForAuth,
+    Firestore,
+    FirebaseAuth
+};
+
 // Initialize Firebase
-export default firebase.initializeApp(firebaseConfig);
+//export firebase.initializeApp(firebaseConfig, 'authManager');   
+//export default firebase.initializeApp(firebaseConfig);    
