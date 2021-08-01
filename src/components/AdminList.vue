@@ -173,12 +173,10 @@ export default {
       actualItemBackup: {
         id: null,
         fullName: "",
-        adresse: "",
         number: "",
         mail: "",
         password: "",
-        date: null,
-        credit: "",
+        admin: true,
       },
       editedItem: {
         id: null,
@@ -186,38 +184,36 @@ export default {
         number: "",
         mail: "",
         password: "",
+        admin: true,
       },
       defaultItem: {
         id: null,
         fullName: "",
-        mail: "",
         number: "",
+        mail: "",
         password: "",
+        admin: true,
       },
       itemToDelete: {},
     };
   },
   methods: {
-    ...mapActions(["fetchAdmins"]),
+    ...mapActions(["fetchUsers"]),
     async save() {
       this.processing = true;
       console.log("before signup");
       try {
-        if (this.editedItem.id == null) {
-          await this.$store.dispatch("signUpAdmin", this.editedItem);
-        } else {
-          await this.$store.dispatch("updateAdmin", {
-            admin: this.editedItem,
-            backup: this.actualItemBackup,
-          });
-        }
+        await this.$store.dispatch("signUpUser", {
+          user: this.editedItem,
+          backup: this.actualItemBackup,
+        });
       } catch (err) {
         console.log("try-catch", err);
       }
 
       console.log("after signup");
       // reload
-      await this.fetchAdmins();
+      await this.fetchUsers({admin: true});
 
       this.processing = false;
       this.close();
@@ -246,7 +242,7 @@ export default {
       console.log("before delete");
 
       try {
-        await this.$store.dispatch("deleteAdmin", this.itemToDelete);
+        await this.$store.dispatch("deleteUser", this.itemToDelete);
       } catch (err) {
         console.log("try-catch", err);
       }
@@ -254,7 +250,7 @@ export default {
       console.log("after delete");
 
       // reload
-      await this.fetchAdmins();
+      await this.fetchUsers({admin: true});
 
       this.itemToDelete = {};
       this.closeDelete();
@@ -297,7 +293,7 @@ export default {
     },
   },
   async mounted() {
-    await this.fetchAdmins();
+    await this.fetchUsers({admin: true});
   },
 };
 </script>

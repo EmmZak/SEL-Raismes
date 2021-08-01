@@ -88,3 +88,20 @@ curl https://xk63di4om5.execute-api.us-east-2.amazonaws.com/default/NodeSendMail
 Header is on App.vue.
 
 The button trigers event catched by App to pop up auth dialog
+
+## Test accounts
+
+### admin 
+* Aymeric Robin
+	* aymeric@robin.fr
+	* raismes
+
+* Jenny Adonel
+	* jenny@adonel.fr
+	* raismes
+
+### séliste 
+
+* Alex Zak
+	* alex@zak.fr
+	* raismes

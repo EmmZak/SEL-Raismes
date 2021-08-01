@@ -7,17 +7,24 @@ import {
 export default {
   state: {
     users: [],
+    admins: [],
     // auth user
-    actualUser: {
-      fullName: "",
-      mail: "",
-      number: "",
-      adresse: "",
-      date: null,
-      creadit: "",
-    },
+    actualUser: {},
   },
   mutations: {
+    // admins
+    addAdmin(state, admin) {
+      state.admins.push(admin);
+    },
+    /*
+    removeAdmin(state, admin) {
+      state.admins.push(admin);
+    },
+    */
+    setAdmins(state, value) {
+      state.admins = value;
+    },
+    // user
     addUser(state, user) {
       state.users.push(user);
     },
@@ -32,26 +39,95 @@ export default {
     },
   },
   actions: {
-    // signUp/create user
-    async signUpUser({ commit }, user) {
-      if (user.date == null) {
-        user.date = new Date();
-      }
-      // register auth
-      console.log("authing user", user);
-      let authUser = await FirebaseAuth.createUserWithEmailAndPassword(
+    // signIn user
+    async signIn({ commit }, user) {
+      console.log("before singin IN ");
+
+      let actualUser = await FirebaseAuth.signInWithEmailAndPassword(
         user.mail,
         user.password
       );
+      let id = actualUser.user.uid;
+      console.log("looking for doc id", id);
 
-      const uid = authUser.user.uid;
-      user.id = uid;
+      await Firestore.collection("users")
+        .doc(id)
+        .get()
+        .then((doc) => {
+          console.log("got user data", doc.data());
+          commit("setActualUser", doc.data());
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      console.log("after store sing IN ");
+    },
+    async signOut({ commit }) {
+      console.log("before sign OUT");
 
-      Firestore.collection("users")
-        .doc(uid)
-        .set(user);
+      await FirebaseAuth.signOut();
+      commit("setActualUser", {});
 
-      commit("addUser", user);
+      console.log("after signx OUT");
+    },
+    // signUp/create or update user
+    // data = {user: user, backup: backup}
+    async signUpUser({ commit }, data) {
+      let user = data.user;
+      user.date = new Date();
+
+      // if creating
+      if (user.id == null) {
+        // register auth
+        console.log("authing user", user);
+        let authUser = await FirebaseAuth.createUserWithEmailAndPassword(
+          user.mail,
+          user.password
+        );
+
+        const uid = authUser.user.uid;
+        user.id = uid;
+
+        Firestore.collection("users")
+          .doc(uid)
+          .set(user);
+
+        commit("addUser", user);
+      } else {
+        // if updating
+        let backup = data.backup;
+
+        if (backup.mail === user.mail) {
+          console.log("NO MAIL CHANGE");
+        } else {
+          await FirebaseRefForAuth.signInWithEmailAndPassword(
+            backup.mail,
+            backup.password
+          );
+          let actualUser = FirebaseRefForAuth.currentUser;
+          await actualUser.updateEmail(user.mail);
+          await FirebaseRefForAuth.signOut();
+          //app.delete()
+        }
+
+        // update in collections
+        await Firestore.collection("users")
+          .doc(user.id)
+          .update(user);
+
+        // update publications
+        await Firestore.collection("publications")
+          .where("user.id", "==", user.id)
+          .get()
+          .then((docs) => {
+            docs.forEach((doc) => {
+              var update = {};
+              update[`user`] = user;
+              doc.ref.update(update);
+            });
+          });
+        
+      } // end if
     },
     // delete user
     async deleteUser({ commit }, user) {
@@ -66,7 +142,7 @@ export default {
       //await app.delete();
 
       // remove from collections
-      Firestore.collection("users")
+      await Firestore.collection("users")
         .doc(user.id)
         .delete(user);
     },
@@ -106,11 +182,25 @@ export default {
           });
         });
     },
+    async getUser({ commit }, id) {
+      await Firestore.collection("users")
+        .doc(id)
+        .get()
+        .then((doc) => {
+          commit("setActualUser", doc.data());
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     // get all users
-    fetchUsers({ commit }) {
-      console.log("fetching users");
+    // data { admin: true/false}
+    fetchUsers({ commit }, data) {
+      console.log("fetching users", data);
+
       let users = [];
       Firestore.collection("users")
+        .where("admin", "==", data.admin)
         .get()
         .then((query) => {
           query.forEach((doc) => {
@@ -118,7 +208,11 @@ export default {
             user.id = doc.id;
             users.push(user);
           });
-          commit("setUsers", users);
+          if (data.admin) {
+            commit("setAdmins", users);
+          } else {
+            commit("setUsers", users);
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -129,6 +223,12 @@ export default {
   getters: {
     users(state) {
       return state.users;
+    },
+    actualUser(state) {
+      return state.actualUser;
+    },
+    admins(state) {
+      return state.admins;
     },
   },
 };

@@ -187,6 +187,7 @@ export default {
         password: "",
         date: null,
         credit: "",
+        admin: false
       },
       editedItem: {
         id: null,
@@ -197,6 +198,7 @@ export default {
         password: "",
         date: null,
         credit: "",
+        admin: false
       },
       defaultItem: {
         id: null,
@@ -207,6 +209,7 @@ export default {
         number: "",
         date: null,
         credit: "",
+        admin: false
       },
       itemToDelete: {},
       // registration
@@ -224,21 +227,17 @@ export default {
       this.processing = true;
       console.log("before signup");
       try {
-        if (this.editedItem.id == null) {
-          await this.$store.dispatch("signUpUser", this.editedItem);
-        } else {
-          await this.$store.dispatch("updateUser", {
+        await this.$store.dispatch("signUpUser", {
             user: this.editedItem,
             backup: this.actualItemBackup,
           });
-        }
       } catch (err) {
         console.log("try-catch", err);
       }
 
       console.log("after signup");
       // reload
-      await this.fetchUsers();
+      await this.fetchUsers({admin: false});
 
       this.processing = false;
       this.close();
@@ -275,7 +274,7 @@ export default {
       console.log("after delete");
 
       // reload
-      await this.fetchUsers();
+      await this.fetchUsers({admin: false});
 
       this.itemToDelete = {};
       this.closeDelete();
@@ -311,7 +310,7 @@ export default {
     },
   },
   async mounted() {
-    await this.fetchUsers();
+    await this.fetchUsers({admin: false});
   },
 };
 </script>

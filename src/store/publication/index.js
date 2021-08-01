@@ -10,28 +10,23 @@ export default {
     },
   },
   actions: {
-    async savePublication({ commit }, item) {
-      if (item.date == null) {
-        item.date = new Date();
-      }
+    // data = {publication: publication, backup: backup}
+    async savePublication({ commit }, data) {
+      let publication = data.publication;
+      publication.date = new Date();
 
-      await Firestore.collection("publications").add(item);
-    },
-    async updatePublication({ commit }, data) {
-      let item = data.publication;
-      //let backup = data.backup
-
-      if (item.date == null) {
-        item.date = new Date();
+      if (publication.id == null) {
+        await Firestore.collection("publications").add(publication);
+      } else {
+        await Firestore.collection("publications")
+          .doc(publication.id)
+          .update(publication);
+        /* local
+        var pubObject = state.publications.find(item => item.id == pub.id)
+        var index = state.publications.indexOf(pubObject)
+        Object.assign(state.publications[index], pub) 
+        */
       }
-      /* local
-      var pubObject = state.publications.find(item => item.id == pub.id)
-      var index = state.publications.indexOf(pubObject)
-      Object.assign(state.publications[index], pub) 
-      */
-      await Firestore.collection("publications")
-        .doc(item.id)
-        .update(item);
     },
     async deletePublication({ commit }, item) {
       await Firestore.collection("publications")
@@ -43,10 +38,10 @@ export default {
       });
       */
     },
-    fetchPublications({ commit }) {
+    async fetchPublications({ commit }) {
       console.log("fetching publications");
       let pubs = [];
-      Firestore.collection("publications")
+      await Firestore.collection("publications")
         .get()
         .then((query) => {
           query.forEach((doc) => {

@@ -217,14 +217,10 @@ export default {
     async save() {
       this.processing = true;
       try {
-        if (this.editedItem.id == null) {
-          await this.$store.dispatch("savePublication", this.editedItem);
-        } else {
-          await this.$store.dispatch("updatePublication", {
+          await this.$store.dispatch("savePublication", {
             publication: this.editedItem,
             backup: this.actualItemBackup,
           });
-        }
       } catch (err) {
         console.log("try-catch", err);
       }
@@ -334,7 +330,7 @@ export default {
     },
   },
   mounted() {
-    this.fetchUsers()
+    this.fetchUsers({admin: false});
     this.fetchPublications();
     this.populateSlots();
   },
