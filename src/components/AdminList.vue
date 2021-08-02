@@ -160,7 +160,7 @@ export default {
         fail: "mdi-close-circle",
       },
       headers: [
-        { text: "ID", value: "id" },
+        // { text: "ID", value: "id" },
         { text: "Nom - Prénom", value: "fullName" },
         { text: "Mail", value: "mail" },
         { text: "Numéro", value: "number" },

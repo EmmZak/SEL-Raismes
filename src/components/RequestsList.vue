@@ -179,7 +179,7 @@ export default {
             loadedPublications: [],
             slots: [], //["8-9h", "9-10h", "10-11h", ""],
             headers: [
-              { text: "ID", value: "id" },
+              // { text: "ID", value: "id" },
               { text: "Catégorie", value: "categ" },
               { text: "Prestataire", value: "user" },
               //{ text: "Adresse", value: "adresse" },

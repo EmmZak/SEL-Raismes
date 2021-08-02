@@ -1,9 +1,9 @@
 <template>
   <v-app>
     <!-- header -->
-    <Header @auth-event="openAuthDialog" />
+    <Header v-if="!isAdminView" @auth-event="openAuthDialog" />
     
-    <v-btn @click="test">test </v-btn>
+    <!-- <v-btn @click="test">test </v-btn> -->
     <!-- auth dialog -->
     <v-dialog v-model="authDialog" max-width="500px">
       <v-card>
@@ -66,7 +66,7 @@
     </div>
 
     <!-- footer -->
-    <Footer />
+    <Footer v-if="!isAdminView" />
   </v-app>
 </template>
 
@@ -82,6 +82,7 @@ export default {
     Header,
   },
   data: () => ({
+    admin: false,
     authLoading: false,
     authDialog: false,
     authError: "",
@@ -143,6 +144,10 @@ export default {
       console.log("actualUser", this.$store.getters.actualUser);
       return this.$store.getters.actualUser;
     },
+    isAdminView() {
+      console.log("actualRoute", this.$route.name)
+      return this.$route.name == 'Admin'
+    }
   },
 };
 </script>

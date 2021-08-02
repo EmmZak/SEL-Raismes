@@ -1,84 +1,72 @@
 <template>
-<!-- list  -->
-<v-layout>
-  
-  <v-container class="pt-10">
+  <!-- list  -->
+  <v-container class="my-5 red" fluid>
     <v-btn @click="signOut()">Se Deconnecter</v-btn>
-    <v-btn 
-      v-if="admin" 
-      @click="toAdminPage()"
-      class="success"
-    > 
-      Interface ADMIN 
+    <v-btn v-if="admin" @click="toAdminPage()" class="success">
+      Interface ADMIN
     </v-btn>
-    <v-row>
-      <!-- 
-      <v-col v-for="(item,i) in items" :key="i" cols="3">
-        
-        <publication-card :item="item" />
 
-      </v-col>
-      -->
-      <v-col v-for="(item,i) in items" :key="i" cols="3">
+    <v-row>
+      <v-col 
+        cols="12" xs="12" sm="6" md="3" lg="2"
+        v-for="(item, i) in items" :key="i"
+      >
         <publication-card :item="item" />
       </v-col>
     </v-row>
-  </v-container>
-</v-layout>
 
-  
+  </v-container>
 </template>
 
 <script>
 //import DateHandler from './../helperFunctions/DateHandler'
 //import { mapGetters } from 'vuex'
-import { mapActions } from 'vuex'
-import PublicationCard from './../components/PublicationCard.vue'
+import { mapActions } from "vuex";
+import PublicationCard from "./../components/PublicationCard.vue";
 
 export default {
-  name: 'Feed',
+  name: "Feed",
 
   data() {
     return {
-      admin: false
-    }
+      admin: false,
+    };
   },
   components: {
-    PublicationCard
+    PublicationCard,
   },
   methods: {
     ...mapActions(["fetchPublications"]),
     async signOut() {
-      try { 
-        await this.$store.dispatch('signOut')
-        this.$router.push('/')  
-      } catch(error) {
-        console.log("signout error", error)
+      try {
+        await this.$store.dispatch("signOut");
+        this.$router.push("/");
+      } catch (error) {
+        console.log("signout error", error);
       }
     },
     toAdminPage() {
-      this.$router.push('/admin')
-    }
+      this.$router.push("/admin");
+    },
   },
   computed: {
     items() {
       //var arr = [this.$store.getters.publications[0]]
-      var arr = this.$store.getters.publications
-      console.log("retuining item arr", arr)
-      return arr
+      var arr = this.$store.getters.publications;
+      console.log("retuining item arr", arr);
+      return arr;
     },
   },
   async created() {
-    await this.fetchPublications()
+    await this.fetchPublications();
     // check if user is admin
-    let storeUser = this.$store.getters.actualUser
-    console.log("storeUser", storeUser)
+    let storeUser = this.$store.getters.actualUser;
+    console.log("storeUser", storeUser);
     if (storeUser.admin) {
-      this.admin = true
+      this.admin = true;
     }
-  }
-  
-}
+  },
+};
 </script>
 
 <style scoped>
@@ -107,5 +95,4 @@ export default {
 .card-user-name {
   font-size: 1em;
 } */
-
 </style>

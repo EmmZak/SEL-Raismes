@@ -49,6 +49,7 @@
         >
           <v-icon left dark>mdi-lock</v-icon>
           Espace Personnel
+          <!-- {{ signInOutButtonText }} -->
         </v-btn>
       </v-toolbar-items>
   </v-toolbar>
@@ -72,10 +73,19 @@ export default {
         this.$emit('auth-event')
       },
       toHomePage() {
-        this.$router.push("/")
+        if (this.$route.path != '/') {
+          this.$router.push('/')
+        }
       },
       toAdminPage() {
         this.$router.push("/admin")
+      }
+    },
+    computed: {
+      signInOutButtonText() {
+        return this.$store.getters.actualUser.id == null 
+          ? 'Espace Personnel'
+          : 'Déconnexion'
       }
     }
 }

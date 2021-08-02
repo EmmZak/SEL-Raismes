@@ -36,7 +36,7 @@ const routes = [
     name: 'Feed',
     component: Feed,
     meta: {
-      authRequired: true,
+      authRequired: false,
     },
   },
   {
