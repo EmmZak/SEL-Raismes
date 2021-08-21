@@ -1,53 +1,41 @@
 <template>
-  <v-container class="pt-5 red">
-    <v-row align="center" justify="center">
+  <v-container class="pt-16" fluid>
+    <v-row justify="center">
       <!-- info section -->
-      <v-col>
-        <v-card>
+      <v-col md="4">
+        <v-card elevation="0">
           <!-- title -->
           <v-card-title>
-            <span class="text-h3 font-weight-bold">Contactez-nous</span>
+            <span class="text-h4 font-weight-bold">Contactez-nous</span>
           </v-card-title>
           <!-- adresse -->
-          <div>
-            <div>
-              <span>Grand place,</span>
-            </div>
-            <div>
-              <span>59590</span>
-            </div>
-            <div>
-              <span>Raismes</span>
-            </div>
-          </div>
-          <v-card-text>
-            <v-container>
-              <div>razerzra</div>
-              <div>razerzra</div>
-              <div>razerzra</div>
-              <v-row>
-                <p class="font-weight-bold">Grand place,</p>
-              </v-row>
-              <v-row>
-                <p class="font-weight-bold">Grand place,</p>
-              </v-row>
-              <v-row>
-                <p class="font-weight-bold">Grand place,</p>
-              </v-row>
-            </v-container>
-          </v-card-text>
+          <br />
+          <v-card-title class="text-h5">
+            Mairie Annexe De Sabatier <br />
+            Rue Léopold Dussart <br />
+            59590 <br />
+            Raismes
+          </v-card-title>
+          <!-- mail -->
+          <v-card-title class="text-h5 blue--text text-decoration-underline">
+            trocdheuresraismois@gmail.com
+          </v-card-title>
+          <!-- number -->
+          <v-card-title class="text-h5"> 03-27-25-54-89 </v-card-title>
         </v-card>
       </v-col>
       <!-- form section -->
-      <v-col>
-        <v-card>
+      <v-col md="4">
+        <v-card elevation="0" class="pa-0">
           <!-- title -->
           <v-card-title>
-            <span class="text-h4">Envoyez-nous un message</span>
+            <span class="text-h4 font-weight-bold"
+              >Envoyez-nous un message</span
+            >
           </v-card-title>
           <!-- fields -->
-          <v-card-text>
-            <v-container>
+          <v-card-text class="pl-0">
+            <v-container class="pa-0">
               <v-row>
                 <v-col>
                   <v-select
@@ -89,7 +77,7 @@
                 </v-col>
               </v-row>
               <v-row>
-                <v-col>
+                <v-col class="pb-0">
                   <v-textarea
                     v-model="message"
                     :rules="messageRules"
@@ -100,10 +88,15 @@
               </v-row>
             </v-container>
           </v-card-text>
+          <v-card-actions class="pt-0">
+            <v-btn block class="success pt-0" @click="send()" large>
+              Envoyer
+            </v-btn>
+          </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
-
+    <!--  
     <v-row align="center" justify="center">
       <v-card elevation="10" width="50%">
         <v-card-title>
@@ -171,7 +164,9 @@
           <v-btn block color="success  " @click="send()" large> Envoyer </v-btn>
         </v-card-actions>
       </v-card>
-    </v-row>
+    </v-row> -->
+
+    <!-- map -->
   </v-container>
 </template>
 

@@ -4,7 +4,8 @@
     <v-footer
         dark
         padless
-        app bottom fixed
+        fixed
+        absolute
     >
     <v-card
         class="flex"

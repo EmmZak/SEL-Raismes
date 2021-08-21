@@ -65,8 +65,8 @@
       </v-main>
     </div>
 
-    <!-- footer -->
-    <Footer v-if="!isAdminView" />
+    <!-- footer 
+    <Footer v-if="!isAdminView" /> -->
   </v-app>
 </template>
 

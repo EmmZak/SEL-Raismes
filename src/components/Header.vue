@@ -5,7 +5,7 @@
     <!-- logo -->
     <v-img 
       contain
-      src="./../assets/raismes-logo.png"
+      src="./../assets/sel-logo-crop.jpg"
       max-width="100%"
       max-height="100%"
       width="0px"
