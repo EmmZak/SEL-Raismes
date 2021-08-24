@@ -7,14 +7,10 @@
     </v-btn>
 
     <v-row>
-      <v-col 
-        cols="12" xs="12" sm="6" md="3" lg="2"
-        v-for="(item, i) in items" :key="i"
-      >
+      <v-col cols="12" lg="2" md="3" sm="4" xs="6" v-for="(item, i) in items" :key="i">
         <publication-card :item="item" />
-      </v-col>
+      </v-col>  
     </v-row>
-
   </v-container>
 </template>
 
