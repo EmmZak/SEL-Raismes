@@ -1,7 +1,9 @@
 <template>
   <v-app>
-    <!-- header -->
-    <Header v-if="!isAdminView" @auth-event="openAuthDialog" />
+    <!-- Header 
+    <Header /> -->
+    <!-- HeaderApp -->
+    <HeaderApp v-if="!isAdminView" @auth-event="openAuthDialog" />
     
     <!-- <v-btn @click="test">test </v-btn> -->
     <!-- auth dialog -->
@@ -65,13 +67,14 @@
       </v-main>
     </div>
 
-    <!-- footer 
-    <Footer v-if="!isAdminView" /> -->
+    <!-- footer -->
+    <Footer v-if="!isAdminView" /> 
   </v-app>
 </template>
 
 <script>
-import Header from "./components/Header.vue";
+//import Header from "./components/Header.vue"
+import HeaderApp from "./components/HeaderApp.vue";
 import Footer from "./components/Footer.vue";
 
 export default {
@@ -79,7 +82,8 @@ export default {
 
   components: {
     Footer,
-    Header,
+    //Header,
+    HeaderApp,
   },
   data: () => ({
     admin: false,

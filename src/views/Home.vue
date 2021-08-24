@@ -5,7 +5,13 @@
         <v-col md="7">
           <v-img src="./../assets/home-page.jpg" class="rounded-lg"></v-img>
         </v-col>
-        <v-col> text </v-col>
+        <v-col>
+          <v-card flat>
+            <v-card-title class="text-h2">Troc D'Heures Raismois</v-card-title>
+
+            <div></div>
+          </v-card>
+        </v-col>
       </v-row>
 
       <!--  
@@ -14,20 +20,20 @@
       </v-card-title> -->
     </v-card>
 
-    <!-- map -->
-    <v-row class="green" align="center" justify="center">
-      <v-col class="purple" md="8">
-        <iframe
-          width="100%"
-          height="450"
-          style="border: 0"
-          loading="lazy"
-          allowfullscreen
-          src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDgI1A9YSRRa4AVAZZE5VfFnokytTACUa0&q=50.403587663227206, 3.5099710163715776"
-        >
-        </iframe>
+    <v-row class="" align="center" justify="center">
+      <v-col md="8">
+        <div class="map-responsive">
+          <iframe
+            style="border: 0"
+            loading="lazy"
+            allowfullscreen
+            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDgI1A9YSRRa4AVAZZE5VfFnokytTACUa0&q=50.403587663227206, 3.5099710163715776"
+          >
+          </iframe>
+        </div>
       </v-col>
     </v-row>
+
   </v-container>
 
   <!-- Carousel 
@@ -107,5 +113,19 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
+.map-responsive {
+  overflow: hidden;
+  padding-bottom: 56.25%;
+  position: relative;
+  height: 0;
+}
+
+.map-responsive iframe {
+  left: 0;
+  top: 0;
+  height: 75%;
+  width: 100%;
+  position: absolute;
+}
 </style>

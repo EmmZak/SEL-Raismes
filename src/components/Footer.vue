@@ -1,53 +1,38 @@
 <template>
 <v-card>
-    
-    <v-footer
-        dark
-        padless
-        fixed
-        absolute
-    >
-    <v-card
-        class="flex"
-        flat
-        tile
-    >
+    footer
+</v-card>
+  <!--  
+  <v-card>
+    <v-footer dark padless fixed absolute>
+      <v-card class="flex" flat tile>
         <v-card-title class="teal">
-        <strong class="subheading">Nos réseaux sociaux</strong>
+          <strong class="subheading">Nos réseaux sociaux</strong>
 
-        <v-spacer></v-spacer>
+          <v-spacer></v-spacer>
 
-        <v-btn
-            v-for="icon in icons"
-            :key="icon"
-            class="mx-4"
-            dark
-            icon
-        >
+          <v-btn v-for="icon in icons" :key="icon" class="mx-4" dark icon>
             <v-icon size="24px">
-            {{ icon }}
+              {{ icon }}
             </v-icon>
-        </v-btn>
+          </v-btn>
         </v-card-title>
 
         <v-card-text class="py-2 white--text text-center">
-        {{ new Date().getFullYear() }} — <strong>SEL Raismes</strong>
+          {{ new Date().getFullYear() }} — <strong>SEL Raismes</strong>
         </v-card-text>
-    </v-card>
+      </v-card>
     </v-footer>
-</v-card>
-
+  </v-card>
+  -->
 </template>
 
 <script>
 export default {
-    name: "Footer",
+  name: "Footer",
 
-    data: () => ({
-        icons: [
-            'mdi-facebook',
-            'mdi-instagram',
-        ],
-    })
-}
+  data: () => ({
+    icons: ["mdi-facebook", "mdi-instagram"],
+  }),
+};
 </script>
