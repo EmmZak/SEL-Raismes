@@ -1,14 +1,25 @@
 <template>
   <v-container class="pt-16" fluid>
-    <v-row justify="center">
+    <v-row justify="center" class="">
       <!-- info section -->
-      <v-col md="4">
-        <v-card elevation="0">
-          <!-- title -->
-          <v-card-title>
-            <span class="text-h4 font-weight-bold">Contactez-nous</span>
+      <v-col cols="12" xs="6" md="4">
+        <v-card elevation="0" class="pa-5">
+          <v-card-title
+            class="d-none d-sm-flex text-lg-h3 text-md-h3 text-sm-h3 text-h5"
+          >
+            <div class="title-font font-weight-bold">Contactez-nous</div>
           </v-card-title>
-          <!-- adresse -->
+          <v-card-title
+            class="
+              d-flex d-sm-none
+              blue
+              text-lg-h3 text-md-h3 text-sm-h3 text-h5
+            "
+          >
+            <div class="title-font font-weight-bold white--text">
+              Contactez-nous
+            </div>
+          </v-card-title>
           <br />
           <v-card-title class="text-h5">
             Mairie Annexe De Sabatier <br />
@@ -16,26 +27,27 @@
             59590 <br />
             Raismes
           </v-card-title>
-          <!-- mail -->
           <v-card-title class="text-h5 blue--text text-decoration-underline">
             trocdheuresraismois@gmail.com
           </v-card-title>
-          <!-- number -->
           <v-card-title class="text-h5"> 03-27-25-54-89 </v-card-title>
         </v-card>
       </v-col>
-      <!-- form section -->
-      <v-col md="4">
-        <v-card elevation="0" class="pa-0">
-          <!-- title -->
-          <v-card-title>
-            <span class="text-h4 font-weight-bold"
-              >Envoyez-nous un message</span
-            >
+
+      <v-col cols="12" xs="12" md="5">
+        <v-card elevation="0" class="pa-5 red-xs-only">
+          <v-card-title class="d-none d-sm-flex text-lg-h3 text-md-h3 text-sm-h3 text-h5">
+            <div class="title-font font-weight-bold">
+              Envoyez-nous un message
+            </div>
           </v-card-title>
-          <!-- fields -->
+          <v-card-title class="d-flex d-sm-none green text-lg-h3 text-md-h3 text-sm-h3 text-h5">
+            <div class="title-font font-weight-bold white--text">
+              Envoyez-nous un message
+            </div>
+          </v-card-title>
           <v-card-text class="pl-0">
-            <v-container class="pa-0">
+            <v-container class="pt-5">
               <v-row>
                 <v-col>
                   <v-select
@@ -96,77 +108,6 @@
         </v-card>
       </v-col>
     </v-row>
-    <!--  
-    <v-row align="center" justify="center">
-      <v-card elevation="10" width="50%">
-        <v-card-title>
-          <span class="text-h2">Contact</span>
-        </v-card-title>
-
-        <br />
-
-        <v-card-text>
-          <v-container>
-            <v-row>
-              <v-col>
-                <v-select
-                  :items="subjects"
-                  label="Sujét"
-                  v-model="subject"
-                  :rules="subjectRules"
-                  prepend-icon="mdi-help"
-                ></v-select>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col>
-                <v-text-field
-                  v-model="name"
-                  :rules="nameRules"
-                  label="Nom - Prénom"
-                  prepend-icon="mdi-account"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col>
-                <v-text-field
-                  v-model="email"
-                  :rules="emailRules"
-                  label="E-mail"
-                  prepend-icon="mdi-email"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col>
-                <v-text-field
-                  v-model="number"
-                  label="Numéro"
-                  prepend-icon="mdi-phone"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col>
-                <v-textarea
-                  v-model="message"
-                  :rules="messageRules"
-                  label="Message ..."
-                  prepend-icon="mdi-message"
-                ></v-textarea>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card-text>
-
-        <v-card-actions>
-          <v-btn block color="success  " @click="send()" large> Envoyer </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-row> -->
-
-    <!-- map -->
   </v-container>
 </template>
 
@@ -177,6 +118,7 @@ export default {
   name: "Contact",
   data() {
     return {
+      titleStyle: "",
       adresse: "Grand place,<br/> 59590<br/> Raismes",
       subjects: [
         "Création compte",
@@ -238,3 +180,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.title-font {
+  font-family: "Open Sans", sans-serif;
+}
+</style>

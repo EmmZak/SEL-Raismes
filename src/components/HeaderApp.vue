@@ -3,13 +3,14 @@
     <!-- mobile navbar  -->
     <v-app-bar-nav-icon
       class="hidden-sm-and-up"
+      x-large
       @click.stop="drawer = !drawer"
     ></v-app-bar-nav-icon>
     <v-navigation-drawer v-model="drawer" absolute app temporary>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" x-large></v-app-bar-nav-icon>
       <v-list-item>
         <v-list-item-avatar>
-          <v-img src="./../assets/sel-logo-crop.jpg"></v-img>
+          <v-img src="./../assets/sel-logo.jpg"></v-img>
         </v-list-item-avatar>
 
         <v-list-item-content>
@@ -21,32 +22,36 @@
 
       <v-list dense>
         <v-list-item v-for="item in items" :key="item.title" link>
-          <v-btn :class="item.color" text :to="item.to">
+          <v-btn :class="item.color" text :to="item.to" class="text--center" width="100%" x-large >
             <v-icon left dark> {{ item.icon }}</v-icon>
             {{ item.title }}
           </v-btn>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-
+  
     <v-img
       contain
-      src="./../assets/sel-logo-crop.jpg"
-      max-width="100%"
-      max-height="100%"
-      width="0px"
+      src="./../assets/sel-logo-crop-min.jpg"
+      
+      width="150px"
+      height="100%"
       @click="test"
     ></v-img>
 
-    <v-spacer></v-spacer>
+    <v-spacer class="hidden-md-and-down"></v-spacer>
 
     <v-toolbar-title @click="toHomePage">
+      <!-- 
       <div class="text-lg-h3 text-md-h4 text-sm-body-h5 gradient-text">
         {{ appTitle }}
-      </div>
+      </div>  -->
+      <div class="text-lg-h3 hidden-md-and-down gradient-text">
+        {{ appTitle }}
+      </div> 
     </v-toolbar-title>
 
-    <v-spacer></v-spacer>
+    <v-spacer class="hidden-md-and-down"></v-spacer>
 
     <v-toolbar-items class="hidden-xs-only">
       <v-btn text to="/">
@@ -146,9 +151,6 @@ export default {
 </script>
 
 <style scoped>
-.nav-bar-btn-text {
-  font-size: 6rem;
-}
 
 /deep/ .v-toolbar__content {
   padding-top: 0;

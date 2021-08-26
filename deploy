@@ -1,5 +1,10 @@
 #!/bin/bash
 
+export NVM_DIR=$HOME/.nvm;
+source $NVM_DIR/nvm.sh;
+
+nvm use 14
+
 rm -rf dist
 npm run build
 

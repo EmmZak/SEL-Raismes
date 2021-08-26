@@ -10,7 +10,7 @@
     <v-dialog v-model="authDialog" max-width="500px">
       <v-card>
         <v-card-title>
-          <span class="text-h4"> Identification </span>
+          <div class="title-font"> Identification </div>
         </v-card-title>
 
         <v-card-text>
@@ -156,5 +156,8 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
+.title-font {
+  font-family: "Open Sans", sans-serif;
+}
 </style>
