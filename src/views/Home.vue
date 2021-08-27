@@ -11,7 +11,7 @@
               Troc D'Heures Raismois
             </div>
           </v-card-title>
-          <div>
+          <div class="">
             <v-card-text class="">
               <div class="text-lg-h5 text-md-h5 text-sm-h5 text-body-2">
                 <div class="title-font">
@@ -19,7 +19,7 @@
                   (SEL) qui a pour objet de créer du lien et de promouvoir des
                   solidarités entre les individus grâce à des échanges
                   multilatéraux de services et de biens, comptabilisés au moyen
-                  de Ramis
+                  de Ramis.
                 </div>
               </div>
             </v-card-text>
@@ -29,7 +29,7 @@
       </v-col>
     </v-row>
 
-    <v-row justify="center" class="">
+    <v-row justify="center">
       <v-col cols="12" class="light-blue lighten-1 d-flex justify-center pa-10">
         <div class="text-lg-h2 text-md-h3 text-sm-body-h4 text-h5">
           <div class="title-font white--text">Comment ça fonctionne ?</div>
@@ -42,6 +42,7 @@
         md="3"
         sm="3"
         xs="12"
+        class="pt-5"
       >
         <v-card flat class="" color="transparent">
           <v-card-title class="justify-center">
@@ -91,17 +92,17 @@
         </div>
       </v-col>
       <v-col md="8">
-        <div class="map-responsive">
+        <div class="map-responsive red">
           <iframe
             style="border: 0"
             loading="lazy"
-            allowfullscreen
             :src="`https://www.google.com/maps/embed/v1/place?key=AIzaSyDgI1A9YSRRa4AVAZZE5VfFnokytTACUa0&q=${coor.x}, ${coor.y}`"
           >
           </iframe>
         </div>
       </v-col>
     </v-row>
+    
   </v-container>
 </template>
 src/
@@ -141,17 +142,17 @@ export default {
         {
           iconClass: "fas fa-user-circle",
           title: "1. Inscrivez-vous !",
-          text: "Coût d'adhésion 5 euros par an. ",
+          text: "Coût d'adhésion 5 euros par an.",
         },
         {
           iconClass: "fas fa-hand-holding-usd",
           title: "2. Proposez vos services",
-          text: "1h de travail vous apporte 60 RAMIS. Les services sont de nature occasionelle",
+          text: "1h de travail vous apporte 60 RAMIS. Les services sont de nature occasionelle.",
         },
         {
           iconClass: "fas fa-handshake",
           title: "3. Recevez un autre service",
-          text: "Vous pouvez utlsider les Ramis obtenus en recevant des services",
+          text: "Vous pouvez utlsider les Ramis obtenus en recevant des services.",
         },
       ],
       events: [
@@ -197,17 +198,21 @@ export default {
   font-family: "Open Sans", sans-serif;
 }
 
-.map-responsive {
+.map-responsive-old {
   overflow: hidden;
   padding-bottom: 56.25%;
   position: relative;
-  height: 0;
+}
+
+.map-responsive { 
+  position: relative;
+  padding-bottom: 45%;
 }
 
 .map-responsive iframe {
   left: 0;
   top: 0;
-  height: 75%;
+  height: 100%;
   width: 100%;
   position: absolute;
 }

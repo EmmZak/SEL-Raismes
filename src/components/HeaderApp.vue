@@ -7,7 +7,10 @@
       @click.stop="drawer = !drawer"
     ></v-app-bar-nav-icon>
     <v-navigation-drawer v-model="drawer" absolute app temporary>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" x-large></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon
+        @click.stop="drawer = !drawer"
+        x-large
+      ></v-app-bar-nav-icon>
       <v-list-item>
         <v-list-item-avatar>
           <v-img src="./../assets/sel-logo.jpg"></v-img>
@@ -22,18 +25,29 @@
 
       <v-list dense>
         <v-list-item v-for="item in items" :key="item.title" link>
-          <v-btn :class="item.color" text :to="item.to" class="text--center" width="100%" x-large >
+          <!--  
+          <div :class="item.color" width="100%" :to="item.to">
+            <v-icon left dark> {{ item.icon }} </v-icon>
+            {{ item.title }}
+          </div>  -->
+          <v-btn
+            :class="item.color"
+            text
+            :to="item.to"
+            class="justify-start"
+            width="100%"
+            x-large
+          >
             <v-icon left dark> {{ item.icon }}</v-icon>
             {{ item.title }}
           </v-btn>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-  
+
     <v-img
       contain
       src="./../assets/sel-logo-crop-min.jpg"
-      
       width="150px"
       height="100%"
       @click="test"
@@ -48,7 +62,7 @@
       </div>  -->
       <div class="text-lg-h3 hidden-md-and-down gradient-text">
         {{ appTitle }}
-      </div> 
+      </div>
     </v-toolbar-title>
 
     <v-spacer class="hidden-md-and-down"></v-spacer>
@@ -73,7 +87,7 @@ export default {
   name: "HeaderApp",
   data() {
     return {
-      titleSize: 'text-lg-h2 text-md-h3 text-sm-body-h5',
+      titleSize: "text-lg-h2 text-md-h3 text-sm-body-h5",
       appTitle: "Troc D'Heures Raismois",
       drawer: false,
       group: null,
@@ -151,7 +165,6 @@ export default {
 </script>
 
 <style scoped>
-
 /deep/ .v-toolbar__content {
   padding-top: 0;
   padding-left: 30px;
