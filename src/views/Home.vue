@@ -2,7 +2,7 @@
   <v-container fluid flat class="">
     <v-row>
       <v-col cols="12" lg="8" md="12">
-        <v-img src="./../assets/home-page.jpg" class="rounded-lg"></v-img>
+        <v-img src="./../assets/home-page-min.jpg" class="rounded-lg"></v-img>
       </v-col>
       <v-col cols="12" lg="4" md="12" class="pl-0">
         <v-card flat class="">
@@ -74,7 +74,7 @@
           >
             <v-card :color="timelineColors[i % 3]" dark>
               <v-card-title class="title">{{ event.title }}</v-card-title>
-              <v-card-text class="white text--primary pt-2">
+              <v-card-text class="white text--primary pa-5">
                 <p>
                   {{ event.text }}
                 </p>
@@ -85,7 +85,7 @@
       </v-col>
     </v-row>
 
-    <v-row class="" justify="center">
+    <v-row justify="center">
       <v-col cols="12" class="deep-orange accent-2 d-flex justify-center pa-10">
         <div class="text-lg-h2 text-md-h3 text-sm-body-h4 text-h5">
           <div class="title-font white--text">Où sommes-nous ?</div>
@@ -142,7 +142,7 @@ export default {
         {
           iconClass: "fas fa-user-circle",
           title: "1. Inscrivez-vous !",
-          text: "Coût d'adhésion 5 euros par an.",
+          text: "Coût d'adhésion 5 euros par an ouvert à tous les raismois.",
         },
         {
           iconClass: "fas fa-hand-holding-usd",

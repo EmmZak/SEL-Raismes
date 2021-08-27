@@ -3,7 +3,7 @@
     <v-card class="red ">
       <v-row justify="center">
         <v-col>
-          <v-img max-width="500px" src="./../assets/sel-logo.jpg"></v-img>
+          <v-img max-width="600px" src="./../assets/sel-logo-500-min.jpg"></v-img>
         </v-col>
         <v-col>
           <v-card flat>

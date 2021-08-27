@@ -3,7 +3,7 @@
     <v-hover>
       <template v-slot:default="{ hover }">
         <v-card>
-          <v-img :src="require(`@/assets/${item.categ}.jpg`)"></v-img>
+          <v-img :src="require(`@/assets/${item.categ}-300.jpg`)"></v-img>
 
           <v-row justify="space-around">
             <v-card-title class="card-title">
@@ -80,6 +80,7 @@
                                 v-for="(slot, i) in item.slots"
                                 :key="i"
                                 cols="3"
+                                class="green"
                               >
                                 <v-chip medium>
                                   {{ slot }}
@@ -123,7 +124,7 @@
                   <v-col class="pt-7">
                     <v-avatar size="300" tile>
                       <v-img
-                        :src="require(`@/assets/${item.categ}.jpg`)"
+                        :src="require(`@/assets/${item.categ}-300.jpg`)"
                       ></v-img>
                     </v-avatar>
                   </v-col>

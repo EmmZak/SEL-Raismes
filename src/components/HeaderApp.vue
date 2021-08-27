@@ -13,7 +13,7 @@
       ></v-app-bar-nav-icon>
       <v-list-item>
         <v-list-item-avatar>
-          <v-img src="./../assets/sel-logo.jpg"></v-img>
+          <v-img src="./../assets/sel-logo-crop-min-150.jpg"></v-img>
         </v-list-item-avatar>
 
         <v-list-item-content>
@@ -47,10 +47,10 @@
 
     <v-img
       contain
-      src="./../assets/sel-logo-crop-min.jpg"
+      src="./../assets/sel-logo-crop-min-150.jpg"
       width="150px"
       height="100%"
-      @click="test"
+      @click="toHomePage"
     ></v-img>
 
     <v-spacer class="hidden-md-and-down"></v-spacer>
