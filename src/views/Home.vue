@@ -1,7 +1,7 @@
 <template>
   <v-container fluid flat class="">
     <v-row>
-      <v-col cols="12" lg="8" md="12">
+      <v-col cols="12" lg="8" md="12"  justify-center>
         <v-img src="./../assets/home-page-min.jpg" class="rounded-lg"></v-img>
       </v-col>
       <v-col cols="12" lg="4" md="12" class="pl-0">
@@ -11,7 +11,9 @@
               Troc D'Heures Raismois
             </div>
           </v-card-title>
-          <v-card-text :class="{'pt-16': $vuetify.breakpoint.lg}">
+
+          <v-card-text :class="{'pt-10': $vuetify.breakpoint.lg}">
+            <v-divider class="pb-5"></v-divider>
             <div class="text-lg-h5 text-md-h5 text-sm-h5 text-body-2">
                   Le Troc d'heures raismois est un Système d’Échanges Local (SEL)
               qui a pour objet de créer du lien social et de promouvoir des
@@ -21,6 +23,7 @@
               convertible en Euros, appelée « Ramis ».
               </div>
           </v-card-text>
+          <v-divider></v-divider>
           <div></div>
         </v-card>
       </v-col>
@@ -43,7 +46,7 @@
       >
         <v-card flat class="" color="transparent">
           <v-card-title class="justify-center">
-            <v-icon size="70" :class="item.iconClass"></v-icon>
+            <v-icon size="100" :class="item.iconClass"></v-icon>
           </v-card-title>
           <v-card-title class="justify-center text-h5">
             {{ item.title }}

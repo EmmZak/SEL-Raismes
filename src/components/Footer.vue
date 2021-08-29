@@ -44,6 +44,7 @@ export default {
       },
       { icon: "mdi-email", href: "/contact", target: "" },
       { icon: "mdi-phone", href: "/contact", target: "" },
+      { icon: "mdi-information", href: "/about", target: "" },
     ],
   }),
 };
