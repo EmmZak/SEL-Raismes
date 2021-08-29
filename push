@@ -2,7 +2,7 @@
 
 str="'$*'"
 
-echo str
+echo "$str"
 
 git add .
 git commit -m $1
