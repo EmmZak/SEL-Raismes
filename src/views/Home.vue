@@ -11,19 +11,16 @@
               Troc D'Heures Raismois
             </div>
           </v-card-title>
-          <div class="">
-            <v-card-text class="">
-              <div class="text-lg-h5 text-md-h5 text-sm-h5 text-body-2">
-                <div class="title-font">
-                  Le Troc d'heures raismois est un Système d’Échanges Local
-                  (SEL) qui a pour objet de créer du lien et de promouvoir des
-                  solidarités entre les individus grâce à des échanges
-                  multilatéraux de services et de biens, comptabilisés au moyen
-                  de Ramis.
-                </div>
+          <v-card-text :class="{'pt-16': $vuetify.breakpoint.lg}">
+            <div class="text-lg-h5 text-md-h5 text-sm-h5 text-body-2">
+                  Le Troc d'heures raismois est un Système d’Échanges Local (SEL)
+              qui a pour objet de créer du lien social et de promouvoir des
+              solidarités entre les individus grâce à des échanges multilatéraux
+              de services (compétences, temps, savoirs...) et de biens,
+              comptabilisés au moyen d'une unité d'échange symbolique, non
+              convertible en Euros, appelée « Ramis ».
               </div>
-            </v-card-text>
-          </div>
+          </v-card-text>
           <div></div>
         </v-card>
       </v-col>
@@ -102,7 +99,6 @@
         </div>
       </v-col>
     </v-row>
-    
   </v-container>
 </template>
 src/
@@ -140,16 +136,19 @@ export default {
       ],
       mainPageIconInfos: [
         {
+          iconPath: "account",
           iconClass: "fas fa-user-circle",
           title: "1. Inscrivez-vous !",
           text: "Coût d'adhésion 5 euros par an ouvert à tous les raismois.",
         },
         {
+          iconPath: "handholding",
           iconClass: "fas fa-hand-holding-usd",
           title: "2. Proposez vos services",
           text: "1h de travail vous apporte 60 RAMIS. Les services sont de nature occasionelle.",
         },
         {
+          iconPath: "handshake",
           iconClass: "fas fa-handshake",
           title: "3. Recevez un autre service",
           text: "Vous pouvez utlsider les Ramis obtenus en recevant des services.",
@@ -204,7 +203,7 @@ export default {
   position: relative;
 }
 
-.map-responsive { 
+.map-responsive {
   position: relative;
   padding-bottom: 45%;
 }
