@@ -1,9 +1,7 @@
 #!/bin/bash
 
-str="'$*'"
-
 git add .
-git commit -m "$str"
+git commit -m "'$*'"
 git push 
 
 /bin/bash deploy
