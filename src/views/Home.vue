@@ -154,7 +154,7 @@ export default {
           iconPath: "handshake",
           iconClass: "fas fa-handshake",
           title: "3. Recevez un autre service",
-          text: "Vous pouvez utlsider les Ramis obtenus en recevant des services.",
+          text: "Vous pouvez échanger les Ramis obtenus contre des services.",
         },
       ],
       events: [
