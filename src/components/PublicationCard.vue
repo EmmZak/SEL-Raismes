@@ -1,4 +1,20 @@
 <template>
+  <v-card elevation="10">
+    <v-row>
+      <v-col class="">
+        <v-card-title v-text="item.categ" class=""> </v-card-title>
+      </v-col>
+      <v-col class="purple">
+        <v-avatar v-show="$vuetify.breakpoint.lgAndUp" size="150" tile>
+          <v-img :src="require(`@/assets/${item.categ}-300.jpg`)"></v-img>
+        </v-avatar>
+        <v-avatar v-show="$vuetify.breakpoint.xsOnly" size="100" tile>
+          <v-img :src="require(`@/assets/${item.categ}-300.jpg`)"></v-img>
+        </v-avatar>
+      </v-col>
+    </v-row>
+  </v-card>
+  <!-- 
   <div>
     <v-hover>
       <template v-slot:default="{ hover }">
@@ -19,7 +35,7 @@
             <span class="font-weight-light"> Disponibilités </span>
           </v-card-title>
           <v-divider></v-divider>
-          <!-- info card  -->
+
           <v-bottom-navigation>
             <v-btn>
               <span>Recents</span>
@@ -41,7 +57,7 @@
         </v-card>
       </template>
     </v-hover>
-    <!-- opened card -->
+    
     <v-dialog v-model="dialog" max-width="700px">
       <v-container>
         <v-toolbar color="blue lighten-1">
@@ -67,7 +83,7 @@
                       </v-card-title>
                     </v-row>
 
-                    <!-- slots -->
+                    
                     <v-row>
                       <v-col class="pt-0">
                         <v-card elevation="5" flat>
@@ -91,7 +107,7 @@
                         </v-card>
                       </v-col>
                     </v-row>
-                    <!-- user -->
+                    
                     <v-row>
                       <v-col>
                         <v-card elevation="10" class="">
@@ -118,9 +134,9 @@
                         </v-card>
                       </v-col>
                     </v-row>
-                    <!-- END user -->
+                    
                   </v-col>
-                  <!-- image -->
+                  
                   <v-col class="pt-7">
                     <v-avatar size="300" tile>
                       <v-img
@@ -135,7 +151,7 @@
         </v-row>
       </v-container>
     </v-dialog>
-  </div>
+  </div>  -->
 </template>
 
 <script>
@@ -144,16 +160,30 @@ export default {
   props: ["item"],
   data() {
     return {
+      //avatarSize: 0,
       dialog: false,
     };
   },
   methods: {
+    avatarSizeTTT() {
+      let display = this.$vuetify.breakpoint.name;
+      switch (display) {
+        case this.$vuetify.breakpoint.lg:
+          return 150;
+        case this.$vuetify.breakpoint.md:
+          return 100;
+        case this.$vuetify.breakpoint.xs:
+          return 50;
+      }
+    },
     open() {
       this.dialog = true;
     },
     close() {
       this.dialog = false;
     },
+  },
+  computed: {
   },
 };
 </script>

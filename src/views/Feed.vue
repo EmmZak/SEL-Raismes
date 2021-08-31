@@ -1,6 +1,6 @@
 <template>
   <!-- list  -->
-  <v-container class="my-5 red" fluid>
+  <v-container class="my-5 " fluid>
     <v-btn @click="signOut()">Se Deconnecter</v-btn>
     <v-btn v-if="admin" @click="toAdminPage()" class="success">
       Interface ADMIN
@@ -19,7 +19,7 @@
     </v-row> -->
 
     <v-row>
-      <v-col cols="12" lg="2" v-for="(item, i) in items" :key="i">
+      <v-col cols="12" lg="8" class="pa-5" v-for="(item, i) in items" :key="i">
         <publication-card :item="item" />
       </v-col>
     </v-row>

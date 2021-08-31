@@ -10,6 +10,7 @@ export default {
     admins: [],
     // auth user
     actualUser: {},
+    visitor: false,
   },
   mutations: {
     // admins
@@ -37,8 +38,14 @@ export default {
     setActualUser(state, user) {
       state.actualUser = user;
     },
+    setVisitor(state, visitor) {
+      state.visitor = visitor
+    }
   },
   actions: {
+    async setVisitor({commit}, visitor) {
+      commit("setVisitor", visitor)
+    },
     // signIn user
     async signIn({ commit }, user) {
       console.log("before singin IN ");
@@ -230,5 +237,8 @@ export default {
     admins(state) {
       return state.admins;
     },
+    visitor(state) {
+      return state.visitor
+    }
   },
 };
