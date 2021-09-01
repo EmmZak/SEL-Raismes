@@ -6,7 +6,10 @@
         cols="12"
         lg="3"
       >
-        <v-img max-width="600px" src="./../assets/sel-logo-500-min-opt.jpg"></v-img>
+        <v-img
+          max-width="600px"
+          src="./../assets/sel-logo-500-min-opt.jpg"
+        ></v-img>
       </v-col>
       <v-col :class="{ 'ma-10': $vuetify.breakpoint.lg }" lg="6">
         <v-card flat class="">
@@ -70,11 +73,7 @@
     </v-row>
 
     <v-row justify="center">
-      <v-col
-        :class="{ 'ma-10': $vuetify.breakpoint.lg }"
-        cols="12"
-        lg="2"
-      >
+      <v-col :class="{ 'ma-10': $vuetify.breakpoint.lg }" cols="12" lg="2">
         <v-row class="justify-center pt-5">
           <v-icon size="220">mdi-scale-balance</v-icon>
         </v-row>
