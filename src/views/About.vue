@@ -6,7 +6,7 @@
         cols="12"
         lg="3"
       >
-        <v-img max-width="600px" src="./../assets/sel-logo-500-min.jpg"></v-img>
+        <v-img max-width="600px" src="./../assets/sel-logo-500-min-opt.jpg"></v-img>
       </v-col>
       <v-col :class="{ 'ma-10': $vuetify.breakpoint.lg }" lg="6">
         <v-card flat class="">
@@ -82,7 +82,7 @@
       <v-col :class="{ 'ma-10': $vuetify.breakpoint.lg }" colrs="12" lg="7">
         <v-card flat class="">
           <v-card-title class="text-lg-h4 text-md-h4 text-sm-h5 text-h6 pa-5">
-            <div class="title-font font-weight-bold">Mentaions Légales</div>
+            <div class="title-font font-weight-bold">Mentions Légales</div>
           </v-card-title>
           <v-card-text>
             <v-divider

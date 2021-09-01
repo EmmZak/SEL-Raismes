@@ -9,8 +9,7 @@
 </template>
 
 <script>
-import firebase from './../firebaseConfig';
-const db = firebase.firestore();
+import {Firestore} from './../firebaseConfig';
 
 export default {
     name: "Offres",
@@ -25,7 +24,7 @@ export default {
     },
     methods: {
       getOffres() {
-        db.collection("offres")
+        Firestore.collection("offres")
           .get()
           .then((query) => {
             query.forEach((doc) => {
