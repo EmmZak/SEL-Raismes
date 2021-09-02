@@ -96,7 +96,9 @@
           <iframe
             style="border: 0"
             loading="lazy"
+            
             :src="`https://www.google.com/maps/embed/v1/place?key=AIzaSyDgI1A9YSRRa4AVAZZE5VfFnokytTACUa0&q=${coor.x}, ${coor.y}`"
+            
           >
           </iframe>
         </div>
@@ -115,8 +117,8 @@ export default {
     return {
       // map
       coor: {
-        x: 50.403587663227206,
-        y: 3.5099710163715776,
+        x: 50.40621442353633,
+        y: 3.5204996088740343,
       },
       dialog: false,
       zoom: 12,

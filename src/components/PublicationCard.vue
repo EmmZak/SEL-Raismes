@@ -1,14 +1,13 @@
 <template>
   <v-card elevation="10">
-    <v-row>
-      <v-col class="">
-        <v-card-title v-text="item.categ" class=""> </v-card-title>
+    <v-row class="red">
+      <v-col class="yellow">
+        <v-card-title v-text="item.categ" class="pa-0"></v-card-title>
       </v-col>
+      <v-card-title v-text="item.price" class=""></v-card-title>
+
       <v-col class="purple">
-        <v-avatar v-show="$vuetify.breakpoint.lgAndUp" size="150" tile>
-          <v-img :src="require(`@/assets/${item.categ}-300.jpg`)"></v-img>
-        </v-avatar>
-        <v-avatar v-show="$vuetify.breakpoint.xsOnly" size="100" tile>
+        <v-avatar size="150" tile>
           <v-img :src="require(`@/assets/${item.categ}-300.jpg`)"></v-img>
         </v-avatar>
       </v-col>
@@ -183,8 +182,7 @@ export default {
       this.dialog = false;
     },
   },
-  computed: {
-  },
+  computed: {},
 };
 </script>
 

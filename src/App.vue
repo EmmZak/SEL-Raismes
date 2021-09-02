@@ -80,9 +80,9 @@
 
 <script>
 //import Header from "./components/Header.vue"
+import firebase from 'firebase'
 import HeaderApp from "./components/HeaderApp.vue";
 import Footer from "./components/Footer.vue";
-
 
 export default {
   name: "App",
@@ -104,20 +104,31 @@ export default {
       "auth/too-many-requests": "Veuillez essayer plus tard",
     },
     authData: {
-      mail: "",
-      password: "",
+      mail: "aymeric@robin.fr",
+      password: "raismes",
     },
   }),
+  async mounted() {
+    console.log("APP MOUNTED")
+  },
   methods: {
-    openAuthDialog() {
-      let storeUser = this.$store.getters.actualUser;
-      console.log("storeUser", storeUser);
-      if (storeUser.id != null) {
+    async openAuthDialog() {
+      let route = this.$route.name;
+      if (route == "Feed" && !this.$store.getters.visitor) {
+        await this.signOut();
+        return;
+      }
+
+      let authUser = firebase.auth().currentUser
+      console.log("authUser", authUser);
+      if (authUser) {
         console.log("already logged");
-        this.$router.push("/feed");
+        if (route != "Feed") {
+          this.$router.push("/feed");
+        }
       } else {
-        this.authData.mail = "";
-        this.authData.password = "";
+        //this.authData.mail = "";
+        //this.authData.password = "";
         this.authDialog = true;
       }
     },
@@ -128,14 +139,25 @@ export default {
       try {
         await this.$store.dispatch("signIn", this.authData);
         this.authDialog = false;
-        this.$router.push("/feed");
+        if (this.$route.name != "Feed") {
+          this.$router.push("/feed");
+        }
       } catch (error) {
         console.log("App.vue.signIn.error", error);
         this.authError = this.authErrorMap[error.code];
       }
       this.authLoading = false;
 
+      await this.$store.dispatch("setVisitor", false);
       console.log("APPvue after signIN");
+    },
+    async signOut() {
+      try {
+        await this.$store.dispatch("signOut");
+        this.$router.push("/");
+      } catch (error) {
+        console.log("signout error", error);
+      }
     },
     // if no account, go to contact page with create accoutn header
     createAccountRequest() {
@@ -146,7 +168,9 @@ export default {
     async visit() {
       await this.$store.dispatch("setVisitor", true);
       this.authDialog = false;
-      this.$router.push({path: "/feed"})
+      if (this.$route.name != "Feed") {
+        this.$router.push({ path: "/feed" });
+      }
     },
     test() {
       //let user = firebase.auth().currentUser

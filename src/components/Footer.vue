@@ -3,8 +3,7 @@
     <v-row>
       <v-col col="12" class="pa-0">
         <v-footer dark padless>
-          <v-row justify="">
-
+          <v-row>
             <v-col justify="center" class="pa-10">
               <v-row class="" justify="center">
                 <v-col md="5">

@@ -25,11 +25,6 @@
 
       <v-list dense>
         <v-list-item v-for="item in items" :key="item.title" link>
-          <!--  
-          <div :class="item.color" width="100%" :to="item.to">
-            <v-icon left dark> {{ item.icon }} </v-icon>
-            {{ item.title }}
-          </div>  -->
           <v-btn
             :class="item.color"
             text
@@ -56,12 +51,8 @@
     <v-spacer class="hidden-md-and-down"></v-spacer>
 
     <v-toolbar-title @click="toHomePage">
-      <!-- 
-      <div class="text-lg-h3 text-md-h4 text-sm-body-h5 gradient-text">
-        {{ appTitle }}
-      </div>  -->
       <div class="text-lg-h3 hidden-md-and-down gradient-text">
-        {{ appTitle }}
+        Troc D'Heures Raismois 
       </div>
     </v-toolbar-title>
 
@@ -76,21 +67,24 @@
       <v-btn text to="/about"> à propos </v-btn>
       <v-btn text @click="emitAuthEvent" class="success">
         <v-icon left dark>mdi-lock</v-icon>
-        Espace Personnel
+        <div 
+          v-text="this.$route.name == 'Feed' 
+            && !this.$store.getters.visitor ? 'Déconnexion': 'Espace Personnel'">
+        </div>
       </v-btn>
+      <v-btn @click="user()">user</v-btn>
     </v-toolbar-items>
   </v-app-bar>
 </template>
 
 <script>
+ import firebase from "firebase";
 export default {
   name: "HeaderApp",
   data() {
     return {
-      titleSize: "text-lg-h2 text-md-h3 text-sm-body-h5",
-      appTitle: "Troc D'Heures Raismois",
+      out: "Log Out",
       drawer: false,
-      group: null,
       items: [
         { to: "/", icon: "mdi-home", title: "Accueil", color: "" },
         {
@@ -110,9 +104,16 @@ export default {
     };
   },
   methods: {
+    user() {
+      let user = firebase.auth().currentUser
+      console.log("firebase user", user)
+
+      let storeUser = this.$store.getters.actualUser;
+      console.log("store user", storeUser)
+    },
     // trigers event to parent component for auth dialog
     emitAuthEvent() {
-      console.log("emitting");
+      console.log("emitting with route ", this.$route.name);
       this.$emit("auth-event");
     },
     toHomePage() {
@@ -157,9 +158,6 @@ export default {
     },
   },
   watch: {
-    group() {
-      this.drawer = false;
-    },
   },
 };
 </script>

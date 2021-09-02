@@ -3,6 +3,41 @@ import { Firestore } from "./../../firebaseConfig";
 export default {
   state: {
     publications: [],
+
+    items: [
+      { categ: "Animaux", user: {}, cost: "5", slots: [], date: new Date() },
+      { categ: "Cuisine", user: {}, cost: "60", slots: [], date: new Date() },
+      {
+        categ: "Jardinage",
+        user: {},
+        cost: "50",
+        slots: [],
+        date: new Date(),
+      },
+      {
+        categ: "Ménagers",
+        user: {},
+        cost: "20",
+        slots: [],
+        date: new Date(),
+      },
+      { categ: "Animaux", user: {}, cost: "30", slots: [], date: new Date() },
+      { categ: "Cuisine", user: {}, cost: "45", slots: [], date: new Date() },
+      {
+        categ: "Jardinage",
+        user: {},
+        cost: "78",
+        slots: [],
+        date: new Date(),
+      },
+      {
+        categ: "Ménagers",
+        user: {},
+        cost: "99  ",
+        slots: [],
+        date: new Date(),
+      },
+    ],
   },
   mutations: {
     setPublications(state, value) {
@@ -61,5 +96,8 @@ export default {
     publications(state) {
       return state.publications;
     },
+    items(state) {
+      return state.items
+    }
   },
 };
