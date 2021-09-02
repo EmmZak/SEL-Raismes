@@ -117,8 +117,8 @@ export default {
     return {
       // map
       coor: {
-        x: 50.40621442353633,
-        y: 3.5204996088740343,
+        x: 50.403774,
+        y: 3.509751,
       },
       dialog: false,
       zoom: 12,
