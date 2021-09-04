@@ -1,16 +1,38 @@
 <template>
   <!-- list  -->
-  <v-container class="my-5 grey" fluid>
-    <v-btn @click="signOut()">Se Deconnecter</v-btn>
+  <v-container class="my-5" fluid>
     <v-btn v-if="admin" @click="toAdminPage()" class="success">
       Interface ADMIN
     </v-btn>
-    <!-- 
+
+    <!-- options -->
+    <v-row align="center">
+      <v-col v-for="(option, i) in options" :key="i" cols="12" lg="2">
+        <v-select
+          :items="option.items"
+          :label="option.title"
+          :prepend-icon="option.icon"
+        ></v-select>
+      </v-col>
+    </v-row>
+
     <v-row>
-      <v-col cols="12" class="pa-5" v-for="(item, i) in staticItems" :key="i">
+      <v-col cols="12" lg="6" md="6" xs="12" class="pa-5" v-for="(item, i) in items" :key="i">
         <publication-card :item="item" />
       </v-col>
-    </v-row> -->
+    </v-row>
+
+    <v-navigation-drawer clipped class="red">
+      <v-list>
+        <v-list-item v-for="(option, i) in options" :key="i">
+          <v-select
+            :items="option.items"
+            :label="option.title"
+            :prepend-icon="option.icon"
+          ></v-select>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
 
     <v-pagination
       v-model="page"
@@ -32,6 +54,19 @@ export default {
 
   data() {
     return {
+      options: [
+        {
+          title: "Trier",
+          items: ["Le plus récent", "Le plus ancien", "Par défaut"],
+          icon: "mdi-sort",
+        },
+        {
+          title: "Choisir la catégorie",
+          items: this.$store.getters.categories,
+          icon: "mdi-feature-search",
+        },
+      ],
+      sortItems: ["Le plus récent", "Le plus ancien", "Par défaut"],
       page: 1,
       nbItems: 2,
       admin: false,
@@ -44,21 +79,19 @@ export default {
     ...mapActions(["fetchUser, fetchPublications"]),
     toAdminPage() {
       this.$router.push("/admin");
-    }
+    },
   },
   computed: {
     nbPages() {
-      if (this.items.length <= this.nbItems) 
-      {
+      if (this.items.length <= this.nbItems) {
         return 1;
-      } 
-      let n = this.items.length / this.nbItems
-      if (n %2 !=0) 
-      {
-        return (n|0) + 1
+      }
+      let n = this.items.length / this.nbItems;
+      if (n % 2 != 0) {
+        return (n | 0) + 1;
       }
       console.log("n -> ", n);
-      return n
+      return n;
     },
     items() {
       //var arr = [this.$store.getters.publications[0]]
@@ -69,10 +102,10 @@ export default {
     },
   },
   async mounted() {
-    await this.fetchPublications();
+    //await this.fetchPublications();
 
     // check if auth user
-    await this.fetchUser();
+    //await this.fetchUser();
 
     // check if user is admin
     let storeUser = this.$store.getters.actualUser;

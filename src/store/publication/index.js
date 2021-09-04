@@ -2,6 +2,7 @@ import { Firestore } from "./../../firebaseConfig";
 
 export default {
   state: {
+    categories: ["Animaux", "Cuisine", "Jardinage", "Ménagers", "OTHER"],
     publications: [],
 
     items: [
@@ -98,6 +99,9 @@ export default {
     },
     items(state) {
       return state.items
+    },
+    categories(state) {
+      return state.categories
     }
   },
 };

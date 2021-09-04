@@ -1,16 +1,17 @@
 <template>
   <v-card elevation="10">
-    <v-row class="red">
-      <v-col class="yellow">
+    <v-row class="justify-center">
+
+      <v-col class="yellow" lg="9" md="9" sm="9" xs="9">
         <v-card-title v-text="item.categ" class="pa-0"></v-card-title>
       </v-col>
-      <v-card-title v-text="item.price" class=""></v-card-title>
 
-      <v-col class="purple">
-        <v-avatar size="150" tile>
+      <v-col class="purple" lg="3" md="3" sm="3" xs="3">
+        <v-avatar :size="avatarSize" tile>
           <v-img :src="require(`@/assets/${item.categ}-300.jpg`)"></v-img>
         </v-avatar>
       </v-col>
+
     </v-row>
   </v-card>
   <!-- 
@@ -164,17 +165,6 @@ export default {
     };
   },
   methods: {
-    avatarSizeTTT() {
-      let display = this.$vuetify.breakpoint.name;
-      switch (display) {
-        case this.$vuetify.breakpoint.lg:
-          return 150;
-        case this.$vuetify.breakpoint.md:
-          return 100;
-        case this.$vuetify.breakpoint.xs:
-          return 50;
-      }
-    },
     open() {
       this.dialog = true;
     },
@@ -182,7 +172,18 @@ export default {
       this.dialog = false;
     },
   },
-  computed: {},
+  computed: {
+      avatarSize() {
+        switch (this.$vuetify.breakpoint.name) {
+          case 'xs': return 100
+          case 'sm': return 100
+          case 'md': return 125
+          case 'lg': return 150
+          case 'xl': return 200
+        }
+        return null
+      },
+  },
 };
 </script>
 

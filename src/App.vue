@@ -67,11 +67,9 @@
     </v-dialog>
 
     <!-- router -->
-    <div>
-      <v-main>
-        <router-view />
-      </v-main>
-    </div>
+    <v-main>
+      <router-view />
+    </v-main>
 
     <!-- footer -->
     <Footer v-if="!isAdminView" />
@@ -80,7 +78,7 @@
 
 <script>
 //import Header from "./components/Header.vue"
-import firebase from 'firebase'
+import firebase from "firebase";
 import HeaderApp from "./components/HeaderApp.vue";
 import Footer from "./components/Footer.vue";
 
@@ -109,7 +107,7 @@ export default {
     },
   }),
   async mounted() {
-    console.log("APP MOUNTED")
+    console.log("APP MOUNTED");
   },
   methods: {
     async openAuthDialog() {
@@ -119,7 +117,7 @@ export default {
         return;
       }
 
-      let authUser = firebase.auth().currentUser
+      let authUser = firebase.auth().currentUser;
       console.log("authUser", authUser);
       if (authUser) {
         console.log("already logged");

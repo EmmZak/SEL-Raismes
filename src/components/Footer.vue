@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-bottom-navigation dark>
     <v-row>
       <v-col col="12" class="pa-0">
         <v-footer dark padless>
@@ -27,7 +27,7 @@
         </v-footer>
       </v-col>
     </v-row>
-  </v-container>
+  </v-bottom-navigation>
 </template>
 
 <script>
