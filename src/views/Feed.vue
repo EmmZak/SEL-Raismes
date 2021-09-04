@@ -8,10 +8,14 @@
     <v-row align="center" justify="center" class="" app>
       <v-col v-for="(option, i) in options" :key="i" lg="2" xs="6">
         <v-select
+          v-model="$data[option.model]"
           x-large
           :items="option.items"
           :label="option.title"
           :prepend-icon="option.icon"
+          item-text="title"
+          item-value="value"
+          @change="change()"
         ></v-select>
       </v-col>
     </v-row>
@@ -72,16 +76,24 @@ export default {
     return {
       options: [
         {
+          model: "sort",
           title: "Trier",
-          items: ["Le plus récent", "Le plus ancien", "Par défaut"],
+          items: [
+            { title: "Le plus récent", value: "latest" },
+            { title: "Le plus ancien", value: "oldest" },
+            { title: "Par défaut", value: "default" },
+          ],
           icon: "mdi-sort",
         },
+
         {
+          model: "category",
           title: "Choisir la catégorie",
           items: this.$store.getters.categories,
           icon: "mdi-feature-search",
         },
         {
+          model: "town",
           title: "Ville-Commune",
           items: [
             "Raismes",
@@ -95,8 +107,10 @@ export default {
           icon: "mdi-map-marker",
         },
       ],
-      sortItems: ["Le plus récent", "Le plus ancien", "Par défaut"],
       page: 1,
+      town: "Raismes",
+      sort: "latest",
+      category: "Ménagers",
       nbItems: 2,
       admin: false,
     };
@@ -108,6 +122,16 @@ export default {
     ...mapActions(["fetchUser, fetchPublications"]),
     toAdminPage() {
       this.$router.push("/admin");
+    },
+    change() {
+      console.log(
+        "sort=",
+        this.sort,
+        ", page=",
+        this.page,
+        ", categ=",
+        this.category
+      );
     },
   },
   computed: {
@@ -131,6 +155,14 @@ export default {
     },
   },
   async mounted() {
+    // set parameters from url
+    /*
+    if (this.$route.page) {
+      this.page = this.$route.page
+    }
+    if (this.$route.town) {
+      this.town = this.$route.town
+    } */
     //await this.fetchPublications();
 
     // check if auth user

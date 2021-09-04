@@ -83,7 +83,6 @@ import Footer from "./components/Footer.vue";
 
 export default {
   name: "App",
-
   components: {
     Footer,
     //Header,
@@ -105,6 +104,10 @@ export default {
       password: "raismes",
     },
   }),
+  created() {
+    console.log("APP CREATED")
+    document.title = "Troc D'Heures Raismois"
+  },
   async mounted() {
     console.log("APP MOUNTED");
   },
