@@ -2,7 +2,7 @@ import { Firestore } from "./../../firebaseConfig";
 
 export default {
   state: {
-    categories: ["Animaux", "Cuisine", "Jardinage", "Ménagers", "OTHER"],
+    categories: ["Tout", "Animaux", "Cuisine", "Jardinage", "Ménagers", "OTHER"],
     publications: [],
 
     items: [

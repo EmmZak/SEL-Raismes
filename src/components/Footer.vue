@@ -1,5 +1,5 @@
 <template>
-  <v-bottom-navigation dark>
+  <v-bottom-navigation dark :app="this.$route.name == 'Feed' ? true:false">
     <v-row>
       <v-col col="12" class="pa-0">
         <v-footer dark padless>

@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app prominent class="white" height="84px">
+  <v-app-bar app prominent clipped-left class="white" height="84px">
     <!-- mobile navbar  -->
     <v-app-bar-nav-icon
       class="hidden-sm-and-up"

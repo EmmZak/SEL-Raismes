@@ -1,7 +1,6 @@
 <template>
   <v-app>
-    <!-- Header 
-    <Header /> -->
+   
     <!-- HeaderApp -->
     <HeaderApp v-if="!isAdminView" @auth-event="openAuthDialog" />
 

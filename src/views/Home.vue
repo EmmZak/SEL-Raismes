@@ -1,7 +1,7 @@
 <template>
   <v-container fluid flat class="">
     <v-row>
-      <v-col cols="12" lg="8" md="12"  justify-center>
+      <v-col cols="12" lg="8" md="12" justify-center>
         <v-img src="./../assets/home-page-min.jpg" class="rounded-lg"></v-img>
       </v-col>
       <v-col cols="12" lg="4" md="12" class="pl-0">
@@ -12,16 +12,16 @@
             </div>
           </v-card-title>
 
-          <v-card-text :class="{'pt-10': $vuetify.breakpoint.lg}">
+          <v-card-text :class="{ 'pt-10': $vuetify.breakpoint.lg }">
             <v-divider class="pb-5"></v-divider>
             <div class="text-lg-h5 text-md-h5 text-sm-h5 text-body-2">
-                  Le Troc d'heures raismois est un Système d’Échanges Local (SEL)
+              Le Troc d'heures raismois est un Système d’Échanges Local (SEL)
               qui a pour objet de créer du lien social et de promouvoir des
               solidarités entre les individus grâce à des échanges multilatéraux
               de services (compétences, temps, savoirs...) et de biens,
               comptabilisés au moyen d'une unité d'échange symbolique, non
               convertible en Euros, appelée « Ramis ».
-              </div>
+            </div>
           </v-card-text>
           <v-divider></v-divider>
           <div></div>
@@ -96,9 +96,7 @@
           <iframe
             style="border: 0"
             loading="lazy"
-            
             :src="`https://www.google.com/maps/embed/v1/place?key=AIzaSyDgI1A9YSRRa4AVAZZE5VfFnokytTACUa0&q=${coor.x}, ${coor.y}`"
-            
           >
           </iframe>
         </div>
@@ -106,7 +104,7 @@
     </v-row>
   </v-container>
 </template>
-src/
+
 <script>
 import { mapActions } from "vuex";
 

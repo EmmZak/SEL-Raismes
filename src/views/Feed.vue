@@ -4,11 +4,11 @@
     <v-btn v-if="admin" @click="toAdminPage()" class="success">
       Interface ADMIN
     </v-btn>
-
     <!-- options -->
-    <v-row align="center">
-      <v-col v-for="(option, i) in options" :key="i" cols="12" lg="2">
+    <v-row align="center" justify="center" class="" app>
+      <v-col v-for="(option, i) in options" :key="i" lg="2" xs="6">
         <v-select
+          x-large
           :items="option.items"
           :label="option.title"
           :prepend-icon="option.icon"
@@ -16,25 +16,41 @@
       </v-col>
     </v-row>
 
-    <v-row>
-      <v-col cols="12" lg="6" md="6" xs="12" class="pa-5" v-for="(item, i) in items" :key="i">
-        <publication-card :item="item" />
+    <v-row justify="space-around">
+      <v-col lg="10">
+        <v-row>
+          <v-col
+            cols="12"
+            lg="6"
+            md="6"
+            xs="12"
+            class="pa-5"
+            v-for="(item, i) in items"
+            :key="i"
+          >
+            <publication-card :item="item" />
+          </v-col>
+        </v-row>
       </v-col>
     </v-row>
 
-    <v-navigation-drawer clipped class="red">
-      <v-list>
-        <v-list-item v-for="(option, i) in options" :key="i">
-          <v-select
-            :items="option.items"
-            :label="option.title"
-            :prepend-icon="option.icon"
-          ></v-select>
-        </v-list-item>
-      </v-list>
+    <v-navigation-drawer :drawer="true" app clipped fixed class="pt-16">
+      <v-toolbar></v-toolbar>
+      <v-toolbar flat>
+        <v-list>
+          <v-list-item v-for="(option, i) in options" :key="i" class="pt-10">
+            <v-select
+              :items="option.items"
+              :prepend-icon="option.icon"
+              :label="option.title"
+            ></v-select>
+          </v-list-item>
+        </v-list>
+      </v-toolbar>
     </v-navigation-drawer>
 
     <v-pagination
+      class="pt-5"
       v-model="page"
       :length="nbPages"
       :page="page"
@@ -64,6 +80,19 @@ export default {
           title: "Choisir la catégorie",
           items: this.$store.getters.categories,
           icon: "mdi-feature-search",
+        },
+        {
+          title: "Ville-Commune",
+          items: [
+            "Raismes",
+            "Bruay-sur-l'Escaut",
+            "Beuvrages",
+            "Anzin",
+            "Petite Forêt",
+            "Escaupont",
+            "Fresnes-sur-l'Escaut",
+          ],
+          icon: "mdi-map-marker",
         },
       ],
       sortItems: ["Le plus récent", "Le plus ancien", "Par défaut"],
@@ -118,6 +147,14 @@ export default {
 </script>
 
 <style scoped>
+#styled-input {
+  height: 40px;
+  font-size: 20pt;
+}
+.styled-input label[for] {
+  height: 40px;
+  font-size: 20pt;
+}
 /* 
 .publication_card {
   max-width: 200px;

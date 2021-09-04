@@ -2,11 +2,11 @@
   <v-card elevation="10">
     <v-row class="justify-center">
 
-      <v-col class="yellow" lg="9" md="9" sm="9" xs="9">
+      <v-col class="yellow" lg="8" md="9" sm="9" xs="9">
         <v-card-title v-text="item.categ" class="pa-0"></v-card-title>
       </v-col>
 
-      <v-col class="purple" lg="3" md="3" sm="3" xs="3">
+      <v-col class="purple" lg="4" md="3" sm="3" xs="3">
         <v-avatar :size="avatarSize" tile>
           <v-img :src="require(`@/assets/${item.categ}-300.jpg`)"></v-img>
         </v-avatar>
