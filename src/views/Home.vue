@@ -6,7 +6,7 @@
       </v-col>
       <v-col cols="12" lg="4" md="12" class="pl-0">
         <v-card flat class="">
-          <v-card-title class="text-lg-h3 text-md-h3 text-sm-h3 text-h5">
+          <v-card-title class="text-xl-h3 text-lg-h3 text-md-h3 text-sm-h3 text-h5">
             <div class="title-font font-weight-bold">
               Troc D'Heures Raismois
             </div>

@@ -54,34 +54,6 @@ PDF - ???
 
 Publications - suply, demande
 
-## AWS Account
-
-e-mail: selraismes@gmail.com
-password: Raismes59590@
-name: SEL-Account
-
-Python
-    https://f30vmplorj.execute-api.us-east-2.amazonaws.com/default/SendGridMailSender
-
-Node https://xk63di4om5.execute-api.us-east-2.amazonaws.com/default/NodeSendMail
-
-## Mail
-
-SendGrid is used for mailing. Basic account offers 100 mails per day
-
-Account:
-    username: selraismes@gmail.com
-    password: raismes59590raismes
-    API_KEY: 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
-
-curl --request POST \
---url https://api.sendgrid.com/v3/mail/send \
---header 'Authorization: Bearer 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' \
---header 'Content-Type: application/json' \
---data '{"personalizations":[{"to":[{"email":"emmanuelzakaryan@gmail.com","name":"John Doe"}],"subject":"Hello, World!"}],"content": [{"type": "text/plain", "value": "Heya!"}],"from":{"email":"selraismes@gmail.com","name":"SEL"},"reply_to":{"email":"selraismes@gmail.com","name":"SEL"}}'
-
-curl https://xk63di4om5.execute-api.us-east-2.amazonaws.com/default/NodeSendMail -d "message=from_curl \n age \n date \n adresse"
-
 ## Authentication
 
 "Espace Personnel" button is on Header component.
@@ -94,14 +66,14 @@ The button trigers event catched by App to pop up auth dialog
 ### admin 
 * Aymeric Robin
 	* aymeric@robin.fr
-	* raismes
+	* r####s
 
 * Jenny Adonel
 	* jenny@adonel.fr
-	* raismes
+	* r####s
 
 ### séliste 
 
 * Alex Zak
 	* alex@zak.fr
-	* raismes
+	* r####s

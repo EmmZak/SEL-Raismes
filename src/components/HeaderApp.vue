@@ -72,7 +72,7 @@
             && !this.$store.getters.visitor ? 'Déconnexion': 'Espace Personnel'">
         </div>
       </v-btn>
-      <v-btn @click="user()">user</v-btn>
+      <!-- <v-btn @click="user()">user</v-btn> -->
     </v-toolbar-items>
   </v-app-bar>
 </template>
