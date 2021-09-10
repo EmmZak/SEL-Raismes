@@ -6,6 +6,16 @@ import {
 
 export default {
   state: {
+    towns: [
+      {town: 'Valenciennes', code: '59300'},
+      {town: 'Raismes', code: '59590'},
+      {town: "Bruay-sur-l'Escaut", code: '59860'},
+      {town: 'Beuvrages', code: '59192'},
+      {town: 'Anzin', code: '59410'},
+      {town: 'Petite Forêt', code: '59494'},
+      {town: 'Escaupont', code: '59278'},
+      {town: "Fresnes-sur-l'Escaut", code: '59970'},
+    ],
     users: [],
     admins: [],
     // auth user
@@ -228,6 +238,9 @@ export default {
   },
   modules: {},
   getters: {
+    towns(state) {
+      return state.towns
+    },
     users(state) {
       return state.users;
     },

@@ -36,12 +36,20 @@
 
       <v-col cols="12" xs="12" md="5">
         <v-card elevation="0" class="pa-5 red-xs-only">
-          <v-card-title class="d-none d-sm-flex text-lg-h3 text-md-h3 text-sm-h3 text-h5">
+          <v-card-title
+            class="d-none d-sm-flex text-lg-h3 text-md-h3 text-sm-h3 text-h5"
+          >
             <div class="title-font font-weight-bold">
               Envoyez-nous un message
             </div>
           </v-card-title>
-          <v-card-title class="d-flex d-sm-none green text-lg-h3 text-md-h3 text-sm-h3 text-h5">
+          <v-card-title
+            class="
+              d-flex d-sm-none
+              green
+              text-lg-h3 text-md-h3 text-sm-h3 text-h5
+            "
+          >
             <div class="title-font font-weight-bold white--text">
               Envoyez-nous un message
             </div>
@@ -62,9 +70,17 @@
               <v-row>
                 <v-col>
                   <v-text-field
+                    v-model="surname"
+                    :rules="nameRules"
+                    label="Nom"
+                    prepend-icon="mdi-account"
+                  ></v-text-field>
+                </v-col>
+                <v-col>
+                  <v-text-field
                     v-model="name"
                     :rules="nameRules"
-                    label="Nom - Prénom"
+                    label="Prénom"
                     prepend-icon="mdi-account"
                   ></v-text-field>
                 </v-col>
@@ -78,14 +94,31 @@
                     prepend-icon="mdi-email"
                   ></v-text-field>
                 </v-col>
-              </v-row>
-              <v-row>
                 <v-col>
                   <v-text-field
                     v-model="number"
                     label="Numéro"
                     prepend-icon="mdi-phone"
                   ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col>
+                  <v-text-field
+                    v-model="address"
+                    :rules="addressRules"
+                    label="Adresse"
+                    prepend-icon="mdi-map-marker"
+                  ></v-text-field>
+                </v-col>
+                <v-col>
+                  <v-autocomplete
+                    v-model="town"
+                    :items="this.$store.getters.towns"                    
+                    label="Ville - Code Postal"
+                    prepend-icon="mdi-home-city"  
+                    :item-text="item => item.town +', '+ item.code"
+                  ></v-autocomplete>
                 </v-col>
               </v-row>
               <v-row>

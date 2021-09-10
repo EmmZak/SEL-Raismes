@@ -95,15 +95,7 @@ export default {
         {
           model: "town",
           title: "Ville-Commune",
-          items: [
-            "Raismes",
-            "Bruay-sur-l'Escaut",
-            "Beuvrages",
-            "Anzin",
-            "Petite Forêt",
-            "Escaupont",
-            "Fresnes-sur-l'Escaut",
-          ],
+          items: this.$store.getters.towns,
           icon: "mdi-map-marker",
         },
       ],
