@@ -15,7 +15,7 @@
             </v-col>
 
             <v-col class="pa-10">
-              <v-row justify="center" class="green">
+              <v-row justify="center" class="">
                 <v-col v-for="(item, i) in items" :key="i" cols="6" lg="1" md="1" sm="1">
                   <v-btn icon :href="item.href" :target="item.target">
                     <v-icon dark md>{{ item.icon }}</v-icon>
