@@ -34,8 +34,9 @@
         </v-card>
       </v-col>
 
+      <!--  -->
       <v-col cols="12" xs="12" md="5">
-        <v-card elevation="0" class="pa-5 red-xs-only">
+        <v-card v-if="!sentSucceess"  elevation="0" class="pa-5 red-xs-only">
           <v-card-title
             class="d-none d-sm-flex text-lg-h3 text-md-h3 text-sm-h3 text-h5"
           >
@@ -54,8 +55,9 @@
               Envoyez-nous un message
             </div>
           </v-card-title>
+          <!-- form -->
           <v-card-text class="pl-0">
-            <v-container class="pt-5">
+            <v-form class="pt-5" ref="contactForm" v-model="valid">
               <v-row>
                 <v-col>
                   <v-select
@@ -64,29 +66,32 @@
                     v-model="subject"
                     :rules="subjectRules"
                     prepend-icon="mdi-help"
+                    required
                   ></v-select>
                 </v-col>
               </v-row>
               <v-row>
-                <v-col>
+                <v-col cols="12" lg="6">
                   <v-text-field
                     v-model="surname"
                     :rules="nameRules"
                     label="Nom"
                     prepend-icon="mdi-account"
+                    required
                   ></v-text-field>
                 </v-col>
-                <v-col>
+                <v-col cols="12" lg="6">
                   <v-text-field
                     v-model="name"
                     :rules="nameRules"
                     label="Prénom"
                     prepend-icon="mdi-account"
+                    required
                   ></v-text-field>
                 </v-col>
               </v-row>
               <v-row>
-                <v-col>
+                <v-col cols="12" lg="6">
                   <v-text-field
                     v-model="email"
                     :rules="emailRules"
@@ -94,31 +99,14 @@
                     prepend-icon="mdi-email"
                   ></v-text-field>
                 </v-col>
-                <v-col>
+                <v-col cols="12" lg="6">
                   <v-text-field
                     v-model="number"
+                    :rules="numberRules"
                     label="Numéro"
                     prepend-icon="mdi-phone"
+                    type="number"
                   ></v-text-field>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col>
-                  <v-text-field
-                    v-model="address"
-                    :rules="addressRules"
-                    label="Adresse"
-                    prepend-icon="mdi-map-marker"
-                  ></v-text-field>
-                </v-col>
-                <v-col>
-                  <v-autocomplete
-                    v-model="town"
-                    :items="this.$store.getters.towns"                    
-                    label="Ville - Code Postal"
-                    prepend-icon="mdi-home-city"  
-                    :item-text="item => item.town +', '+ item.code"
-                  ></v-autocomplete>
                 </v-col>
               </v-row>
               <v-row>
@@ -128,10 +116,11 @@
                     :rules="messageRules"
                     label="Message ..."
                     prepend-icon="mdi-message"
+                    required
                   ></v-textarea>
                 </v-col>
               </v-row>
-            </v-container>
+            </v-form>
           </v-card-text>
           <v-card-actions class="pt-0">
             <v-btn block class="success pt-0" @click="send()" large>
@@ -139,18 +128,24 @@
             </v-btn>
           </v-card-actions>
         </v-card>
+        <!-- else -->
+        <v-card v-else>
+          else
+        </v-card>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-import axios from "axios";
+//import axios from "axios";
 
 export default {
   name: "Contact",
   data() {
     return {
+      sentSucceess: false,
+      valid: false,
       titleStyle: "",
       adresse: "Grand place,<br/> 59590<br/> Raismes",
       subjects: [
@@ -165,19 +160,20 @@ export default {
       sender: "selraismes@gmail.com",
       AWS_LAMBDA_URL:
         "https://xk63di4om5.execute-api.us-east-2.amazonaws.com/default/NodeSendMail",
-      valid: false,
 
       // mail params
       subject: "",
       subjectRules: [(v) => !!v || "Veuillez choisir un sujét"],
       name: "",
-      nameRules: [(v) => !!v || "Veuillez saisir un nom"],
+      nameRules: [(v) => !!v || "Veuillez saisir un nom/prénom"],
+      surname: "",
       email: "",
       emailRules: [
         (v) => !!v || "Veuillez saisir votre mail",
         (v) => /.+@.+\..+/.test(v) || "Le mail n'est pas correct",
       ],
       number: "",
+      numberRules: [(v) => v.length < 10 || "Le numéro n'est pas correct"],
       message: "",
       messageRules: [(v) => v.length < 100 || "Le message est très long"],
       headers: {
@@ -198,6 +194,10 @@ export default {
   },
   methods: {
     async send() {
+      this.$refs.contactForm.validate();
+
+      this.sentSucceess = true
+      /*
       await axios
         .post(
           this.AWS_LAMBDA_URL,
@@ -207,7 +207,8 @@ export default {
           this.data
         )
         .then((res) => console.log(res))
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err)); 
+        */
       // sendGrid service call
     },
   },

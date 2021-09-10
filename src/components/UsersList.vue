@@ -46,8 +46,15 @@
                   <v-row>
                     <v-col>
                       <v-text-field
-                        v-model="editedItem.fullName"
-                        label="Nom - Prénom"
+                        v-model="editedItem.surname"
+                        label="Nom"
+                        prepend-icon="mdi-account"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col>
+                      <v-text-field
+                        v-model="editedItem.name"
+                        label="Prénom"
                         prepend-icon="mdi-account"
                       ></v-text-field>
                     </v-col>
@@ -89,6 +96,18 @@
                     </v-col>
                   </v-row>
                   <v-row>
+                    <v-col>
+                      <v-autocomplete
+                        v-model="town"
+                        :items="this.$store.getters.towns"
+                        label="Ville - Code Postal"
+                        prepend-icon="mdi-home-city"
+                        :item-text="(item) => item.town + ', ' + item.code"
+                      ></v-autocomplete>
+                    </v-col>
+                  </v-row>
+                  <!-- default sold is 60 Ramis
+                  <v-row>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
                         v-model="editedItem.credit"
@@ -96,7 +115,7 @@
                         prepend-icon="mdi-currency-eur"
                       ></v-text-field>
                     </v-col>
-                  </v-row>
+                  </v-row>  -->
                   <!-- registration error div -->
                   <v-row>
                     <v-col>
@@ -180,14 +199,15 @@ export default {
       // while updating, this'll check if any field has changed or not
       actualItemBackup: {
         id: null,
-        fullName: "",
+        name: "",
+        surname: "",
         adresse: "",
         number: "",
         mail: "",
         password: "",
         date: null,
         credit: "",
-        admin: false
+        admin: false,
       },
       editedItem: {
         id: null,
@@ -198,7 +218,7 @@ export default {
         password: "",
         date: null,
         credit: "",
-        admin: false
+        admin: false,
       },
       defaultItem: {
         id: null,
@@ -209,7 +229,7 @@ export default {
         number: "",
         date: null,
         credit: "",
-        admin: false
+        admin: false,
       },
       itemToDelete: {},
       // registration
@@ -228,16 +248,16 @@ export default {
       console.log("before signup");
       try {
         await this.$store.dispatch("signUpUser", {
-            user: this.editedItem,
-            backup: this.actualItemBackup,
-          });
+          user: this.editedItem,
+          backup: this.actualItemBackup,
+        });
       } catch (err) {
         console.log("try-catch", err);
       }
 
       console.log("after signup");
       // reload
-      await this.fetchUsers({admin: false});
+      await this.fetchUsers({ admin: false });
 
       this.processing = false;
       this.close();
@@ -274,7 +294,7 @@ export default {
       console.log("after delete");
 
       // reload
-      await this.fetchUsers({admin: false});
+      await this.fetchUsers({ admin: false });
 
       this.itemToDelete = {};
       this.closeDelete();
@@ -310,7 +330,7 @@ export default {
     },
   },
   async mounted() {
-    await this.fetchUsers({admin: false});
+    await this.fetchUsers({ admin: false });
   },
 };
 </script>
