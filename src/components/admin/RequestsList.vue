@@ -161,7 +161,7 @@
 </template>
 
 <script>
-import DateHandler from '../helperFunctions/DateHandler'
+import DateHandler from "./../../helperFunctions/DateHandler";
 //import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
 

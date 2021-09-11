@@ -1,5 +1,15 @@
 import { Firestore } from "./../../firebaseConfig";
 
+/*
+
+Information
+Venez nous rencontrer cette semaine lors des permanences du Troc d'heures raismois. RDV le mercredi 21 juillet de 15 à 17 h ou le jeudi 22 juillet de 9h30 à 11h30 (rez-de-chaussée de la mairie annexe de Sabatier, rue Léopold Dussart).
+
+Inscription
+Le Troc d'heures raismois prend ses vacances d'été jusqu'au lundi 30 août. Nous vous retrouverons donc dès la rentrée pour les permanences de septembre : - Mercredi 1er septembre 15h-17h - Mercredi 8 septembre 15h-17h.
+
+*/ 
+
 export default {
   state: {
     events: [],
@@ -13,7 +23,7 @@ export default {
     // data = {event: event, backup: backup}
     async saveEvent({ commit }, data) {
       let event = data.event;
-      event.date = new Date();
+      //event.date = new Date();
 
       if (event.id == null) {
         await Firestore.collection("events").add(event);
@@ -41,11 +51,14 @@ export default {
     async fetchEvents({ commit }) {
       console.log("fetching events");
       let events = [];
-      await Firestore.collection("events").doc("eventsDoc")
+      await Firestore.collection("events")
         .get()
-        .then((doc) => {
-          console.log("doc data", doc.data())
-          events = doc.data().eventsList
+        .then((query) => {
+          query.forEach((doc) => {
+            var e = doc.data()
+            e.id = doc.id
+            events.push(e)
+          })
           commit("setEvents", events);
         })
         .catch((err) => {

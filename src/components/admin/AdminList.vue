@@ -26,7 +26,7 @@
       <template v-slot:top>
         <v-toolbar flat>
           <!-- Header (search, new) -->
-          <v-toolbar-title>My CRUD</v-toolbar-title>
+          <v-toolbar-title>Gestion d'administrateurs</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
 
@@ -140,7 +140,7 @@
 </template>
 
 <script>
-import DateHandler from "./../helperFunctions/DateHandler";
+import DateHandler from "./../../helperFunctions/DateHandler";
 import { mapActions } from "vuex";
 
 export default {

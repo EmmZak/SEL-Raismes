@@ -24,7 +24,7 @@
       <template v-slot:top>
         <v-toolbar flat>
           <!-- Header (search, new) -->
-          <v-toolbar-title>My CRUD</v-toolbar-title>
+          <v-toolbar-title>Gestions de sélistes</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
 
@@ -171,7 +171,7 @@
 </template>
 
 <script>
-import DateHandler from "./../helperFunctions/DateHandler";
+import DateHandler from "./../../helperFunctions/DateHandler";
 //import store from '@/store'
 //import { mapGetters } from 'vuex'
 import { mapActions } from "vuex";

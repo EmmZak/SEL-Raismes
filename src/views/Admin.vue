@@ -60,22 +60,21 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
-
     </v-navigation-drawer>
 
     <!-- section -->
     <v-card>
       <component v-bind:is="currentSection" />
     </v-card>
-
   </v-container>
 </template>
 
 <script>
-import AdminList from "../components/AdminList.vue";
-import UsersList from "../components/UsersList.vue";
-import PublicationsList from "../components/PublicationsList.vue";
-import RequestsList from "../components/RequestsList.vue";
+import AdminList from "../components/admin/AdminList.vue";
+import UsersList from "../components/admin/UsersList.vue";
+import PublicationsList from "../components/admin/PublicationsList.vue";
+import RequestsList from "../components/admin/RequestsList.vue";
+import EventsList from "../components/admin/EventsList.vue";
 
 export default {
   name: "Admin",
@@ -99,12 +98,15 @@ export default {
           component: RequestsList,
           icon: "mdi-format-list-checkbox",
         },
+        {
+          title: "Evénements",
+          component: EventsList,
+          icon: "mdi-calendar",
+        },
       ],
     };
   },
-  mounted() {
-    
-  },
+  mounted() {},
   methods: {
     changeSection(component) {
       this.currentSection = component;

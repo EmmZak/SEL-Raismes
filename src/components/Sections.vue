@@ -45,7 +45,7 @@
 <script>
 import Offres from './Offres.vue';
 import Demandes from './Demandes.vue';
-import Publications from './PublicationsList.vue';
+import Publications from './admin/PublicationsList.vue';
 
 export default {
     name: "Sections",

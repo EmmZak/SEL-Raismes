@@ -29,7 +29,7 @@
       <!------------------------ Custom field rendering ------------------------>
       <template v-slot:top>
         <v-toolbar flat>
-          <v-toolbar-title>My CRUD</v-toolbar-title>
+          <v-toolbar-title>Gestion de publications</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="800px">
@@ -177,7 +177,7 @@
 </template>
 
 <script>
-import DateHandler from "./../helperFunctions/DateHandler";
+import DateHandler from "./../../helperFunctions/DateHandler";
 //import { mapGetters } from 'vuex'
 import { mapActions } from "vuex";
 
@@ -251,7 +251,7 @@ export default {
     ...mapActions(["fetchUsers", "fetchPublications"]),
     async save() {
       console.log("edited item", this.editedItem.date);
-      /*
+      
       this.processing = true;
       try {
         await this.$store.dispatch("savePublication", {
@@ -267,7 +267,7 @@ export default {
 
       this.processing = false;
       this.close();
-      */
+      
     },
     // UPDATE
     async editItem(item) {
