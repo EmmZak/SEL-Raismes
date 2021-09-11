@@ -49,7 +49,7 @@ export default {
     // data = {publication: publication, backup: backup}
     async savePublication({ commit }, data) {
       let publication = data.publication;
-      //publication.date = new Date();
+      publication.date = new Date();
 
       if (publication.id == null) {
         await Firestore.collection("publications").add(publication);
