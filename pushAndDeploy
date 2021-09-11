@@ -5,3 +5,5 @@
 git add .
 git commit -m "'$*'"
 git push 
+
+/bin/bash deploy
