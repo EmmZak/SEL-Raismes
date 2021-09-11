@@ -91,7 +91,8 @@ export default {
     // data = {user: user, backup: backup}
     async signUpUser({ commit }, data) {
       let user = data.user;
-      user.date = new Date();
+      user.date = new Date().toISOString().split('T')[0]
+      
       //let batch = Firestore.batch();
       // if creating
       let authUser = null;
