@@ -18,7 +18,7 @@
       class="elevation-1"
     >
       <!------------------------ Custom field rendering ------------------------>
-      <!-- date column -->
+      <!-- date column  -->
       <template v-slot:[`item.date`]="{ item }">
         <span>{{ formatDDMMYYYY(item.date) }}</span>
       </template>
@@ -65,12 +65,14 @@
                             v-model="editedItem.startTime"
                             label="Heure Début"
                             prepend-icon="mdi-clock"
+                            type="number"
                           ></v-text-field> </v-col
                         ><v-col>
                           <v-text-field
                             v-model="editedItem.endTIme"
                             label="Heure Fin"
                             prepend-icon="mdi-clock"
+                            type="number"
                           ></v-text-field>
                         </v-col>
                       </v-row>
@@ -80,6 +82,7 @@
                             v-model="editedItem.cost"
                             label="Coût"
                             prepend-icon="mdi-currency-eur"
+                            type="number"
                           ></v-text-field>
                         </v-col>
                       </v-row>
@@ -203,7 +206,7 @@ export default {
         { text: "Numéro", value: "user.number" },
         { text: "E-mail", value: "user.mail" },
         //{ text: "Adresse", value: "adresse" },
-        { text: "Crénaux", value: "start  Time" },
+        { text: "Crénaux", value: "startTime" },
         { text: "Date", value: "date" },
         { text: "Coût", value: "cost" },
         { text: "Actions", value: "actions", sortable: false },
