@@ -7,14 +7,14 @@ import {
 export default {
   state: {
     towns: [
-      {town: 'Valenciennes', code: '59300'},
-      {town: 'Raismes', code: '59590'},
-      {town: "Bruay-sur-l'Escaut", code: '59860'},
-      {town: 'Beuvrages', code: '59192'},
-      {town: 'Anzin', code: '59410'},
-      {town: 'Petite Forêt', code: '59494'},
-      {town: 'Escaupont', code: '59278'},
-      {town: "Fresnes-sur-l'Escaut", code: '59970'},
+      { town: "Valenciennes", code: "59300" },
+      { town: "Raismes", code: "59590" },
+      { town: "Bruay-sur-l'Escaut", code: "59860" },
+      { town: "Beuvrages", code: "59192" },
+      { town: "Anzin", code: "59410" },
+      { town: "Petite Forêt", code: "59494" },
+      { town: "Escaupont", code: "59278" },
+      { town: "Fresnes-sur-l'Escaut", code: "59970" },
     ],
     users: [],
     admins: [],
@@ -49,12 +49,12 @@ export default {
       state.actualUser = user;
     },
     setVisitor(state, visitor) {
-      state.visitor = visitor
-    }
+      state.visitor = visitor;
+    },
   },
   actions: {
-    async setVisitor({commit}, visitor) {
-      commit("setVisitor", visitor)
+    async setVisitor({ commit }, visitor) {
+      commit("setVisitor", visitor);
     },
     // signIn user
     async signIn({ commit }, user) {
@@ -92,12 +92,13 @@ export default {
     async signUpUser({ commit }, data) {
       let user = data.user;
       user.date = new Date();
-
+      //let batch = Firestore.batch();
       // if creating
+      let authUser = null;
       if (user.id == null) {
         // register auth
         console.log("authing user", user);
-        let authUser = await FirebaseAuth.createUserWithEmailAndPassword(
+        authUser = await FirebaseAuth.createUserWithEmailAndPassword(
           user.mail,
           user.password
         );
@@ -110,7 +111,8 @@ export default {
           .set(user);
 
         commit("addUser", user);
-      } else {
+      } 
+      else {
         // if updating
         let backup = data.backup;
 
@@ -126,24 +128,10 @@ export default {
           await FirebaseRefForAuth.signOut();
           //app.delete()
         }
-
         // update in collections
         await Firestore.collection("users")
           .doc(user.id)
           .update(user);
-
-        // update publications
-        await Firestore.collection("publications")
-          .where("user.id", "==", user.id)
-          .get()
-          .then((docs) => {
-            docs.forEach((doc) => {
-              var update = {};
-              update[`user`] = user;
-              doc.ref.update(update);
-            });
-          });
-        
       } // end if
     },
     // delete user
@@ -186,18 +174,6 @@ export default {
       await Firestore.collection("users")
         .doc(user.id)
         .update(user);
-
-      // update publications
-      await Firestore.collection("publications")
-        .where("user.id", "==", user.id)
-        .get()
-        .then((docs) => {
-          docs.forEach((doc) => {
-            var update = {};
-            update[`user`] = user;
-            doc.ref.update(update);
-          });
-        });
     },
     async getUser({ commit }, id) {
       await Firestore.collection("users")
@@ -239,7 +215,7 @@ export default {
   modules: {},
   getters: {
     towns(state) {
-      return state.towns
+      return state.towns;
     },
     users(state) {
       return state.users;
@@ -251,7 +227,7 @@ export default {
       return state.admins;
     },
     visitor(state) {
-      return state.visitor
-    }
+      return state.visitor;
+    },
   },
 };

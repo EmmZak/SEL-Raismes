@@ -24,7 +24,7 @@
       </template>
       <!-- user column -->
       <template v-slot:[`item.user`]="{ item }">
-        <span>{{ item.user.fullName }} </span>
+        <span>{{ item.user }} </span>
       </template>
       <!------------------------ Custom field rendering ------------------------>
       <template v-slot:top>
@@ -106,14 +106,14 @@
                   <v-row>
                     <v-col>
                       <v-text-field
-                        v-model="editedItem.surname"
+                        v-model="editedItem.user.surname"
                         label="Nom"
                         prepend-icon="mdi-account"
                       ></v-text-field>
                     </v-col>
                     <v-col>
                       <v-text-field
-                        v-model="editedItem.name"
+                        v-model="editedItem.user.name"
                         label="Prénom"
                         prepend-icon="mdi-account"
                       ></v-text-field>
@@ -122,14 +122,14 @@
                   <v-row>
                     <v-col>
                       <v-text-field
-                        v-model="editedItem.mail"
+                        v-model="editedItem.user.mail"
                         label="E-mail"
                         prepend-icon="mdi-email"
                       ></v-text-field>
                     </v-col>
                     <v-col>
                       <v-text-field
-                        v-model="editedItem.number"
+                        v-model="editedItem.user.number"
                         label="Numéro"
                         prepend-icon="mdi-phone"
                       ></v-text-field>
@@ -197,7 +197,11 @@ export default {
       headers: [
         // { text: "ID", value: "id" },
         { text: "Catégorie", value: "categ" },
-        { text: "Prestataire", value: "user" },
+        //{ text: "Séliste", value: "user" },
+        { text: "Nom", value: "user.surname" },
+        { text: "Prénom", value: "user.name" },
+        { text: "Numéro", value: "user.number" },
+        { text: "E-mail", value: "user.mail" },
         //{ text: "Adresse", value: "adresse" },
         { text: "Crénaux", value: "slots" },
         { text: "Date", value: "date" },
@@ -208,7 +212,12 @@ export default {
       editedItem: {
         id: null,
         categ: "",
-        user: "",
+        user: {
+          name: "",
+          surname: "",
+          number: "",
+          mail: "",
+        },
         //adresse: "",
         startTime: null,
         endTIme: null,
@@ -218,7 +227,12 @@ export default {
       actualItemBackup: {
         id: null,
         categ: "",
-        user: "",
+        user: {
+          name: "",
+          surname: "",
+          number: "",
+          mail: "",
+        },
         //adresse: "",
         startTime: null,
         endTIme: null,
@@ -228,7 +242,12 @@ export default {
       defaultItem: {
         id: null,
         categ: "",
-        user: "",
+        user: {
+          name: "",
+          surname: "",
+          number: "",
+          mail: "",
+        },
         //adresse: "",
         startTime: null,
         endTIme: null,
@@ -251,7 +270,7 @@ export default {
     ...mapActions(["fetchUsers", "fetchPublications"]),
     async save() {
       console.log("edited item", this.editedItem.date);
-      
+
       this.processing = true;
       try {
         await this.$store.dispatch("savePublication", {
@@ -267,7 +286,6 @@ export default {
 
       this.processing = false;
       this.close();
-      
     },
     // UPDATE
     async editItem(item) {
@@ -313,26 +331,6 @@ export default {
     },
     test() {
       console.log("pub", this.$store.getters.publications[0].user);
-    },
-    /*
-     * a function to create time slots from a list of hours
-     */
-    populateSlots() {
-      var hours = [
-        7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
-      ];
-
-      for (let i = 0; i < hours.length; i++) {
-        var hour = hours[i];
-        var hourPlusOne = hours[i + 1];
-
-        if (hourPlusOne === undefined) {
-          break;
-        }
-
-        var slot = String(hour) + "-" + String(hourPlusOne) + "h";
-        this.slots.push(slot);
-      }
     },
     isUserLoaded(user) {
       if (user == undefined) {

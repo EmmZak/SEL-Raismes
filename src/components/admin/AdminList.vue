@@ -44,14 +44,41 @@
               </v-card-title>
 
               <v-card-text>
-                <v-container>
+                <v-form>
                   <v-row>
                     <v-col>
                       <v-text-field
-                        v-model="editedItem.fullName"
-                        label="Nom - Prénom"
+                        v-model="editedItem.surname"
+                        label="Nom"
                         prepend-icon="mdi-account"
                       ></v-text-field>
+                    </v-col>
+                    <v-col>
+                      <v-text-field
+                        v-model="editedItem.name"
+                        label="Prénom"
+                        prepend-icon="mdi-account"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col>
+                      <v-text-field
+                        v-model="editedItem.adresse"
+                        label="Adresse"
+                        prepend-icon="mdi-map-marker"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col>
+                      <v-autocomplete
+                        v-model="editedItem.town"
+                        :items="$store.getters.towns"
+                        label="Ville - Code Postal"
+                        prepend-icon="mdi-home-city"
+                        :item-text="(item) => item.town + ', ' + item.code"
+                      ></v-autocomplete>
                     </v-col>
                   </v-row>
                   <v-row>
@@ -81,7 +108,25 @@
                       ></v-text-field>
                     </v-col>
                   </v-row>
-                </v-container>
+                  <!-- default sold is 60 Ramis -->
+                  <v-row>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="editedItem.credit"
+                        label="Solde"
+                        prepend-icon="mdi-currency-eur"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row> 
+                  <!-- registration error div -->
+                  <v-row>
+                    <v-col>
+                      <div class="text-h5 pa-12 text-wrap hidden-md-and-up">
+                        {{ registrationError }}
+                      </div>
+                    </v-col>
+                  </v-row>
+                </v-form>
               </v-card-text>
 
               <v-card-actions>
@@ -148,6 +193,7 @@ export default {
   mixins: [DateHandler],
   data() {
     return {
+      registrationError: null,
       // Data tab
       notifSucess: false,
       showNotif: false,
@@ -161,9 +207,14 @@ export default {
       },
       headers: [
         // { text: "ID", value: "id" },
-        { text: "Nom - Prénom", value: "fullName" },
+        { text: "Nom", value: "surname" },
+        { text: "Prénom", value: "name" },
         { text: "Mail", value: "mail" },
         { text: "Numéro", value: "number" },
+        { text: "Adresse", value: "adresse" },
+        { text: "Ville", value: "town" },
+        { text: "Inscription", value: "date" },
+        { text: "Crédit", value: "credit" },
         { text: "Actions", value: "actions", sortable: false },
       ],
       // Form Dialog
@@ -172,7 +223,10 @@ export default {
       editedIndex: -1,
       actualItemBackup: {
         id: null,
-        fullName: "",
+        name: "",
+        surname: "",
+        adresse: "",
+        town: null,
         number: "",
         mail: "",
         password: "",
@@ -180,7 +234,10 @@ export default {
       },
       editedItem: {
         id: null,
-        fullName: "",
+        name: "",
+        surname: "",
+        adresse: "",
+        town: null,
         number: "",
         mail: "",
         password: "",
@@ -188,7 +245,10 @@ export default {
       },
       defaultItem: {
         id: null,
-        fullName: "",
+        name: "",
+        surname: "",
+        adresse: "",
+        town: null,
         number: "",
         mail: "",
         password: "",
@@ -213,7 +273,7 @@ export default {
 
       console.log("after signup");
       // reload
-      await this.fetchUsers({admin: true});
+      await this.fetchUsers({ admin: true });
 
       this.processing = false;
       this.close();
@@ -250,7 +310,7 @@ export default {
       console.log("after delete");
 
       // reload
-      await this.fetchUsers({admin: true});
+      await this.fetchUsers({ admin: true });
 
       this.itemToDelete = {};
       this.closeDelete();
@@ -293,7 +353,7 @@ export default {
     },
   },
   async mounted() {
-    await this.fetchUsers({admin: true});
+    await this.fetchUsers({ admin: true });
   },
 };
 </script>

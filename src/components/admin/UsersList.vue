@@ -42,7 +42,7 @@
               </v-card-title>
 
               <v-card-text>
-                <v-container>
+                <v-form>
                   <v-row>
                     <v-col>
                       <v-text-field
@@ -107,7 +107,7 @@
                     </v-col>
                   </v-row>
 
-                  <!-- default sold is 60 Ramis
+                  <!-- default sold is 60 Ramis -->
                   <v-row>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
@@ -116,7 +116,7 @@
                         prepend-icon="mdi-currency-eur"
                       ></v-text-field>
                     </v-col>
-                  </v-row>  -->
+                  </v-row> 
                   <!-- registration error div -->
                   <v-row>
                     <v-col>
@@ -125,7 +125,7 @@
                       </div>
                     </v-col>
                   </v-row>
-                </v-container>
+                </v-form>
               </v-card-text>
 
               <v-card-actions>
@@ -182,13 +182,16 @@ export default {
   data() {
     return {
       // Data tab
+      registrationError: null,
       search: "",
       headers: [
         // { text: "ID", value: "id" },
-        { text: "Nom - Prénom", value: "fullName" },
+        { text: "Nom", value: "surname" },
+        { text: "Prénom", value: "name" },
         { text: "Mail", value: "mail" },
         { text: "Numéro", value: "number" },
         { text: "Adresse", value: "adresse" },
+        { text: "Ville", value: "town" },
         { text: "Inscription", value: "date" },
         { text: "Crédit", value: "credit" },
         { text: "Actions", value: "actions", sortable: false },
