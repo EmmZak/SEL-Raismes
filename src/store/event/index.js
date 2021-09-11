@@ -41,10 +41,11 @@ export default {
     async fetchEvents({ commit }) {
       console.log("fetching events");
       let events = [];
-      await Firestore.collection("events").doc("event-list")
+      await Firestore.collection("events").doc("eventsDoc")
         .get()
         .then((doc) => {
-          events = doc.data().events
+          console.log("doc data", doc.data())
+          events = doc.data().eventsList
           commit("setEvents", events);
         })
         .catch((err) => {

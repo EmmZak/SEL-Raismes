@@ -65,15 +65,23 @@ The button trigers event catched by App to pop up auth dialog
 
 ### admin 
 * Aymeric Robin
-	* aymeric@robin.fr
+	* ar@test.fr
 	* r####s
 
 * Jenny Adonel
-	* jenny@adonel.fr
+	* ja@test.fr
+	* r####s
+
+* Alex Zak
+	* az@test.fr
 	* r####s
 
 ### séliste 
 
-* Alex Zak
-	* alex@zak.fr
+* Em Zak
+	* az@test.fr
 	* r####s
+
+## Firebase Porject
+
+Troc-Raismois

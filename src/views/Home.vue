@@ -69,11 +69,10 @@
           <v-timeline-item
             v-for="(event, i) in events"
             :key="i"
-            :icon="event.icon"
             fill-dot
           >
             <v-card :color="timelineColors[i % 3]" dark>
-              <v-card-title class="title">{{ event.title }}</v-card-title>
+              <v-card-title class="title">{{ event.type }}</v-card-title>
               <v-card-text class="white text--primary pa-5">
                 <p>
                   {{ event.text }}
