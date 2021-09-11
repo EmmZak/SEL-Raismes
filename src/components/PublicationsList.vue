@@ -39,65 +39,99 @@
               </v-btn>
             </template>
             <v-card>
-              <v-card-title>
-                <span class="text-h4">{{ formTitle }}</span>
-              </v-card-title>
-
+              <!-- form -->
               <v-card-text>
                 <v-container>
-                  <v-row>
+                  <v-row class="pa-0">
                     <v-col>
-                      <v-select
-                        :items="categories"
-                        label="Catégorie"
-                        v-model="editedItem.categ"
-                        prepend-icon="mdi-shape"
-                      ></v-select>
+                      <v-row>
+                        <v-col class="">
+                          <v-card-title class="pl-0">
+                            <span class="text-h4">Création Publication</span>
+                          </v-card-title>
+                        </v-col> </v-row
+                      ><v-row>
+                        <v-col>
+                          <v-select
+                            :items="categories"
+                            label="Catégorie"
+                            v-model="editedItem.categ"
+                            prepend-icon="mdi-shape"
+                          ></v-select> </v-col
+                      ></v-row>
+                      <v-row>
+                        <v-col>
+                          <v-text-field
+                            v-model="editedItem.startTime"
+                            label="Heure Début"
+                            prepend-icon="mdi-clock"
+                          ></v-text-field> </v-col
+                        ><v-col>
+                          <v-text-field
+                            v-model="editedItem.endTIme"
+                            label="Heure Fin"
+                            prepend-icon="mdi-clock"
+                          ></v-text-field>
+                        </v-col>
+                      </v-row>
+                      <v-row>
+                        <v-col md="6">
+                          <v-text-field
+                            v-model="editedItem.cost"
+                            label="Coût"
+                            prepend-icon="mdi-currency-eur"
+                          ></v-text-field>
+                        </v-col>
+                      </v-row>
                     </v-col>
-                    <v-col>
-                      <v-autocomplete
-                        v-model="editedItem.user"
-                        :items="users"
-                        item-text="fullName"
-                        return-object
-                        label="Séliste"
-                        placeholder="Taper un nom..."
-                        prepend-icon="mdi-account"
-                      >
-                      </v-autocomplete>
+                    <v-col lg="6" class="" justify-center>
+                      <v-row justify="center">
+                        <v-col lg="10">
+                          <v-date-picker
+                            v-model="editedItem.date"
+                            color="green lighten-1"
+                            locale="fr-FR"
+                          ></v-date-picker>
+                        </v-col>
+                      </v-row>
                     </v-col>
                   </v-row>
-                  <!-- adresse  
-                <v-row>
-                  <v-col >
-                    <v-text-field
-                      v-model="editedItem.adresse"
-                      label="Adresse"
-                      prepend-icon="mdi-map-marker"
-                    ></v-text-field>
-                  </v-col>
-                </v-row> -->
-
-                  <v-row>
-                    <v-col>
-                      <v-select
-                        v-model="editedItem.slots"
-                        :items="slots"
-                        attach
-                        chips
-                        label="Créneaux"
-                        multiple
-                        prepend-icon="mdi-timetable"
-                        :menu-props="selectMenuProps"
-                      ></v-select>
+                  <v-row class="pt-0 pb-0">
+                    <v-col class="pt-0">
+                      <v-card-title class="pa-0">
+                        <span class="text-h4">Séliste</span>
+                      </v-card-title>
                     </v-col>
                   </v-row>
                   <v-row>
-                    <v-col md="6">
+                    <v-col>
                       <v-text-field
-                        v-model="editedItem.cost"
-                        label="Coût"
-                        prepend-icon="mdi-currency-eur"
+                        v-model="editedItem.surname"
+                        label="Nom"
+                        prepend-icon="mdi-account"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col>
+                      <v-text-field
+                        v-model="editedItem.name"
+                        label="Prénom"
+                        prepend-icon="mdi-account"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col>
+                      <v-text-field
+                        v-model="editedItem.mail"
+                        label="E-mail"
+                        prepend-icon="mdi-email"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col>
+                      <v-text-field
+                        v-model="editedItem.number"
+                        label="Numéro"
+                        prepend-icon="mdi-phone"
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -176,7 +210,8 @@ export default {
         categ: "",
         user: "",
         //adresse: "",
-        slots: "",
+        startTime: null,
+        endTIme: null,
         date: null,
         cost: "",
       },
@@ -185,7 +220,8 @@ export default {
         categ: "",
         user: "",
         //adresse: "",
-        slots: "",
+        startTime: null,
+        endTIme: null,
         date: null,
         cost: "",
       },
@@ -194,6 +230,8 @@ export default {
         categ: "",
         user: "",
         //adresse: "",
+        startTime: null,
+        endTIme: null,
         slots: "",
         date: null,
         cost: "",
@@ -206,21 +244,20 @@ export default {
         openOnClick: false,
         maxHeight: 304,
       },
-      processing: false
+      processing: false,
     };
   },
   methods: {
-    ...mapActions([
-      "fetchUsers",
-      "fetchPublications"
-    ]),
+    ...mapActions(["fetchUsers", "fetchPublications"]),
     async save() {
+      console.log("edited item", this.editedItem.date);
+      /*
       this.processing = true;
       try {
-          await this.$store.dispatch("savePublication", {
-            publication: this.editedItem,
-            backup: this.actualItemBackup,
-          });
+        await this.$store.dispatch("savePublication", {
+          publication: this.editedItem,
+          backup: this.actualItemBackup,
+        });
       } catch (err) {
         console.log("try-catch", err);
       }
@@ -230,6 +267,7 @@ export default {
 
       this.processing = false;
       this.close();
+      */
     },
     // UPDATE
     async editItem(item) {
@@ -237,7 +275,7 @@ export default {
       this.actualItemBackup = { ...item };
       console.log("editItem.item", item);
       console.log("backup.item", this.actualItemBackup);
-  
+
       this.editedIndex = this.publications.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
@@ -251,14 +289,13 @@ export default {
       this.dialogDelete = true;
     },
     async deleteItemConfirm() {
-      
       try {
-        await this.$store.dispatch('deletePublication', this.itemToDelete);
-      } catch(err) {
-        console.log(err)
+        await this.$store.dispatch("deletePublication", this.itemToDelete);
+      } catch (err) {
+        console.log(err);
       }
       //reload
-      await this.fetchPublications()
+      await this.fetchPublications();
 
       this.itemToDelete = {};
       this.closeDelete();
@@ -330,7 +367,7 @@ export default {
     },
   },
   mounted() {
-    this.fetchUsers({admin: false});
+    this.fetchUsers({ admin: false });
     this.fetchPublications();
     this.populateSlots();
   },

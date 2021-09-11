@@ -62,6 +62,26 @@
                   <v-row>
                     <v-col>
                       <v-text-field
+                        v-model="editedItem.adresse"
+                        label="Adresse"
+                        prepend-icon="mdi-map-marker"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col>
+                      <v-autocomplete
+                        v-model="editedItem.town"
+                        :items="$store.getters.towns"
+                        label="Ville - Code Postal"
+                        prepend-icon="mdi-home-city"
+                        :item-text="(item) => item.town + ', ' + item.code"
+                      ></v-autocomplete>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col>
+                      <v-text-field
                         v-model="editedItem.mail"
                         label="E-mail"
                         prepend-icon="mdi-email"
@@ -86,26 +106,7 @@
                       ></v-text-field>
                     </v-col>
                   </v-row>
-                  <v-row>
-                    <v-col>
-                      <v-text-field
-                        v-model="editedItem.adresse"
-                        label="Adresse"
-                        prepend-icon="mdi-map-marker"
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col>
-                      <v-autocomplete
-                        v-model="town"
-                        :items="this.$store.getters.towns"
-                        label="Ville - Code Postal"
-                        prepend-icon="mdi-home-city"
-                        :item-text="(item) => item.town + ', ' + item.code"
-                      ></v-autocomplete>
-                    </v-col>
-                  </v-row>
+
                   <!-- default sold is 60 Ramis
                   <v-row>
                     <v-col cols="12" sm="6" md="4">
@@ -202,6 +203,7 @@ export default {
         name: "",
         surname: "",
         adresse: "",
+        town: null,
         number: "",
         mail: "",
         password: "",
@@ -211,8 +213,10 @@ export default {
       },
       editedItem: {
         id: null,
-        fullName: "",
+        name: "",
+        surname: "",
         adresse: "",
+        town: null,
         number: "",
         mail: "",
         password: "",
@@ -222,8 +226,10 @@ export default {
       },
       defaultItem: {
         id: null,
-        fullName: "",
+        name: "",
+        surname: "",
         adresse: "",
+        town: null,
         mail: "",
         password: "",
         number: "",

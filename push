@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#jq '.version = $newVal' --arg newVal '777' <<<"$jsonStr"
+
 git add .
 git commit -m "'$*'"
 git push 

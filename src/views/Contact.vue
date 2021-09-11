@@ -105,7 +105,6 @@
                     :rules="numberRules"
                     label="Numéro"
                     prepend-icon="mdi-phone"
-                    type="number"
                   ></v-text-field>
                 </v-col>
               </v-row>
@@ -173,7 +172,11 @@ export default {
         (v) => /.+@.+\..+/.test(v) || "Le mail n'est pas correct",
       ],
       number: "",
-      numberRules: [(v) => v.length < 10 || "Le numéro n'est pas correct"],
+      numberRules: [
+        //(v) => !!v || "Veuillez saisir votre numéro",
+        (v) => v.length == 10 || "Le numéro n'est pas correct",
+        (v) => !isNaN(v) || "Seuls les chiffres sont autorisés"
+        ],
       message: "",
       messageRules: [(v) => v.length < 100 || "Le message est très long"],
       headers: {
@@ -194,9 +197,10 @@ export default {
   },
   methods: {
     async send() {
-      this.$refs.contactForm.validate();
-
-      this.sentSucceess = true
+      if (this.$refs.contactForm.validate()) {
+        console.log("sending request ")
+      }
+      //this.sentSucceess = true
       /*
       await axios
         .post(

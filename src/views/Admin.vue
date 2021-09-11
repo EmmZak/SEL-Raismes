@@ -102,7 +102,9 @@ export default {
       ],
     };
   },
-  mounted() {},
+  mounted() {
+    
+  },
   methods: {
     changeSection(component) {
       this.currentSection = component;

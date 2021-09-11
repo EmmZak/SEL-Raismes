@@ -21,7 +21,7 @@
     </v-row>
 
     <v-row justify="space-around">
-      <v-col lg="10">
+      <v-col v-if="done" lg="10">
         <v-row>
           <v-col
             cols="12"
@@ -74,6 +74,7 @@ export default {
 
   data() {
     return {
+      done: false,
       options: [
         {
           model: "sort",
