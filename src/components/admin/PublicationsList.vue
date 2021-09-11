@@ -23,8 +23,8 @@
         <span>{{ formatDDMMYYYY(item.date) }}</span>
       </template>
       <!-- user column -->
-      <template v-slot:[`item.user`]="{ item }">
-        <span>{{ item.user }} </span>
+      <template v-slot:[`item.startTime`]="{ item }">
+        <span>{{ item.startTime }}h - {{ item.endTIme }}h </span>
       </template>
       <!------------------------ Custom field rendering ------------------------>
       <template v-slot:top>
@@ -203,7 +203,7 @@ export default {
         { text: "Numéro", value: "user.number" },
         { text: "E-mail", value: "user.mail" },
         //{ text: "Adresse", value: "adresse" },
-        { text: "Crénaux", value: "slots" },
+        { text: "Crénaux", value: "start  Time" },
         { text: "Date", value: "date" },
         { text: "Coût", value: "cost" },
         { text: "Actions", value: "actions", sortable: false },
@@ -367,7 +367,6 @@ export default {
   mounted() {
     this.fetchUsers({ admin: false });
     this.fetchPublications();
-    this.populateSlots();
   },
 };
 </script>
