@@ -1,17 +1,31 @@
 <template>
-  <v-card elevation="10">
-    <v-row class="justify-center">
-      <v-col class="pt-0" cols="8" lg="8" md="9" sm="9" xs="9">
+  <v-card elevation="10" class="grey" >
+
+    <v-row class="">
+<!-- 
+      <v-col class="" cols="8" lg="8" md="9" sm="9" xs="9">
+        <v-row class=" justify-space-between">
+          <div class="text-lg-h5">{{ item.categ }}</div>
+          <div class="text-lg-h5">{{ item.date }}</div>
+        </v-row>
+      </v-col> -->
+
+          
+      <v-col class=" pt-0" cols="8" lg="8" md="9" sm="9" xs="9">
         <v-card-title
-          class=" pa- text-xl-h3 text-lg-h4 text-md-h3 text-sm-h3 text-h6"
+          class=" text-xl-h3 text-lg-h6 text-md-h3 text-sm-h3 text-h6"
         >
           <div class="title-font font-weight-bold">
             {{ item.categ }}
           </div>
+          <div class="title-font font-weight-bold">
+            {{ item.date }}
+          </div>
         </v-card-title>
-      </v-col>
+        {{ item.date }}
+      </v-col> 
 
-      <v-col class=" text-center" cols="4" lg="4" md="3" sm="3" xs="3">
+      <v-col class="red text-center" cols="4" lg="4" md="3" sm="3" xs="3">
         <v-avatar :size="avatarSize" tile>
           <v-img
             :src="require(`@/assets/${categToImage[item.categ]}-300.jpg`)"
@@ -194,7 +208,7 @@ export default {
         case "md":
           return 125;
         case "lg":
-          return 200;
+          return 150;
         case "xl":
           return 200;
       }

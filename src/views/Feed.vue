@@ -1,12 +1,13 @@
 <template>
   <!-- list  -->
-  <v-container class="my-5" fluid>
+  <v-container class="my-5 feed" fluid>
     <v-btn v-if="admin" @click="toAdminPage()" class="success">
       Interface ADMIN
     </v-btn>
-    <!-- options -->
-    <v-row align="center" justify="center" class="" app>
-      <v-col v-for="(option, i) in options" :key="i" lg="2" xs="6">
+
+    <!-- options
+    <v-row align="center" justify="space-around" class="">
+      <v-col v-for="(option, i) in options" :key="i" cols="12" lg="2">
         <v-select
           v-model="$data[option.model]"
           x-large
@@ -17,15 +18,20 @@
           item-value="value"
           @change="change()"
         ></v-select>
-      </v-col>
-    </v-row>
+      </v-col> 
+    </v-row>  -->
 
     <v-row justify="space-around">
       <v-col v-if="!done" lg="10">
+        <div class="text-lg-h4 ">
+          <div class="title-font pb-10 text-left">
+            12 offre(s) disponible(s) pour votre recherche
+          </div>
+        </div>
         <v-row>
           <v-col
             cols="12"
-            lg="8"
+            lg="6"
             md="6"
             xs="12"
             class="pa-5"
@@ -142,8 +148,8 @@ export default {
     items() {
       let a = this.$store.getters.publications;
       //console.log("returning publivations", a)
-      return [...a, ...a, ...a, ...a, ...a, ...a, ...a, ...a, ...a, ...a]
-      //return a
+      return [...a, ...a, ...a, ...a, ...a, ...a, ...a, ...a, ...a, ...a];
+      //return a;
     },
   },
   async mounted() {
@@ -155,8 +161,8 @@ export default {
     if (this.$route.town) {
       this.town = this.$route.town
     } */
-    
-    await this.fetchPublications()
+
+    await this.fetchPublications();
     // check if auth user
     //await this.fetchUser();
 
@@ -171,6 +177,20 @@ export default {
 </script>
 
 <style scoped>
+/* .feed {
+  background: rgb(233, 148, 224);
+  background: linear-gradient(
+    34deg,
+    rgba(233, 148, 224, 1) 0%,
+    rgba(180, 215, 166, 1) 46%,
+    rgba(0, 212, 255, 1) 100%
+  );
+} */
+
+.title-font {
+  font-family: "Open Sans", sans-serif;
+}
+
 #styled-input {
   height: 40px;
   font-size: 20pt;

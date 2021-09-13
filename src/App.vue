@@ -193,6 +193,8 @@ export default {
 </script>
 
 <style>
+
+
 .title-font {
   font-family: "Open Sans", sans-serif;
 }
