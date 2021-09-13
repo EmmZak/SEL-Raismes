@@ -21,7 +21,7 @@
     </v-row>
 
     <v-row justify="space-around">
-      <v-col v-if="done" lg="10">
+      <v-col v-if="!done" lg="10">
         <v-row>
           <v-col
             cols="12"
@@ -112,7 +112,7 @@ export default {
     PublicationCard,
   },
   methods: {
-    ...mapActions(["fetchUser, fetchPublications"]),
+    ...mapActions(["fetchUser", "fetchPublications"]),
     toAdminPage() {
       this.$router.push("/admin");
     },
@@ -140,11 +140,10 @@ export default {
       return n;
     },
     items() {
-      //var arr = [this.$store.getters.publications[0]]
-      //var arr = this.$store.getters.publications;
-      var arr = this.$store.getters.items;
-      console.log("returning item arr", arr);
-      return arr;
+      let a = this.$store.getters.publications;
+      //console.log("returning publivations", a)
+      return [...a, ...a, ...a, ...a, ...a, ...a, ...a, ...a, ...a, ...a]
+      //return a
     },
   },
   async mounted() {
@@ -156,8 +155,8 @@ export default {
     if (this.$route.town) {
       this.town = this.$route.town
     } */
-    //await this.fetchPublications();
-
+    
+    await this.fetchPublications()
     // check if auth user
     //await this.fetchUser();
 

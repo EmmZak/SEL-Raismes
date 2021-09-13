@@ -36,7 +36,7 @@
 
       <!--  -->
       <v-col cols="12" xs="12" md="5">
-        <v-card v-if="!sentSucceess"  elevation="0" class="pa-5 red-xs-only">
+        <v-card v-if="!sentSucceess" elevation="0" class="pa-5 red-xs-only">
           <v-card-title
             class="d-none d-sm-flex text-lg-h3 text-md-h3 text-sm-h3 text-h5"
           >
@@ -128,16 +128,14 @@
           </v-card-actions>
         </v-card>
         <!-- else -->
-        <v-card v-else>
-          else
-        </v-card>
+        <v-card v-else> else </v-card>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-//import axios from "axios";
+import axios from "axios";
 
 export default {
   name: "Contact",
@@ -145,21 +143,14 @@ export default {
     return {
       sentSucceess: false,
       valid: false,
-      titleStyle: "",
-      adresse: "Grand place,<br/> 59590<br/> Raismes",
       subjects: [
         "Création compte",
         "Renseignements",
         "Annonce",
         "Demande de service",
       ],
-      subjectsMap: {
-        creation: "Création compte",
-      },
-      sender: "selraismes@gmail.com",
       AWS_LAMBDA_URL:
-        "https://xk63di4om5.execute-api.us-east-2.amazonaws.com/default/NodeSendMail",
-
+        "https://a5qvtjd4al.execute-api.us-east-2.amazonaws.com/default/pythonMail",
       // mail params
       subject: "",
       subjectRules: [(v) => !!v || "Veuillez choisir un sujét"],
@@ -175,8 +166,8 @@ export default {
       numberRules: [
         //(v) => !!v || "Veuillez saisir votre numéro",
         (v) => v.length == 10 || "Le numéro n'est pas correct",
-        (v) => !isNaN(v) || "Seuls les chiffres sont autorisés"
-        ],
+        (v) => !isNaN(v) || "Seuls les chiffres sont autorisés",
+      ],
       message: "",
       messageRules: [(v) => v.length < 100 || "Le message est très long"],
       headers: {
@@ -198,22 +189,23 @@ export default {
   methods: {
     async send() {
       if (this.$refs.contactForm.validate()) {
-        console.log("sending request ")
+        console.log("sending request ");
       }
-      //this.sentSucceess = true
+      await axios
+        .get(this.AWS_LAMBDA_URL)
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
       /*
       await axios
-        .post(
-          this.AWS_LAMBDA_URL,
-          {
-            headers: this.headers,
-          },
-          this.data
-        )
+        .get(this.AWS_LAMBDA_URL, this.headers, {
+          mail_from: "emmanuelzakaryan@gmail.com",
+          reply_to: "emmanuelzakaryan@gmail.com",
+          subject: "Inscription",
+          body: "bonjor, \naws lambda",
+        })
         .then((res) => console.log(res))
-        .catch((err) => console.log(err)); 
-        */
-      // sendGrid service call
+        .catch((err) => console.log(err)); */
+      //this.sentSucceess = true
     },
   },
 };

@@ -53,7 +53,7 @@
                       ><v-row>
                         <v-col>
                           <v-select
-                            :items="categories"
+                            :items="$store.getters.categories"
                             label="Catégorie"
                             v-model="editedItem.categ"
                             prepend-icon="mdi-shape"
@@ -187,7 +187,7 @@ export default {
   data() {
     return {
       // Form
-      categories: ["Jardinage", "Animaux", "Ménagers"],
+      //categories: ["Jardinage", "Animaux", "Ménagers"],
       // Form dialog
       dialog: false,
       dialogDelete: false,
