@@ -25,7 +25,7 @@
         <v-row>
           <v-col
             cols="12"
-            lg="6"
+            lg="8"
             md="6"
             xs="12"
             class="pa-5"

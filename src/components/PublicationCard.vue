@@ -1,22 +1,22 @@
 <template>
   <v-card elevation="10">
     <v-row class="justify-center">
-      <v-col class="" cols="8" lg="8" md="9" sm="9" xs="9">
-        <v-card-title class="blue text-xl-h3 text-lg-h5 text-md-h3 text-sm-h3 text-h6">
+      <v-col class="pt-0" cols="8" lg="8" md="9" sm="9" xs="9">
+        <v-card-title
+          class=" pa- text-xl-h3 text-lg-h4 text-md-h3 text-sm-h3 text-h6"
+        >
           <div class="title-font font-weight-bold">
-            {{item.categ}}
+            {{ item.categ }}
           </div>
         </v-card-title>
       </v-col>
 
-      <v-col class="purple" cols="4" lg="4" md="3" sm="3" xs="3">
-        <v-row justify="center">
-          <v-col cols="12" lg="10" class="red">
-            <v-avatar :size="avatarSize" tile>
-              <v-img :src="require(`@/assets/${categToImage[item.categ]}-300.jpg`)"></v-img>
-            </v-avatar>
-          </v-col>
-        </v-row>
+      <v-col class=" text-center" cols="4" lg="4" md="3" sm="3" xs="3">
+        <v-avatar :size="avatarSize" tile>
+          <v-img
+            :src="require(`@/assets/${categToImage[item.categ]}-300.jpg`)"
+          ></v-img>
+        </v-avatar>
       </v-col>
     </v-row>
   </v-card>
@@ -170,7 +170,7 @@ export default {
         "Garde d'Animaux": "Animaux",
         "Aide en cuisine": "Cuisine",
         "Aide au jardinage": "Jardinage",
-        "Coup de main ménager": "Ménagers"
+        "Coup de main ménager": "Ménagers",
       },
       //avatarSize: 0,
       dialog: false,
@@ -194,7 +194,7 @@ export default {
         case "md":
           return 125;
         case "lg":
-          return 150;
+          return 200;
         case "xl":
           return 200;
       }
