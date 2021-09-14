@@ -23,19 +23,18 @@
 
     <v-row justify="space-around">
       <v-col v-if="!done" lg="11">
-        <div class="text-lg-h4 ">
+        <div class="text-lg-h4">
           <div class="title-font pb-10 text-left">
             12 offre(s) disponible(s) pour votre recherche
           </div>
         </div>
         <v-row class="">
           <v-col
-            
             cols="12"
             lg="6"
             md="6"
             xs="12"
-            class="pa-5 "
+            class="pa-5"
             v-for="(item, i) in items"
             :key="i"
           >
@@ -178,14 +177,24 @@ export default {
 </script>
 
 <style scoped>
-.feed {
-  /* background: green; */
+
+/* .feed {
   background: linear-gradient(
     34deg,
     rgba(233, 148, 224, 1) 0%,
     rgba(180, 215, 166, 1) 46%,
     rgba(0, 212, 255, 1) 100%
   );
+} */
+
+.feed {
+  background-color: rgb(255, 255, 255);
+  /* background: linear-gradient(
+    34deg,
+    rgba(233, 148, 224, 1) 0%,
+    rgba(180, 215, 166, 1) 46%,
+    rgba(0, 212, 255, 1) 100%
+  ); */
 }
 
 .title-font {

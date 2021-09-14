@@ -1,5 +1,5 @@
 <template>
-  <v-card class="card" elevation="5">
+  <v-card class="card" elevation="10">
     <v-card-text>
       <v-row justify="center" class="pa-0">
         <v-col>
@@ -36,6 +36,7 @@
         <v-col class="" lg="4">
           <v-avatar :size="avatarSize" class="" tile>
             <v-img
+              class="id"
               :src="require(`@/assets/${categToImage[item.categ]}-300.jpg`)"
             ></v-img>
           </v-avatar>
@@ -90,26 +91,27 @@ export default {
 </script>
 
 <style scoped>
-.img {
-  opacity: 100%;
-}
 .card {
   max-width: 640px;
   height: 220px;
   border-radius: 10px;
 
-  /* opacity: 25%; */
-  /* background: linear-gradient(
+  opacity: 90%;
+  background: linear-gradient(
     150deg,
     rgb(255, 255, 255) 25%,
     rgb(255, 255, 255, 0)
-  ); */
+  );
 }
 
 .card_categ_title {
   /* font-family: "Open Sans", sans-serif; */
   color: #404040;
   font-size: 26px;
+}
+
+#card_image {
+  border-radius: 10px;
 }
 
 .card_date {
