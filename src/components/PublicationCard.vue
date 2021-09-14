@@ -8,7 +8,7 @@
               {{ item.categ }}
             </div>
             <div class="card_date">
-              {{ item.date }}
+              {{ formatDDMMYYYY(item.date) }}
             </div>
           </v-row>
           <!-- service by -->
@@ -47,9 +47,12 @@
 </template>
 
 <script>
+import DateHandler from "./../helperFunctions/DateHandler";
+
 export default {
   name: "PublicationCard",
   props: ["item"],
+  mixins: [DateHandler],
   data() {
     return {
       categToImage: {
