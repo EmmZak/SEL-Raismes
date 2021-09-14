@@ -1,8 +1,38 @@
 <template>
   <v-card class="card" elevation="5">
     <v-card-text>
-      <v-row justify="center" align="center" class=" pa-0">
-        <v-col></v-col>
+      <v-row justify="center" class="pa-0">
+        <v-col>
+          <v-row justify="space-between" class="pa-3">
+            <div class="card_categ_title">
+              {{ item.categ }}
+            </div>
+            <div class="card_date">
+              {{ item.date }}
+            </div>
+          </v-row>
+          <!-- service by -->
+          <v-row class="pa-3 pt-0">
+            <div class="card_by">Proposé par {{ item.user.name }}</div>
+          </v-row>
+          <!-- user info -->
+          <v-row class="pt-3">
+            <!-- number -->
+            <v-col lg="12" class="d-flex align-center">
+              <v-icon class="mail_number_icon" large>mdi-phone</v-icon>
+              <div class="mail_number_text pl-4">
+                {{ item.user.number }}
+              </div>
+            </v-col>
+            <!-- mail -->
+            <v-col lg="12" class="d-flex align-center">
+              <v-icon class="mail_number_icon" large>mdi-email-outline</v-icon>
+              <div class="mail_number_text pl-4">
+                {{ item.user.mail }}
+              </div>
+            </v-col>
+          </v-row>
+        </v-col>
         <v-col class="" lg="4">
           <v-avatar :size="avatarSize" class="" tile>
             <v-img
@@ -13,31 +43,6 @@
       </v-row>
     </v-card-text>
   </v-card>
-  <!-- 
-  <v-card elevation="10" class="grey" >
-    <v-row class="">
-      <v-col class="space-between pt-0" cols="8" lg="8" md="9" sm="9" xs="9">
-        <v-card-title
-          class=" text-xl-h3 text-lg-h6 text-md-h3 text-sm-h3 text-h6"
-        >
-          <div class="title-font font-weight-bold">
-            {{ item.categ }}
-          </div>
-          <div class="title-font font-weight-bold">
-            {{ item.date }}
-          </div>
-        </v-card-title>
-        {{ item.date }}
-      </v-col> 
-      <v-col class="red text-center" cols="4" lg="4" md="3" sm="3" xs="3">
-        <v-avatar :size="avatarSize" tile>
-          <v-img
-            :src="require(`@/assets/${categToImage[item.categ]}-300.jpg`)"
-          ></v-img>
-        </v-avatar>
-      </v-col>
-    </v-row>
-  </v-card> -->
 </template>
 
 <script>
@@ -94,10 +99,36 @@ export default {
   border-radius: 10px;
 
   /* opacity: 25%; */
-  background: linear-gradient(
+  /* background: linear-gradient(
     150deg,
     rgb(255, 255, 255) 25%,
     rgb(255, 255, 255, 0)
-  );
+  ); */
+}
+
+.card_categ_title {
+  /* font-family: "Open Sans", sans-serif; */
+  color: #404040;
+  font-size: 26px;
+}
+
+.card_date {
+  font-family: "Open Sans", sans-serif;
+  font-size: 20px;
+}
+
+.card_by {
+  font-family: "Open Sans", sans-serif;
+  font-size: 14 px;
+  color: #404040;
+}
+
+.mail_number_icon {
+  color: #404040;
+}
+
+.mail_number_text {
+  font-size: 20px;
+  color: #404040;
 }
 </style>
