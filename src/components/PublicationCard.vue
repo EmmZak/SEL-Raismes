@@ -99,7 +99,7 @@ export default {
   height: 220px;
   border-radius: 10px;
 
-  opacity: 90%;
+  /* opacity: 90%; */
   background: linear-gradient(
     150deg,
     rgb(255, 255, 255) 25%,
