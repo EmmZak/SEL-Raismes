@@ -24,7 +24,7 @@
       </template>
       <!-- user column -->
       <template v-slot:[`item.startTime`]="{ item }">
-        <span>{{ item.startTime }}h - {{ item.endTIme }}h </span>
+        <span>{{ item.startTime }}h - {{ item.endTime }}h </span>
       </template>
       <!------------------------ Custom field rendering ------------------------>
       <template v-slot:top>
@@ -68,7 +68,7 @@
                           ></v-text-field> </v-col
                         ><v-col>
                           <v-text-field
-                            v-model="editedItem.endTIme"
+                            v-model="editedItem.endTime"
                             label="Heure Fin"
                             prepend-icon="mdi-clock"
                           ></v-text-field>
@@ -220,7 +220,7 @@ export default {
         },
         //adresse: "",
         startTime: null,
-        endTIme: null,
+        endTime: null,
         date: null,
         cost: "",
       },
@@ -235,7 +235,7 @@ export default {
         },
         //adresse: "",
         startTime: null,
-        endTIme: null,
+        endTime: null,
         date: null,
         cost: "",
       },
@@ -250,7 +250,7 @@ export default {
         },
         //adresse: "",
         startTime: null,
-        endTIme: null,
+        endTime: null,
         slots: "",
         date: null,
         cost: "",

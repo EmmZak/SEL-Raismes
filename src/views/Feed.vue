@@ -1,7 +1,7 @@
 <template>
   <!-- list  -->
   <v-container class="my-5 feed" fluid>
-    <!-- NOTIF -->
+    <!-- NOTIF
     <v-dialog v-model="dialog" persistent max-width="700">
       <v-card>
         <v-card-title class="text-h5">
@@ -14,7 +14,7 @@
           </v-btn>
         </v-card-actions>
       </v-card>
-    </v-dialog>
+    </v-dialog> -->
 
     <v-btn v-if="admin" @click="toAdminPage()" class="success">
       Interface ADMIN
@@ -47,9 +47,13 @@
           <v-col
             cols="12"
             lg="6"
-            md="6"
+            md="12"
+            sm="12"
             xs="12"
-            class="pa-5"
+            :class="{
+              'pa-5': $vuetify.breakpoint.lg,
+              'pa-2': $vuetify.breakpoint.xs
+            }"
             v-for="(item, i) in items"
             :key="i"
           >

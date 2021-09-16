@@ -52,7 +52,7 @@
 
     <v-toolbar-title @click="toHomePage">
       <div class="text-lg-h3 hidden-md-and-down gradient-text">
-        Troc D'Heures Raismois  
+        Troc D'Heures Raismois
       </div>
     </v-toolbar-title>
 
