@@ -2,43 +2,14 @@ import { Firestore } from "./../../firebaseConfig";
 
 export default {
   state: {
+    sortOptions: [
+      { title: "Le plus récent", value: "latest" },
+      { title: "Le plus ancien", value: "oldest" },
+      { title: "Par défaut", value: "default" },
+    ],
     categories: ["Tout", "Garde d'Animaux", "Aide en cuisine", "Aide au jardinage", "Coup de main ménager", "OTHER"],
     publications: [],
-
-    items: [
-      { categ: "Animaux", user: {}, cost: "5", slots: [], date: new Date() },
-      { categ: "Cuisine", user: {}, cost: "60", slots: [], date: new Date() },
-      {
-        categ: "Jardinage",
-        user: {},
-        cost: "50",
-        slots: [],
-        date: new Date(),
-      },
-      {
-        categ: "Ménagers",
-        user: {},
-        cost: "20",
-        slots: [],
-        date: new Date(),
-      },
-      { categ: "Animaux", user: {}, cost: "30", slots: [], date: new Date() },
-      { categ: "Cuisine", user: {}, cost: "45", slots: [], date: new Date() },
-      {
-        categ: "Jardinage",
-        user: {},
-        cost: "78",
-        slots: [],
-        date: new Date(),
-      },
-      {
-        categ: "Ménagers",
-        user: {},
-        cost: "99  ",
-        slots: [],
-        date: new Date(),
-      },
-    ],
+    items: [],
   },
   mutations: {
     setPublications(state, value) {
@@ -93,6 +64,9 @@ export default {
   },
   modules: {},
   getters: {
+    sortOptions(state) {
+      return state.sortOptions
+    },  
     publications(state) {
       return state.publications;
     },

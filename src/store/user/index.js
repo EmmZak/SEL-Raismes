@@ -7,14 +7,14 @@ import {
 export default {
   state: {
     towns: [
-      { town: "Valenciennes", code: "59300" },
-      { town: "Raismes", code: "59590" },
-      { town: "Bruay-sur-l'Escaut", code: "59860" },
-      { town: "Beuvrages", code: "59192" },
-      { town: "Anzin", code: "59410" },
-      { town: "Petite Forêt", code: "59494" },
-      { town: "Escaupont", code: "59278" },
-      { town: "Fresnes-sur-l'Escaut", code: "59970" },
+      { name: "Valenciennes", code: "59300" },
+      { name: "Raismes", code: "59590" },
+      { name: "Bruay-sur-l'Escaut", code: "59860" },
+      { name: "Beuvrages", code: "59192" },
+      { name: "Anzin", code: "59410" },
+      { name: "Petite Forêt", code: "59494" },
+      { name: "Escaupont", code: "59278" },
+      { name: "Fresnes-sur-l'Escaut", code: "59970" },
     ],
     users: [],
     admins: [],

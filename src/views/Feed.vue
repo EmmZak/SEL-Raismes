@@ -37,7 +37,7 @@
     </v-row>  -->
 
     <v-row justify="center">
-      <v-col v-if="!done" lg="11" >
+      <v-col v-if="!done" lg="11">
         <div class="text-lg-h4">
           <div class="title-font pb-10 text-left">
             12 offre(s) disponible(s) pour votre recherche
@@ -63,17 +63,62 @@
       </v-col>
     </v-row>
 
-    <v-navigation-drawer :drawer="true" app clipped fixed :permanent="$vuetify.breakpoint.smAndUp" class="pt-16">
+    <v-navigation-drawer
+      :drawer="true"
+      app
+      clipped
+      fixed
+      :permanent="$vuetify.breakpoint.smAndUp"
+      class="pt-16"
+    >
       <v-toolbar></v-toolbar>
       <v-toolbar flat>
         <v-list>
+          <v-list-item>
+            <v-select
+              v-model="sort"
+              :items="this.$store.getters.sortOptions"
+              prepend-icon="mdi-sort"
+              label="Trier"
+              item-text="title"
+              item-value="value"
+              @change="change()"
+            ></v-select>
+          </v-list-item>
+          <v-list-item>
+            <v-select
+              v-model="sort"
+              :items="this.$store.getters.categories"
+              prepend-icon="mdi-feature-search"
+              label="Choisir la catégorie"
+              item-text="title"
+              item-value="value"
+              @change="change()"
+            ></v-select>
+          </v-list-item>
+          <v-list-item>
+            <v-autocomplete
+              v-model="town"
+              :items="$store.getters.towns"
+              label="Ville - Code Postal"
+              prepend-icon="mdi-home-city"
+              :item-text="(town) => town.name + ', ' + town.code"
+              return-object
+              @change="change()"
+            ></v-autocomplete>
+          </v-list-item>
+          <!--           
           <v-list-item v-for="(option, i) in options" :key="i" class="pt-10">
             <v-select
+              v-model="$data[option.model]"
               :items="option.items"
               :prepend-icon="option.icon"
               :label="option.title"
+              item-text="title"
+              item-value="value"
+              @change="change()"
             ></v-select>
-          </v-list-item>
+          </v-list-item> -->
         </v-list>
       </v-toolbar>
     </v-navigation-drawer>
@@ -116,13 +161,13 @@ export default {
         {
           model: "category",
           title: "Choisir la catégorie",
-          items: this.$store.getters.categories,
+          items: this.categories,
           icon: "mdi-feature-search",
         },
         {
           model: "town",
           title: "Ville-Commune",
-          items: this.$store.getters.towns,
+          items: this.towns,
           icon: "mdi-map-marker",
         },
       ],
@@ -149,7 +194,9 @@ export default {
         ", page=",
         this.page,
         ", categ=",
-        this.category
+        this.category,
+        ", town=",
+        this.town.code
       );
     },
   },
@@ -164,6 +211,13 @@ export default {
       }
       console.log("n -> ", n);
       return n;
+    },
+    towns() {
+      console.log("returning towns");
+      return this.$store.getters.towns;
+    },
+    categories() {
+      return this.$store.getters.categories;
     },
     items() {
       let a = this.$store.getters.publications;
