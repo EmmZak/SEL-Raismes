@@ -10,10 +10,9 @@
               'pa-2 pt-1 pb-0': $vuetify.breakpoint.xs,
             }"
           >
-            <v-col class="pa-0" cols="8">
-              <div class="card_categ_title">
+            <v-col class="pa-0" cols="8"><div class="card_categ_title">
                 {{ item.categ }}
-              </div>
+              </div> 
             </v-col>
             <v-col class="pa-0" align="right" cols="4">
               <div class="card_date">
@@ -38,14 +37,47 @@
             <div class="card_by">Proposé par {{ item.user.name }}</div>
             <div class="card_by">{{ item.startTime }}h-{{ item.endTime }}h</div>
           </v-row>
-          <!-- user info -->
+          <!-- user info row/col -->
+          <v-row
+            :class="{
+              'pt-5': $vuetify.breakpoint.lg,
+              'pa-0 pt-2': $vuetify.breakpoint.xs,
+            }"
+          >
+            <v-col class="pa-2 pl-0 text-center" cols="2">
+              <v-icon class="mail_number_icon" :size="iconSize"
+                >mdi-phone</v-icon
+              >
+            </v-col>
+            <v-col class="pl-0" cols="10">
+              <div class="mail_number_text pl-0">
+                {{
+                  item.user.number.replace(
+                    /(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/,
+                    "$1 $2 $3 $4 $5"
+                  )
+                }}
+              </div>
+            </v-col>
+            <v-col class="pa-2 pl-0 text-center" cols="2">
+              <v-icon class="mail_number_icon" :size="iconSize"
+                >mdi-email-outline</v-icon
+              >
+            </v-col>
+            <v-col class="pl-0" cols="10">
+              <div class="mail_number_text pl-0">
+                {{ item.user.mail }}
+              </div>
+            </v-col>
+          </v-row>
+
+          <!-- user info
           <v-row
             :class="{
               'pt-3': $vuetify.breakpoint.lg,
               'pa-0 pt-2': $vuetify.breakpoint.xs,
             }"
           >
-            <!-- number -->
             <v-col
               lg="12"
               cols="12"
@@ -66,7 +98,6 @@
                 }}
               </div>
             </v-col>
-            <!-- mail -->
             <v-col
               lg="12"
               cols="12"
@@ -82,7 +113,8 @@
                 {{ item.user.mail }}
               </div>
             </v-col>
-          </v-row>
+          </v-row> -->
+          <!-- user info -->
         </v-col>
         <v-col class="pa-1" cols="4" lg="4">
           <v-img
@@ -162,6 +194,7 @@ export default {
 .card_categ_title {
   /* font-family: "Open Sans", sans-serif; */
   color: #404040;
+  /* font-size: 20vw; */
   font-size: 26px;
   /* font-size: 16px; */
 }
