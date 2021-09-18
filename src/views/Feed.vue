@@ -36,8 +36,8 @@
       </v-col> 
     </v-row>  -->
 
-    <v-row justify="space-around">
-      <v-col v-if="!done" lg="11">
+    <v-row justify="center">
+      <v-col v-if="!done" lg="11" >
         <div class="text-lg-h4">
           <div class="title-font pb-10 text-left">
             12 offre(s) disponible(s) pour votre recherche
@@ -52,7 +52,7 @@
             xs="12"
             :class="{
               'pa-5': $vuetify.breakpoint.lg,
-              'pa-2': $vuetify.breakpoint.xs
+              'pa-2': $vuetify.breakpoint.xs,
             }"
             v-for="(item, i) in items"
             :key="i"
@@ -63,7 +63,7 @@
       </v-col>
     </v-row>
 
-    <v-navigation-drawer :drawer="true" app clipped fixed class="pt-16">
+    <v-navigation-drawer :drawer="true" app clipped fixed :permanent="$vuetify.breakpoint.smAndUp" class="pt-16">
       <v-toolbar></v-toolbar>
       <v-toolbar flat>
         <v-list>

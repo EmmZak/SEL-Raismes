@@ -4,7 +4,7 @@ export default {
      * Converts yyyy-mm-dd to dd-mm-yyyy
      */
     formatDDMMYYYY(DATE) {
-      console.log("DATE", DATE)
+      //console.log("DATE", DATE)
       return DATE
         .split("-")
         .reverse()

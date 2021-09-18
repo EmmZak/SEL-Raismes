@@ -10,22 +10,18 @@
               'pa-2 pt-1 pb-0': $vuetify.breakpoint.xs,
             }"
           >
-            <v-col class="pa-0" cols="8"><div class="card_categ_title">
+            <v-col ref="categ" class="pa-0" cols="8">
+              <div class="card_categ_title">
                 {{ item.categ }}
-              </div> 
+              </div>
             </v-col>
             <v-col class="pa-0" align="right" cols="4">
               <div class="card_date">
                 {{ formatDDMMYYYY(item.date) }}
               </div>
             </v-col>
-            <!-- <div class="card_categ_title">
-              {{ item.categ }}
-            </div>
-            <div class="card_date">
-              {{ formatDDMMYYYY(item.date) }}
-            </div> -->
           </v-row>
+          <!-- {{ categTitleSize }} -->
           <!-- service by -->
           <v-row
             justify="space-between"
@@ -153,7 +149,14 @@ export default {
       this.dialog = false;
     },
   },
+  mounted() {
+    //console.log("MOUNTED")
+  },
   computed: {
+    categTitleSize() {
+      console.log("this refs", this.$refs)
+      return this.$refs.categ.clientWidth
+    },
     iconSize() {
       switch (this.$vuetify.breakpoint.name) {
         case "xs":
