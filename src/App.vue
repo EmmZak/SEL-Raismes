@@ -100,8 +100,8 @@ export default {
       "auth/too-many-requests": "Veuillez essayer plus tard",
     },
     authData: {
-      mail: "aymeric@robin.fr",
-      password: "raismes",
+      mail: "", //"aymeric@robin.fr",
+      password: "", //raismes",
     },
   }),
   created() {
