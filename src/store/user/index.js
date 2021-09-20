@@ -1,8 +1,24 @@
+import { db, auth, authManager } from "./../../firebaseConfig";
 import {
-  Firestore,
-  FirebaseAuth,
-  FirebaseRefForAuth,
-} from "./../../firebaseConfig";
+  collection,
+  query,
+  where,
+  doc,
+  getDoc,
+  getDocs,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  setDoc,
+} from "@firebase/firestore";
+import {
+  signOut,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  updateProfile,
+  updateEmail,
+  deleteUser
+} from "firebase/auth";
 
 export default {
   state: {
@@ -60,157 +76,146 @@ export default {
     async signIn({ commit }, user) {
       console.log("before singin IN ");
 
-      let actualUser = await FirebaseAuth.signInWithEmailAndPassword(
+      let actualUser = await signInWithEmailAndPassword(
+        auth,
         user.mail,
         user.password
       );
       let id = actualUser.user.uid;
       console.log("looking for doc id", id);
 
-      await Firestore.collection("users")
-        .doc(id)
-        .get()
-        .then((doc) => {
-          console.log("got user data", doc.data());
-          commit("setActualUser", doc.data());
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      console.log("after store sing IN ");
+      const userDoc = await getDoc(doc(db, "users", id));
+
+      if (userDoc.exists()) {
+        console.log("got user data", userDoc.data());
+        commit("setActualUser", userDoc.data());
+      } else {
+        console.log("no such document with id=", id);
+      }
     },
     async signOut({ commit }) {
       console.log("before sign OUT");
 
-      await FirebaseAuth.signOut();
-      commit("setActualUser", {});
-
-      console.log("after signx OUT");
+      await signOut(auth)
+        .then(() => {
+          console.log("after signx OUT");
+          commit("setActualUser", {});
+        })
+        .catch((err) => {
+          console.log("cant log out err", err);
+        });
     },
     // signUp/create or update user
     // data = {user: user, backup: backup}
     async signUpUser({ commit }, data) {
       let user = data.user;
-      user.date = new Date().toISOString().split('T')[0]
-      
-      //let batch = Firestore.batch();
+      user.date = new Date().toISOString().split("T")[0];
       // if creating
-      let authUser = null;
       if (user.id == null) {
         // register auth
         console.log("authing user", user);
-        authUser = await FirebaseAuth.createUserWithEmailAndPassword(
+        let authUser = await createUserWithEmailAndPassword(
+          auth,
           user.mail,
           user.password
         );
+        user.id = authUser.user.uid;
 
-        const uid = authUser.user.uid;
-        user.id = uid;
-
-        Firestore.collection("users")
-          .doc(uid)
-          .set(user);
-
+        await setDoc(doc(db, "users", user.id), user);
         commit("addUser", user);
-      } 
-      else {
+      } else {
         // if updating
         let backup = data.backup;
 
         if (backup.mail === user.mail) {
           console.log("NO MAIL CHANGE");
         } else {
-          await FirebaseRefForAuth.signInWithEmailAndPassword(
+          signInWithEmailAndPassword(
+            authManager,
             backup.mail,
             backup.password
           );
-          let actualUser = FirebaseRefForAuth.currentUser;
-          await actualUser.updateEmail(user.mail);
-          await FirebaseRefForAuth.signOut();
-          //app.delete()
+          updateEmail(authManager.currentUser, user.mail)
+          .then(() => {
+            signOut(authManager);
+          })
+          .catch((err) => {
+            console.log("error updating user auth", err);
+          });
         }
         // update in collections
-        await Firestore.collection("users")
-          .doc(user.id)
-          .update(user);
-      } // end if
+        await updateDoc(doc(db, "users", user.id), user)
+      } // end if 
     },
     // delete user
     async deleteUser({ commit }, user) {
-      //let app = FirebaseRefForAuth.initializeApp(firebaseConfig, "authManager");
+      console.log("deleting user", user);
 
-      await FirebaseRefForAuth.signInWithEmailAndPassword(
+      let authUser = await signInWithEmailAndPassword(
+        authManager,
         user.mail,
         user.password
       );
-      await FirebaseRefForAuth.currentUser.delete();
-      await FirebaseRefForAuth.signOut();
-      //await app.delete();
-
-      // remove from collections
-      await Firestore.collection("users")
-        .doc(user.id)
-        .delete(user);
+      deleteUser(authUser).then(() => {
+        console.log("DELETED user", user);
+      }).catch((err) => {
+        console.log("err deleting user", user,  err)
+      })
+      
+      await deleteDoc(doc(db, "users", user.id));
     },
     // update user
     async updateUser({ commit }, data) {
-      //let app = FirebaseRefForAuth.initializeApp(firebaseConfig, "authManager");
       let user = data.user;
       let backup = data.backup;
+
       console.log(user, backup);
       if (backup.mail === user.mail) {
         console.log("NO MAIL CHANGE");
       } else {
-        await FirebaseRefForAuth.signInWithEmailAndPassword(
-          backup.mail,
-          backup.password
-        );
-        let actualUser = FirebaseRefForAuth.currentUser;
-        await actualUser.updateEmail(user.mail);
-        await FirebaseRefForAuth.signOut();
-        //app.delete()
+        signInWithEmailAndPassword(authManager, backup.mail, backup.password);
+        updateEmail(authManager.currentUser, user.mail)
+          .then(() => {
+            signOut(authManager);
+          })
+          .catch((err) => {
+            console.log("error updating user auth", err);
+          });
       }
-
       // update in collections
-      await Firestore.collection("users")
-        .doc(user.id)
-        .update(user);
+      const docRef = doc(db, "users", user.id);
+      await updateDoc(docRef, user);
     },
     async getUser({ commit }, id) {
-      await Firestore.collection("users")
-        .doc(id)
-        .get()
-        .then((doc) => {
-          commit("setActualUser", doc.data());
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      const userDoc = await getDoc(doc(db, "users", id));
+      if (userDoc.exists()) {
+        commit("setActualUser", userDoc.data());
+      } else {
+        console.log("doc doesnt exist with id", id);
+      }
     },
     // get all users
     // data { admin: true/false}
-    fetchUsers({ commit }, data) {
+    async fetchUsers({ commit }, data) {
       console.log("fetching users", data);
-
       let users = [];
-      Firestore.collection("users")
-        .where("admin", "==", data.admin)
-        .get()
-        .then((query) => {
-          query.forEach((doc) => {
-            var user = doc.data();
-            user.id = doc.id;
-            users.push(user);
-          });
-          if (data.admin) {
-            commit("setAdmins", users);
-          } else {
-            commit("setUsers", users);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+
+      const q = query(
+        collection(db, "users"),
+        where("admin", "==", data.admin)
+      );
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        var user = doc.data();
+        user.id = doc.id;
+        users.push(user);
+      });
+
+      if (data.admin) {
+        commit("setAdmins", users);
+      } else {
+        commit("setUsers", users);
+      }
     },
   },
   modules: {},

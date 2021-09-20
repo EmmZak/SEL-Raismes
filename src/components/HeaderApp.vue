@@ -78,7 +78,7 @@
 </template>
 
 <script>
- import firebase from "firebase";
+import {getAuth} from "firebase/auth";
 export default {
   name: "HeaderApp",
   data() {
@@ -105,7 +105,7 @@ export default {
   },
   methods: {
     user() {
-      let user = firebase.auth().currentUser
+      let user = getAuth().currentUser
       console.log("firebase user", user)
 
       let storeUser = this.$store.getters.actualUser;

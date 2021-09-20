@@ -1,9 +1,9 @@
-import firebase from "firebase/app";
-//import "firebase/auth";
-//import "firebase/firestore";
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
 // Your web app's Firebase configuration
-
+/*
 const firebaseConfigOLD = {
     apiKey: "AIzaSyCNuvkEN2S5iVAnAINVq7ST7g6wnf14zpU",
     authDomain: "sel-raismes.firebaseapp.com",
@@ -12,8 +12,7 @@ const firebaseConfigOLD = {
     messagingSenderId: "880601682775",
     appId: "1:880601682775:web:afb5e15777bdce856ee412",
     measurementId: "G-T85X0MRFMM"
-};
-
+}; */
 const firebaseConfig = {
     apiKey: "AIzaSyAlJTkalKBtBVpjsj_DlEmXaXVIv24og0g",
     authDomain: "troc-raismois.firebaseapp.com",
@@ -24,16 +23,16 @@ const firebaseConfig = {
     measurementId: "G-12ZPY5CJ6W"
   };
 
-const FirebaseRef = firebase.initializeApp(firebaseConfig);
-const Firestore = FirebaseRef.firestore();
-const FirebaseAuth = FirebaseRef.auth();
-const FirebaseRefForAuth = firebase.initializeApp(firebaseConfig, 'authManager').auth(); 
+const app = initializeApp(firebaseConfig);
+const app2 = initializeApp(firebaseConfig, 'authManager')
+const db = getFirestore()
+const auth = getAuth()
+const authManager = getAuth(app2)
 
 export {
-    firebaseConfig,
-    FirebaseRefForAuth,
-    Firestore,
-    FirebaseAuth
+    authManager,
+    db,
+    auth
 };
 
 // Initialize Firebase

@@ -6,7 +6,7 @@ import Admin from "../views/Admin.vue";
 import Contact from "../views/Contact.vue";
 import News from "../views/News.vue";
 import About from "../views/About.vue";
-import firebase from "firebase";
+import { auth } from "./../firebaseConfig";
 import store from "../store/index.js"
 
 Vue.use(VueRouter);
@@ -57,12 +57,12 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.authRequired)) {
-    console.log("to feed check currentUser", firebase.auth().currentUser);
+    console.log("to feed check currentUser", auth.currentUser);
 
     // if guest/visitor
     let visitor = store.getters.visitor
     console.log("router visitor", visitor);
-    if ( visitor || firebase.auth().currentUser) {
+    if ( visitor || auth.currentUser) {
       next();
     } else {
       console.log("You must be logged in to see this page");

@@ -77,7 +77,7 @@
 
 <script>
 //import Header from "./components/Header.vue"
-import firebase from "firebase";
+import { getAuth } from "firebase/auth";
 import HeaderApp from "./components/HeaderApp.vue";
 import Footer from "./components/Footer.vue";
 
@@ -119,7 +119,7 @@ export default {
         return;
       }
 
-      let authUser = firebase.auth().currentUser;
+      let authUser = getAuth().currentUser;
       console.log("authUser", authUser);
       if (authUser) {
         console.log("already logged");
