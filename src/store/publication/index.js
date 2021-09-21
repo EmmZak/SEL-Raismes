@@ -1,14 +1,26 @@
-import { db } from "./../../firebaseConfig";
-import { collection, query, where, doc, getDoc, getDocs, addDoc,updateDoc, deleteDoc } from "@firebase/firestore";
+import {
+  findPublication,
+  findPublications,
+  createPublication,
+  updatePublication,
+  removePublication,
+} from "./../firebaseService";
 
 export default {
   state: {
     sortOptions: [
-      { title: "Le plus récent", value: "latest" },
-      { title: "Le plus ancien", value: "oldest" },
-      { title: "Par défaut", value: "default" },
+      { title: "Le plus récent", value: "asc" },
+      { title: "Le plus ancien", value: "desc" },
+      { title: "Par défaut", value: "" },
     ],
-    categories: ["Tout", "Garde d'Animaux", "Aide en cuisine", "Aide au jardinage", "Coup de main ménager", "OTHER"],
+    categories: [
+      "Tout",
+      "Garde d'Animaux",
+      "Aide en cuisine",
+      "Aide au jardinage",
+      "Coup de main ménager",
+      "OTHER",
+    ],
     publications: [],
     items: [],
   },
@@ -22,42 +34,34 @@ export default {
     async savePublication({ commit }, data) {
       let publication = data.publication;
 
-      if (publication.id == null) { 
-        await addDoc(collection(db, "publications"), publication)
+      if (publication.id == null) {
+        await createPublication(publication);
       } else {
-        await updateDoc(doc(db, "publications", publication.id), publication)
+        await updatePublication(publication);
       }
     },
     async deletePublication({ commit }, item) {
-      await deleteDoc(doc(db, "publications", item.id))
+      await removePublication(item)
     },
     async fetchPublications({ commit }) {
       console.log("fetching publications");
-      let pubs = [];
-
-      const q = query(collection(db, "publications"))
-      const querySnapshot = await getDocs(q)
-      querySnapshot.forEach((doc) => {
-        var pub = doc.data();
-        pub.id = doc.id;
-        pubs.push(pub);
-      })
+      let pubs = await findPublications()
       commit("setPublications", pubs);
     },
   },
   modules: {},
   getters: {
     sortOptions(state) {
-      return state.sortOptions
-    },  
+      return state.sortOptions;
+    },
     publications(state) {
       return state.publications;
     },
     items(state) {
-      return state.items
+      return state.items;
     },
     categories(state) {
-      return state.categories
-    }
+      return state.categories;
+    },
   },
 };

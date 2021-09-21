@@ -1,24 +1,14 @@
-import { db, auth, authManager } from "./../../firebaseConfig";
 import {
-  collection,
-  query,
-  where,
-  doc,
-  getDoc,
-  getDocs,
-  addDoc,
-  updateDoc,
-  deleteDoc,
-  setDoc,
-} from "@firebase/firestore";
-import {
-  signOut,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  updateProfile,
-  updateEmail,
-  deleteUser
-} from "firebase/auth";
+  findUser,
+  createUser,
+  updateUser,
+  removeUser,
+  findUsers,
+  findAdmins,
+  // auth
+  logIn,
+  logOut
+} from "./../firebaseService";
 
 export default {
   state: {
@@ -75,35 +65,12 @@ export default {
     // signIn user
     async signIn({ commit }, user) {
       console.log("before singin IN ");
-
-      let actualUser = await signInWithEmailAndPassword(
-        auth,
-        user.mail,
-        user.password
-      );
-      let id = actualUser.user.uid;
-      console.log("looking for doc id", id);
-
-      const userDoc = await getDoc(doc(db, "users", id));
-
-      if (userDoc.exists()) {
-        console.log("got user data", userDoc.data());
-        commit("setActualUser", userDoc.data());
-      } else {
-        console.log("no such document with id=", id);
-      }
+      let actualUser = await logIn(user.mail, user.password)
+      commit("setActualUser", actualUser);
     },
     async signOut({ commit }) {
       console.log("before sign OUT");
-
-      await signOut(auth)
-        .then(() => {
-          console.log("after signx OUT");
-          commit("setActualUser", {});
-        })
-        .catch((err) => {
-          console.log("cant log out err", err);
-        });
+      await logOut()
     },
     // signUp/create or update user
     // data = {user: user, backup: backup}
@@ -113,56 +80,18 @@ export default {
       // if creating
       if (user.id == null) {
         // register auth
-        console.log("authing user", user);
-        let authUser = await createUserWithEmailAndPassword(
-          auth,
-          user.mail,
-          user.password
-        );
-        user.id = authUser.user.uid;
-
-        await setDoc(doc(db, "users", user.id), user);
-        commit("addUser", user);
+        user.id = await createUser(user);
+        //commit("addUser", user);
       } else {
         // if updating
         let backup = data.backup;
-
-        if (backup.mail === user.mail) {
-          console.log("NO MAIL CHANGE");
-        } else {
-          signInWithEmailAndPassword(
-            authManager,
-            backup.mail,
-            backup.password
-          );
-          updateEmail(authManager.currentUser, user.mail)
-          .then(() => {
-            signOut(authManager);
-          })
-          .catch((err) => {
-            console.log("error updating user auth", err);
-          });
-        }
-        // update in collections
-        await updateDoc(doc(db, "users", user.id), user)
-      } // end if 
+        await updateUser(backup, user.mail);
+      } // end if
     },
     // delete user
     async deleteUser({ commit }, user) {
       console.log("deleting user", user);
-
-      let authUser = await signInWithEmailAndPassword(
-        authManager,
-        user.mail,
-        user.password
-      );
-      deleteUser(authUser).then(() => {
-        console.log("DELETED user", user);
-      }).catch((err) => {
-        console.log("err deleting user", user,  err)
-      })
-      
-      await deleteDoc(doc(db, "users", user.id));
+      await removeUser(user);
     },
     // update user
     async updateUser({ commit }, data) {
@@ -173,47 +102,24 @@ export default {
       if (backup.mail === user.mail) {
         console.log("NO MAIL CHANGE");
       } else {
-        signInWithEmailAndPassword(authManager, backup.mail, backup.password);
-        updateEmail(authManager.currentUser, user.mail)
-          .then(() => {
-            signOut(authManager);
-          })
-          .catch((err) => {
-            console.log("error updating user auth", err);
-          });
+        await updateUser(backup, user.mail);
       }
-      // update in collections
-      const docRef = doc(db, "users", user.id);
-      await updateDoc(docRef, user);
     },
     async getUser({ commit }, id) {
-      const userDoc = await getDoc(doc(db, "users", id));
-      if (userDoc.exists()) {
-        commit("setActualUser", userDoc.data());
-      } else {
-        console.log("doc doesnt exist with id", id);
-      }
+      let user = await findUser(id);
+      commit("setActualUser", user);
     },
     // get all users
     // data { admin: true/false}
     async fetchUsers({ commit }, data) {
       console.log("fetching users", data);
-      let users = [];
-
-      const q = query(
-        collection(db, "users"),
-        where("admin", "==", data.admin)
-      );
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        var user = doc.data();
-        user.id = doc.id;
-        users.push(user);
-      });
-
+      
+      let users = []
       if (data.admin) {
+        users = await findAdmins()
         commit("setAdmins", users);
       } else {
+        users = await findUsers()
         commit("setUsers", users);
       }
     },
