@@ -77,7 +77,7 @@
                         :items="$store.getters.towns"
                         label="Ville - Code Postal"
                         prepend-icon="mdi-home-city"
-                        :item-text="(item) => item.town + ', ' + item.code"
+                        :item-text="(item) => item.name + ', ' + item.code"
                       ></v-autocomplete>
                     </v-col>
                   </v-row>
