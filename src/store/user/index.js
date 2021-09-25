@@ -12,16 +12,16 @@ import {
 
 export default {
   state: {
-    towns: [
-      { name: "Valenciennes", code: "59300" },
-      { name: "Raismes", code: "59590" },
-      { name: "Bruay-sur-l'Escaut", code: "59860" },
-      { name: "Beuvrages", code: "59192" },
-      { name: "Anzin", code: "59410" },
-      { name: "Petite Forêt", code: "59494" },
-      { name: "Escaupont", code: "59278" },
-      { name: "Fresnes-sur-l'Escaut", code: "59970" },
-    ],
+    // towns: [
+    //   { name: "Valenciennes", code: "59300" },
+    //   { name: "Raismes", code: "59590" },
+    //   { name: "Bruay-sur-l'Escaut", code: "59860" },
+    //   { name: "Beuvrages", code: "59192" },
+    //   { name: "Anzin", code: "59410" },
+    //   { name: "Petite Forêt", code: "59494" },
+    //   { name: "Escaupont", code: "59278" },
+    //   { name: "Fresnes-sur-l'Escaut", code: "59970" },
+    // ],
     users: [],
     admins: [],
     // auth user
@@ -127,9 +127,9 @@ export default {
   },
   modules: {},
   getters: {
-    towns(state) {
-      return state.towns;
-    },
+    // towns(state) {
+    //   return state.towns;
+    // },
     users(state) {
       return state.users;
     },

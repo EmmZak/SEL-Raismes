@@ -16,7 +16,7 @@ import {
   signOut,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  updateProfile,
+  //updateProfile,
   updateEmail,
   deleteUser,
 } from "firebase/auth";
@@ -165,6 +165,7 @@ async function findPublications(sort, categs) {
   let items = [];
 
   let q = null
+  console.log("creating query sort categs", sort, categs)
   if (sort==undefined && categs==undefined) {
     q = query(
       collection(db, "publications"),
@@ -182,8 +183,6 @@ async function findPublications(sort, categs) {
       //limit(10)
     );
   }
-  
-  
 
   let querySnapshot =null
   console.log("query created")

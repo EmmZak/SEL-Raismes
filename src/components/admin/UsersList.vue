@@ -49,7 +49,7 @@
                         v-model="editedItem.surname"
                         label="Nom"
                         prepend-icon="mdi-account"
-                        :rules="rules"  
+                        :rules="requiredRules"
                       ></v-text-field>
                     </v-col>
                     <v-col>
@@ -57,7 +57,7 @@
                         v-model="editedItem.name"
                         label="Prénom"
                         prepend-icon="mdi-account"
-                        :rules="rules"
+                        :rules="requiredRules"
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -67,6 +67,7 @@
                         v-model="editedItem.adresse"
                         label="Adresse"
                         prepend-icon="mdi-map-marker"
+                        :rules="requiredRules"
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -78,6 +79,7 @@
                         label="Ville - Code Postal"
                         prepend-icon="mdi-home-city"
                         :item-text="(item) => item.name + ', ' + item.code"
+                        :rules="requiredRules"
                       ></v-autocomplete>
                     </v-col>
                   </v-row>
@@ -107,6 +109,7 @@
                         v-model="editedItem.number"
                         label="Numéro"
                         prepend-icon="mdi-phone"
+                        :rules="numberRules"
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -176,15 +179,24 @@
 
 <script>
 import DateHandler from "./../../helperFunctions/DateHandler";
-//import store from '@/store'
-//import { mapGetters } from 'vuex'
 import { mapActions } from "vuex";
+import {
+  requiredRules,
+  emailRules,
+  numberRules,
+  passwordRules,
+} from "./../../store/globals";
 
 export default {
   name: "UsersList",
   mixins: [DateHandler],
   data() {
     return {
+      // form
+      requiredRules: requiredRules,
+      emailRules: emailRules,
+      numberRules: numberRules,
+      passwordRules: passwordRules,
       // Data tab
       registrationError: null,
       search: "",
@@ -251,13 +263,6 @@ export default {
         "auth/email-already-in-use": "Le mail est déjà utilisé",
       },
       processing: false,
-      // form
-      emailRules: [
-        (v) => !!v || "Veuillez saisir votre mail",
-        (v) => /.+@.+\..+/.test(v) || "Le mail n'est pas correct",
-      ],
-      passwordRules: [(v) => v.length > 5 || "Au moins 6 caractères"],
-      rules: [(v) => !!v || "Champ obligatoire"]
     };
   },
   methods: {

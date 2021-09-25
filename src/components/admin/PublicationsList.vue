@@ -53,7 +53,7 @@
                       ><v-row>
                         <v-col>
                           <v-select
-                            :items="$store.getters.categories"
+                            :items="categories"
                             label="Catégorie"
                             v-model="editedItem.categ"
                             prepend-icon="mdi-shape"
@@ -110,7 +110,7 @@
                         v-model="editedItem.user.name"
                         label="Prénom"
                         prepend-icon="mdi-account"
-                        :rules="rules"
+                        :rules="requiredRules"
                       ></v-text-field>
                     </v-col>
                     <v-col>
@@ -127,6 +127,7 @@
                         v-model="editedItem.user.mail"
                         label="E-mail"
                         prepend-icon="mdi-email"
+                        :rules="emailRules"
                       ></v-text-field>
                     </v-col>
                     <v-col>
@@ -134,6 +135,7 @@
                         v-model="editedItem.user.number"
                         label="Numéro"
                         prepend-icon="mdi-phone"
+                        :rules="numberRules"
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -182,15 +184,23 @@
 import DateHandler from "./../../helperFunctions/DateHandler";
 //import { mapGetters } from 'vuex'
 import { mapActions } from "vuex";
+import {
+  requiredRules,
+  emailRules,
+  numberRules,
+  categories,
+} from "./../../store/globals";
 
 export default {
   name: "PublicationsList",
   mixins: [DateHandler],
   data() {
     return {
-      
       // Form
-      //categories: ["Jardinage", "Animaux", "Ménagers"],
+      requiredRules: requiredRules,
+      emailRules: emailRules,
+      numberRules: numberRules,
+      categories: categories,
       // Form dialog
       dialog: false,
       dialogDelete: false,
@@ -267,20 +277,23 @@ export default {
         maxHeight: 304,
       },
       processing: false,
-      // form
-      rules: [(v) => !!v || "Champ obligatoire"],
+      sort: "asc",
     };
   },
   methods: {
     ...mapActions(["fetchUsers", "fetchPublications"]),
     async save() {
       if (!this.$refs.publicationForm.validate()) {
-        console.log("mail-number", this.editedItem.user.mail, this.editedItem.user.number)
+        console.log(
+          "mail-number",
+          this.editedItem.user.mail,
+          this.editedItem.user.number
+        );
         return;
       }
       this.processing = true;
       // add creation date for sorting
-      this.editedItem['createdOn'] = new Date()
+      this.editedItem["createdOn"] = new Date();
       try {
         await this.$store.dispatch("savePublication", {
           publication: this.editedItem,
@@ -291,7 +304,10 @@ export default {
       }
 
       // reload
-      await this.fetchPublications();
+      await this.fetchPublications({
+        sort: "asc",
+        categList: categories,
+      });
 
       this.processing = false;
       this.close();
@@ -373,9 +389,12 @@ export default {
       val || this.closeDelete();
     },
   },
-  mounted() {
+  async mounted() {
     this.fetchUsers({ admin: false });
-    this.fetchPublications();
+    await this.fetchPublications({
+      sort: "asc",
+      categList: categories,
+    });
   },
 };
 </script>

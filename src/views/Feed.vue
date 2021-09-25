@@ -20,21 +20,39 @@
       Interface ADMIN
     </v-btn>
 
-    <!-- options
-    <v-row align="center" justify="space-around" class="">
-      <v-col v-for="(option, i) in options" :key="i" cols="12" lg="2">
+    <!-- options  -->
+    <v-row
+      v-if="$vuetify.breakpoint.xs"
+      align="center"
+      justify="space-around"
+      class=""
+    >
+      <v-col>
         <v-select
-          v-model="$data[option.model]"
-          x-large
-          :items="option.items"
-          :label="option.title"
-          :prepend-icon="option.icon"
+          v-model="sort"
+          :items="sortOptions"
+          prepend-icon="mdi-sort"
+          label="Trier"
           item-text="title"
           item-value="value"
-          @change="change()"
+          @change="loadItems()"
         ></v-select>
-      </v-col> 
-    </v-row>  -->
+      </v-col>
+      <v-col>
+        <v-select
+          ref="categSelect"
+          chips
+          v-model="categList"
+          :items="categories"
+          prepend-icon="mdi-feature-search"
+          label="Choisir la catégorie"
+          item-text="title"
+          item-value="value"
+          @change="loadItems()"
+          multiple
+        ></v-select
+      ></v-col>
+    </v-row>
 
     <v-row justify="center">
       <v-col v-if="!done" lg="11">
@@ -74,41 +92,31 @@
       <v-toolbar></v-toolbar>
       <v-toolbar flat>
         <v-list>
-          <v-list-item>
+          <v-list-item class="pt-16">
             <v-select
               v-model="sort"
-              :items="this.$store.getters.sortOptions"
+              :items="sortOptions"
               prepend-icon="mdi-sort"
               label="Trier"
               item-text="title"
               item-value="value"
-              @change="change()"
+              @change="loadItems()"
             ></v-select>
           </v-list-item>
-          <v-list-item>
+          <v-list-item class="pt-16">
             <v-select
+              ref="categSelect"
+              chips
               v-model="categList"
-              :items="this.$store.getters.categories"
+              :items="categories"
               prepend-icon="mdi-feature-search"
               label="Choisir la catégorie"
               item-text="title"
               item-value="value"
-              @change="change()"
+              @change="loadItems()"
               multiple
             ></v-select>
           </v-list-item>
-          <!-- <v-list-item>
-            <v-autocomplete
-              v-model="townList"
-              :items="$store.getters.towns"
-              label="Ville - Code Postal"
-              prepend-icon="mdi-home-city"
-              :item-text="(town) => town.name + ', ' + town.code"
-              return-object
-              @change="change()"
-              multiple
-            ></v-autocomplete>
-          </v-list-item> -->
         </v-list>
       </v-toolbar>
     </v-navigation-drawer>
@@ -125,49 +133,27 @@
 </template>
 
 <script>
-import { findPublications } from './../store/firebaseService'
+import { findPublications } from "./../store/firebaseService";
 import { mapActions } from "vuex";
 import PublicationCard from "./../components/PublicationCard.vue";
+import { sortOptions, categories } from "./../store/globals";
 
 export default {
   name: "Feed",
 
   data() {
     return {
+      categories: categories,
+      sortOptions: sortOptions,
       dialog: false,
       done: false,
-      options: [
-        {
-          model: "sort",
-          title: "Trier",
-          items: [
-            { title: "Le plus récent", value: "latest" },
-            { title: "Le plus ancien", value: "oldest" },
-            { title: "Par défaut", value: "default" },
-          ],
-          icon: "mdi-sort",
-        },
-
-        {
-          model: "category",
-          title: "Choisir la catégorie",
-          items: this.categories,
-          icon: "mdi-feature-search",
-        },
-        {
-          model: "town",
-          title: "Ville-Commune",
-          items: this.towns,
-          icon: "mdi-map-marker",
-        },
-      ],
       page: 1,
       townList: [],
       sort: "desc",
       categList: [],
       nbItems: 2,
       admin: false,
-      items: []
+      //items: [],
     };
   },
   components: {
@@ -178,12 +164,16 @@ export default {
     toAdminPage() {
       this.$router.push("/admin");
     },
-    async change() {
+    async loadItems() {
+      console.log("laoding items");
+      // close select menu
+      this.$refs.categSelect.blur();
+
       let categList = [];
       if (this.categList.length == 0) {
-        categList = this.$store.getters.categories;
+        categList = categories;
       } else {
-        categList = this.categList
+        categList = this.categList;
       }
       console.log(
         "sort=",
@@ -194,9 +184,13 @@ export default {
         categList,
         categList.length
       );
-      console.log("geetting items")
-      this.items = await findPublications(this.sort, categList)
-      console.log("returned publications ", this.items)
+      //console.log("geetting items categlist", categList);
+      //this.items = await findPublications(this.sort, categList);
+      await this.fetchPublications({
+        sort: this.sort,
+        categList: categList,
+      });
+      console.log("returned publications ", this.items);
     },
   },
   computed: {
@@ -215,18 +209,15 @@ export default {
       console.log("returning towns");
       return this.$store.getters.towns;
     },
-    categories() {
-      return this.$store.getters.categories;
+    items() {
+      let a = this.$store.getters.publications;
+      //console.log("returning publivations", a)
+      // return [...a, ...a, ...a, ...a, ...a, ...a, ...a, ...a, ...a, ...a];
+      return a;
     },
-    // items() {
-    //   let a = this.$store.getters.publications;
-    //   //console.log("returning publivations", a)
-    //   // return [...a, ...a, ...a, ...a, ...a, ...a, ...a, ...a, ...a, ...a];
-    //   return a;
-    // },
   },
   async mounted() {
-    await this.change()
+    await this.loadItems();
     // set parameters from url
     /*
     if (this.$route.page) {

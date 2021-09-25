@@ -8,20 +8,20 @@ import {
 
 export default {
   state: {
-    sortOptions: [
-      { title: "Le plus récent", value: "desc" },
-      { title: "Le plus ancien", value: "asc" },
-      /* No default order for now
-      { title: "Par défaut", value: "" } */
-    ],
-    categories: [
-      //"Tout",
-      "Garde d'Animaux",
-      "Aide en cuisine",
-      "Aide au jardinage",
-      "Coup de main ménager",
-      //"OTHER",
-    ],
+    // sortOptions: [
+    //   { title: "Le plus récent", value: "desc" },
+    //   { title: "Le plus ancien", value: "asc" },
+    //   /* No default order for now
+    //   { title: "Par défaut", value: "" } */
+    // ],
+    // categories: [
+    //   //"Tout",
+    //   "Garde d'Animaux",
+    //   "Aide en cuisine",
+    //   "Aide au jardinage",
+    //   "Coup de main ménager",
+    //   //"OTHER",
+    // ],
     publications: [],
     items: [],
   },
@@ -44,9 +44,9 @@ export default {
     async deletePublication({ commit }, item) {
       await removePublication(item)
     },
-    async fetchPublications({ commit }) {
-      console.log("fetching publications");
-      let pubs = await findPublications()
+    async fetchPublications({ commit }, options) {
+      //console.log("fetching publications categList", options.categList);
+      let pubs = await findPublications(options.sort, options.categList)
       commit("setPublications", pubs);
     },
   },
