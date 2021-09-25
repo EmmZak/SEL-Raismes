@@ -106,10 +106,13 @@
 
 <script>
 import { mapActions } from "vuex";
+// import { VRow, VCol, VContainer, VCard, VCardText, VCardTitle, VDivider } from 'vuetify/lib'
 
 export default {
   name: "Home",
-  components: {},
+  components: {
+    //VRow, VCol, VContainer, VCard, VCardText, VCardTitle, VDivider
+  },
   data() {
     return {
       // map
