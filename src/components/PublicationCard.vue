@@ -174,12 +174,12 @@
 </template>
 
 <script>
-import DateHandler from "./../helperFunctions/DateHandler";
+import HelperFunctions from "./../helperFunctions/HelperFunctions";
 
 export default {
   name: "PublicationCard",
   props: ["item"],
-  mixins: [DateHandler],
+  mixins: [HelperFunctions],
   data() {
     return {
       categToImage: {

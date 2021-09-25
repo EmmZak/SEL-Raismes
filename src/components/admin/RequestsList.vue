@@ -161,13 +161,13 @@
 </template>
 
 <script>
-import DateHandler from "./../../helperFunctions/DateHandler";
+import HelperFunctions from "./../../helperFunctions/HelperFunctions";
 //import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
 
 export default {
     name: "DemandesList",
-    mixins: [DateHandler],
+    mixins: [HelperFunctions],
     data() {
         return {
             // Form

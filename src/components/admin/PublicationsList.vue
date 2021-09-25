@@ -10,7 +10,6 @@
       ></v-text-field>
     </v-card-title>
 
-    <v-btn @click="test()">test</v-btn>
     <v-data-table
       :headers="headers"
       :items="publications"
@@ -31,6 +30,9 @@
         <v-toolbar flat>
           <v-toolbar-title>Gestion de publications</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
+          <v-btn @click="toPDF(this.publications)" class="red white--text">
+            <v-icon>mdi-file-pdf-box</v-icon>Exporter</v-btn
+          >
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="800px">
             <template v-slot:activator="{ on, attrs }">
@@ -181,7 +183,7 @@
 </template>
 
 <script>
-import DateHandler from "./../../helperFunctions/DateHandler";
+import HelperFunctions from "./../../helperFunctions/HelperFunctions";
 //import { mapGetters } from 'vuex'
 import { mapActions } from "vuex";
 import {
@@ -193,7 +195,7 @@ import {
 
 export default {
   name: "PublicationsList",
-  mixins: [DateHandler],
+  mixins: [HelperFunctions],
   data() {
     return {
       // Form

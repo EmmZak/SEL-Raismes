@@ -28,12 +28,14 @@
           <!-- Header (search, new) -->
           <v-toolbar-title>Gestion d'administrateurs</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
-          <v-spacer></v-spacer>
 
+          <v-btn @click="toPDF(admins)" class="red white--text">
+            <v-icon>mdi-file-pdf-box</v-icon>Exporter</v-btn
+          >
+          <v-spacer></v-spacer>
           <!-- User Form -->
           <v-dialog v-model="dialog" max-width="500px">
             <template v-slot:activator="{ on, attrs }">
-              <v-btn @click="test()">test</v-btn>
               <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
                 Nouvel Admin
               </v-btn>
@@ -192,18 +194,18 @@
 </template>
 
 <script>
-import DateHandler from "./../../helperFunctions/DateHandler";
+import HelperFunctions from "./../../helperFunctions/HelperFunctions";
 import { mapActions } from "vuex";
 import {
   requiredRules,
   emailRules,
   numberRules,
-  passwordRules
+  passwordRules,
 } from "./../../store/globals";
 
 export default {
   name: "AdminList",
-  mixins: [DateHandler],
+  mixins: [HelperFunctions],
   data() {
     return {
       // form
@@ -358,7 +360,7 @@ export default {
     },
     test() {
       this.showNotif = true;
-    },
+    }
   },
   computed: {
     admins() {

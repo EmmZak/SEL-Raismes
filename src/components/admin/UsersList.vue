@@ -26,6 +26,9 @@
           <!-- Header (search, new) -->
           <v-toolbar-title>Gestions de sélistes</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
+          <v-btn @click="toPDF(users)" class="red white--text">
+            <v-icon>mdi-file-pdf-box</v-icon>Exporter</v-btn
+          >
           <v-spacer></v-spacer>
 
           <!-- User Form -->
@@ -178,7 +181,7 @@
 </template>
 
 <script>
-import DateHandler from "./../../helperFunctions/DateHandler";
+import HelperFunctions from "./../../helperFunctions/HelperFunctions";
 import { mapActions } from "vuex";
 import {
   requiredRules,
@@ -189,7 +192,7 @@ import {
 
 export default {
   name: "UsersList",
-  mixins: [DateHandler],
+  mixins: [HelperFunctions],
   data() {
     return {
       // form
