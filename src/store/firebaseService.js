@@ -131,16 +131,22 @@ async function findUsers() {
   return items;
 }
 async function createUser(user) {
-  await createUserWithEmailAndPassword(auth, user.mail, user.password);
+  console.log("service.createUser")
+  let res = await createUserWithEmailAndPassword(auth, user.mail, user.password);
+  console.log("got res", res)
+  console.log("currentUser", auth.currentUser)
   user.id = auth.currentUser.uid;
-  await setDoc(doc(db, "users", user.id), user);
+  let userDoc = await setDoc(doc(db, "users", user.id), user);
+  console.log("set doc", userDoc)
   return user.id;
 }
-async function updateUser(user, newMail) {
-  if (user.mail != newMail) {
+async function updateUser(user, backup) {
+  console.log("update user", user, "new mail", user.mail)
+  if (user.mail != backup.mail) {
+    console.log("UPDATE MAIL")
     // update auth object's mail
-    await signInWithEmailAndPassword(authManager, user.mail, user.password);
-    await updateEmail(authManager.currentUser, newMail);
+    await signInWithEmailAndPassword(authManager, backup.mail, backup.password);
+    await updateEmail(authManager.currentUser, user.mail);
   }
   // anything else is in firestore collection-doc
   await updateDoc(doc(db, "users", user.id), user);
@@ -159,9 +165,9 @@ async function findPublications(sort, categories, towns) {
   let items = [];
   const q = query(
     collection(db, "publications"),
-    where("town", "in", towns),
-    where("category", "in", categories),
-    orderBy("created", sort)
+    //where("town", "in", towns),
+    //where("category", "in", categories),
+    //orderBy("created", sort)
     //limit(10)
   );
   const querySnapshot = await getDocs(q);

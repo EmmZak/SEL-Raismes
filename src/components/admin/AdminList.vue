@@ -263,6 +263,7 @@ export default {
       this.processing = true;
       console.log("before signup");
       try {
+        console.log("edittedItem", this.editedItem)
         await this.$store.dispatch("signUpUser", {
           user: this.editedItem,
           backup: this.actualItemBackup,

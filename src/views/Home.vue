@@ -121,7 +121,7 @@ export default {
       zoom: 12,
       // carousel
       interval: 1000,
-      timelineColors: ["pink lighten-1", "blue lighten-1", "green accent-3"],
+      timelineColors: ["pink lighten-1", "blue lighten-1", "success"],
       carousel_images: [
         {
           src: "https://www.ville-raismes.fr/fileadmin/_processed_/4/7/csm_Banniere_ete2021-web-low_bbf2947368.jpg",

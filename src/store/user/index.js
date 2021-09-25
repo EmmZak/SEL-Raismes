@@ -81,11 +81,12 @@ export default {
       if (user.id == null) {
         // register auth
         user.id = await createUser(user);
+        console.log("got user.id", user.id)
         //commit("addUser", user);
       } else {
         // if updating
         let backup = data.backup;
-        await updateUser(backup, user.mail);
+        await updateUser(user, backup, user.mail);
       } // end if
     },
     // delete user

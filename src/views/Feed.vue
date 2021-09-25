@@ -62,7 +62,7 @@
         </v-row>
       </v-col>
     </v-row>
-
+    <!-- left app bar
     <v-navigation-drawer
       :drawer="true"
       app
@@ -107,21 +107,9 @@
               @change="change()"
             ></v-autocomplete>
           </v-list-item>
-          <!--           
-          <v-list-item v-for="(option, i) in options" :key="i" class="pt-10">
-            <v-select
-              v-model="$data[option.model]"
-              :items="option.items"
-              :prepend-icon="option.icon"
-              :label="option.title"
-              item-text="title"
-              item-value="value"
-              @change="change()"
-            ></v-select>
-          </v-list-item> -->
         </v-list>
       </v-toolbar>
-    </v-navigation-drawer>
+    </v-navigation-drawer>  -->
 
     <v-pagination
       class="pt-5"
@@ -144,7 +132,7 @@ export default {
 
   data() {
     return {
-      dialog: true,
+      dialog: false,
       done: false,
       options: [
         {

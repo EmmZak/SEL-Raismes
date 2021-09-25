@@ -1,6 +1,5 @@
 <template>
   <v-app>
-   
     <!-- HeaderApp -->
     <HeaderApp v-if="!isAdminView" @auth-event="openAuthDialog" />
 
@@ -13,11 +12,12 @@
         </v-card-title>
 
         <v-card-text>
-          <v-container>
+          <v-form ref="loginForm">
             <v-row>
               <v-col>
                 <v-text-field
                   v-model="authData.mail"
+                  :rules="emailRules"
                   label="E-mail"
                   prepend-icon="mdi-email"
                 ></v-text-field>
@@ -27,19 +27,20 @@
               <v-col>
                 <v-text-field
                   v-model="authData.password"
+                  :rules="passwordRules"
                   label="Mot de passe"
                   prepend-icon="mdi-lock"
                 ></v-text-field>
               </v-col>
             </v-row>
-            <!-- error message -->
+            <!-- error message
             <v-row v-if="authError != ''">
               <v-card-title class="card-title">
                 <span class="font-weight-light md red--text">
                   <v-icon>mdi-alert</v-icon> {{ authError }}
                 </span>
               </v-card-title>
-            </v-row>
+            </v-row>  -->
             <v-row justify="space-around">
               <v-btn
                 class="success"
@@ -60,7 +61,7 @@
                 </v-btn>
               </v-col>
             </v-row>
-          </v-container>
+          </v-form>
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -103,10 +104,16 @@ export default {
       mail: "", //"aymeric@robin.fr",
       password: "", //raismes",
     },
+    // form
+    emailRules: [
+      (v) => !!v || "Veuillez saisir votre mail",
+      (v) => /.+@.+\..+/.test(v) || "Le mail n'est pas correct",
+    ],
+    passwordRules: [(v) => v.length > 5 || "Au moins 6 caractères"],
   }),
   created() {
-    console.log("APP CREATED")
-    document.title = "Troc D'Heures Raismois"
+    console.log("APP CREATED");
+    document.title = "Troc D'Heures Raismois";
   },
   async mounted() {
     console.log("APP MOUNTED");
@@ -133,6 +140,10 @@ export default {
       }
     },
     async signIn() {
+      if (!this.$refs.loginForm.validate()) {
+        console.log("sending request ");
+        return
+      }
       console.log("APPvue before signIN ");
       this.authLoading = true;
 
@@ -193,8 +204,6 @@ export default {
 </script>
 
 <style>
-
-
 .title-font {
   font-family: "Open Sans", sans-serif;
 }
