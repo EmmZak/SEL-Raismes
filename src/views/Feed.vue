@@ -120,7 +120,7 @@
         </v-list>
       </v-toolbar>
     </v-navigation-drawer>
-
+    <!-- pagination
     <v-pagination
       v-if="this.items.length > 0"
       class="pt-5"
@@ -128,7 +128,7 @@
       :length="nbPages"
       :page="page"
       :total-visible="5"
-    ></v-pagination>
+    ></v-pagination>  -->
   </v-container>
 </template>
 
