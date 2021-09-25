@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- test -->
-    <v-card class="card" elevation="10">
+    <v-card v-if="false" class="card" elevation="10">
       <v-card-text class="">
         <v-row class="">
           <v-col class="grey">
@@ -59,7 +59,7 @@
               <div class="text-lg-subtitle-2 text-caption">
                 Proposé par {{ item.user.name }}
               </div>
-              <div class="text-lg-subtitle-2 text-caption">
+              <div v-if="item.startTime && item.endTime" class="text-lg-subtitle-2 text-caption">
                 {{ item.startTime }}h-{{ item.endTime }}h
               </div>
               <!-- <div class="card_by">Proposé par {{ item.user.name }}</div>
@@ -82,6 +82,7 @@
             </v-col> -->
               <v-col class="pl-0" cols="10">
                 <div class="text-lg-h6 text-caption pl-0">
+                  <!-- {{ new Date(item.createdOn.seconds*1000) }} -->
                   {{
                     item.user.number.replace(
                       /(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/,

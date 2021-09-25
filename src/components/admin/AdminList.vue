@@ -44,13 +44,14 @@
               </v-card-title>
 
               <v-card-text>
-                <v-form>
+                <v-form ref="adminForm">
                   <v-row>
                     <v-col>
                       <v-text-field
                         v-model="editedItem.surname"
                         label="Nom"
                         prepend-icon="mdi-account"
+                        :rules="rules"
                       ></v-text-field>
                     </v-col>
                     <v-col>
@@ -58,6 +59,7 @@
                         v-model="editedItem.name"
                         label="Prénom"
                         prepend-icon="mdi-account"
+                        :rules="rules" 
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -87,6 +89,7 @@
                         v-model="editedItem.mail"
                         label="E-mail"
                         prepend-icon="mdi-email"
+                        :rules="emailRules"
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -96,6 +99,7 @@
                         v-model="editedItem.password"
                         label="Mot de passe"
                         prepend-icon="mdi-lock"
+                        :rules="passwordRules"
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -117,7 +121,7 @@
                         prepend-icon="mdi-currency-eur"
                       ></v-text-field>
                     </v-col>
-                  </v-row> 
+                  </v-row>
                   <!-- registration error div -->
                   <v-row>
                     <v-col>
@@ -255,15 +259,25 @@ export default {
         admin: true,
       },
       itemToDelete: {},
+      // form
+      emailRules: [
+        (v) => !!v || "Veuillez saisir votre mail",
+        (v) => /.+@.+\..+/.test(v) || "Le mail n'est pas correct",
+      ],
+      passwordRules: [(v) => v.length > 5 || "Au moins 6 caractères"],
+      rules: [(v) => !!v || "Champ obligatoire"],
     };
   },
   methods: {
     ...mapActions(["fetchUsers"]),
     async save() {
+      if (!this.$refs.adminForm.validate()) {
+        return;
+      }
       this.processing = true;
       console.log("before signup");
       try {
-        console.log("edittedItem", this.editedItem)
+        console.log("edittedItem", this.editedItem);
         await this.$store.dispatch("signUpUser", {
           user: this.editedItem,
           backup: this.actualItemBackup,

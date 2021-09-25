@@ -22,7 +22,7 @@
       <template v-slot:[`item.date`]="{ item }">
         <span>{{ formatDDMMYYYY(item.date) }}</span>
       </template>
-      <!-- user column -->
+      <!-- slots column -->
       <template v-slot:[`item.startTime`]="{ item }">
         <span>{{ item.startTime }}h - {{ item.endTime }}h </span>
       </template>
@@ -41,7 +41,7 @@
             <v-card>
               <!-- form -->
               <v-card-text>
-                <v-container>
+                <v-form ref="publicationForm">
                   <v-row class="pa-0">
                     <v-col>
                       <v-row>
@@ -57,6 +57,7 @@
                             label="Catégorie"
                             v-model="editedItem.categ"
                             prepend-icon="mdi-shape"
+                            :rules="rules"
                           ></v-select> </v-col
                       ></v-row>
                       <v-row>
@@ -106,15 +107,16 @@
                   <v-row>
                     <v-col>
                       <v-text-field
-                        v-model="editedItem.user.surname"
-                        label="Nom"
+                        v-model="editedItem.user.name"
+                        label="Prénom"
                         prepend-icon="mdi-account"
+                        :rules="rules"
                       ></v-text-field>
                     </v-col>
                     <v-col>
                       <v-text-field
-                        v-model="editedItem.user.name"
-                        label="Prénom"
+                        v-model="editedItem.user.surname"
+                        label="Nom"
                         prepend-icon="mdi-account"
                       ></v-text-field>
                     </v-col>
@@ -135,7 +137,7 @@
                       ></v-text-field>
                     </v-col>
                   </v-row>
-                </v-container>
+                </v-form>
               </v-card-text>
 
               <v-card-actions>
@@ -186,6 +188,7 @@ export default {
   mixins: [DateHandler],
   data() {
     return {
+      
       // Form
       //categories: ["Jardinage", "Animaux", "Ménagers"],
       // Form dialog
@@ -203,7 +206,7 @@ export default {
         { text: "Numéro", value: "user.number" },
         { text: "E-mail", value: "user.mail" },
         //{ text: "Adresse", value: "adresse" },
-        { text: "Crénaux", value: "start  Time" },
+        { text: "Crénaux", value: "startTime" },
         { text: "Date", value: "date" },
         { text: "Coût", value: "cost" },
         { text: "Actions", value: "actions", sortable: false },
@@ -264,14 +267,20 @@ export default {
         maxHeight: 304,
       },
       processing: false,
+      // form
+      rules: [(v) => !!v || "Champ obligatoire"],
     };
   },
   methods: {
     ...mapActions(["fetchUsers", "fetchPublications"]),
     async save() {
-      console.log("edited item", this.editedItem.date);
-
+      if (!this.$refs.publicationForm.validate()) {
+        console.log("mail-number", this.editedItem.user.mail, this.editedItem.user.number)
+        return;
+      }
       this.processing = true;
+      // add creation date for sorting
+      this.editedItem['createdOn'] = new Date()
       try {
         await this.$store.dispatch("savePublication", {
           publication: this.editedItem,

@@ -5,10 +5,19 @@ export default {
      */
     formatDDMMYYYY(DATE) {
       //console.log("DATE", DATE)
-      return DATE
-        .split("-")
-        .reverse()
-        .join("-");
+      let res = "";
+      try {
+        res = DATE.split("-")
+          .reverse()
+          .join("-");
+      } catch(err) {
+        res = ""
+      }
+      return res
     },
+    /**
+     * Format slots
+     */
+    
   },
 };

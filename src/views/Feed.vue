@@ -14,7 +14,7 @@
           </v-btn>
         </v-card-actions>
       </v-card>
-    </v-dialog> 
+    </v-dialog>
 
     <v-btn v-if="admin" @click="toAdminPage()" class="success">
       Interface ADMIN
@@ -40,7 +40,7 @@
       <v-col v-if="!done" lg="11">
         <div class="text-lg-h4">
           <div class="title-font pb-10 text-left">
-            12 offre(s) disponible(s) pour votre recherche
+            {{ items.length }} offre(s) disponible(s) pour votre recherche
           </div>
         </div>
         <v-row class="">
@@ -62,7 +62,7 @@
         </v-row>
       </v-col>
     </v-row>
-    <!-- left app bar
+    <!-- left app bar  -->
     <v-navigation-drawer
       :drawer="true"
       app
@@ -87,31 +87,34 @@
           </v-list-item>
           <v-list-item>
             <v-select
-              v-model="sort"
+              v-model="categList"
               :items="this.$store.getters.categories"
               prepend-icon="mdi-feature-search"
               label="Choisir la catégorie"
               item-text="title"
               item-value="value"
               @change="change()"
+              multiple
             ></v-select>
           </v-list-item>
-          <v-list-item>
+          <!-- <v-list-item>
             <v-autocomplete
-              v-model="town"
+              v-model="townList"
               :items="$store.getters.towns"
               label="Ville - Code Postal"
               prepend-icon="mdi-home-city"
               :item-text="(town) => town.name + ', ' + town.code"
               return-object
               @change="change()"
+              multiple
             ></v-autocomplete>
-          </v-list-item>
+          </v-list-item> -->
         </v-list>
       </v-toolbar>
-    </v-navigation-drawer>  -->
+    </v-navigation-drawer>
 
     <v-pagination
+      v-if="this.items.length > 0"
       class="pt-5"
       v-model="page"
       :length="nbPages"
@@ -122,8 +125,7 @@
 </template>
 
 <script>
-//import DateHandler from './../helperFunctions/DateHandler'
-//import { mapGetters } from 'vuex'
+import { findPublications } from './../store/firebaseService'
 import { mapActions } from "vuex";
 import PublicationCard from "./../components/PublicationCard.vue";
 
@@ -160,11 +162,12 @@ export default {
         },
       ],
       page: 1,
-      town: "Raismes",
-      sort: "latest",
-      category: "Ménagers",
+      townList: [],
+      sort: "desc",
+      categList: [],
       nbItems: 2,
       admin: false,
+      items: []
     };
   },
   components: {
@@ -175,17 +178,25 @@ export default {
     toAdminPage() {
       this.$router.push("/admin");
     },
-    change() {
+    async change() {
+      let categList = [];
+      if (this.categList.length == 0) {
+        categList = this.$store.getters.categories;
+      } else {
+        categList = this.categList
+      }
       console.log(
         "sort=",
         this.sort,
         ", page=",
         this.page,
         ", categ=",
-        this.category,
-        ", town=",
-        this.town.code
+        categList,
+        categList.length
       );
+      console.log("geetting items")
+      this.items = await findPublications(this.sort, categList)
+      console.log("returned publications ", this.items)
     },
   },
   computed: {
@@ -207,14 +218,15 @@ export default {
     categories() {
       return this.$store.getters.categories;
     },
-    items() {
-      let a = this.$store.getters.publications;
-      //console.log("returning publivations", a)
-      return [...a, ...a, ...a, ...a, ...a, ...a, ...a, ...a, ...a, ...a];
-      //return a;
-    },
+    // items() {
+    //   let a = this.$store.getters.publications;
+    //   //console.log("returning publivations", a)
+    //   // return [...a, ...a, ...a, ...a, ...a, ...a, ...a, ...a, ...a, ...a];
+    //   return a;
+    // },
   },
   async mounted() {
+    await this.change()
     // set parameters from url
     /*
     if (this.$route.page) {
@@ -224,7 +236,7 @@ export default {
       this.town = this.$route.town
     } */
 
-    await this.fetchPublications();
+    //await this.fetchPublications();
     // check if auth user
     //await this.fetchUser();
 

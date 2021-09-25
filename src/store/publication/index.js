@@ -1,5 +1,5 @@
 import {
-  findPublication,
+  //findPublication,
   findPublications,
   createPublication,
   updatePublication,
@@ -9,17 +9,18 @@ import {
 export default {
   state: {
     sortOptions: [
-      { title: "Le plus récent", value: "asc" },
-      { title: "Le plus ancien", value: "desc" },
-      { title: "Par défaut", value: "" },
+      { title: "Le plus récent", value: "desc" },
+      { title: "Le plus ancien", value: "asc" },
+      /* No default order for now
+      { title: "Par défaut", value: "" } */
     ],
     categories: [
-      "Tout",
+      //"Tout",
       "Garde d'Animaux",
       "Aide en cuisine",
       "Aide au jardinage",
       "Coup de main ménager",
-      "OTHER",
+      //"OTHER",
     ],
     publications: [],
     items: [],

@@ -160,22 +160,46 @@ async function removeUser(user) {
 /*
  * Publication CRUD
  */
-// sort asc|desc, category array, towns array
-async function findPublications(sort, categories, towns) {
+// sort asc|desc, category array
+async function findPublications(sort, categs) {
   let items = [];
-  const q = query(
-    collection(db, "publications"),
-    //where("town", "in", towns),
-    //where("category", "in", categories),
-    //orderBy("created", sort)
-    //limit(10)
-  );
-  const querySnapshot = await getDocs(q);
+
+  let q = null
+  if (sort==undefined && categs==undefined) {
+    q = query(
+      collection(db, "publications"),
+      //where("town", "in", towns),
+      //where("categ", "in", categs),
+      //orderBy("createdOn", sort)
+      //limit(10)
+    );
+  } else {
+    q = query(
+      collection(db, "publications"),
+      //where("town", "in", towns),
+      where("categ", "in", categs),
+      orderBy("createdOn", sort)
+      //limit(10)
+    );
+  }
+  
+  
+
+  let querySnapshot =null
+  console.log("query created")
+  try {
+    querySnapshot = await getDocs(q);
+  } catch(err) {
+    console.log("err", err)
+  }
+  
+  console.log("got docs ")
   querySnapshot.forEach((doc) => {
     var pub = doc.data();
     pub.id = doc.id;
     items.push(pub);
   });
+  console.log("retuning items")
   return items;
 }
 async function findPublication(id) {
