@@ -33,14 +33,6 @@
                 ></v-text-field>
               </v-col>
             </v-row>
-            <!-- error message
-            <v-row v-if="authError != ''">
-              <v-card-title class="card-title">
-                <span class="font-weight-light md red--text">
-                  <v-icon>mdi-alert</v-icon> {{ authError }}
-                </span>
-              </v-card-title>
-            </v-row>  -->
             <v-row justify="space-around">
               <v-btn
                 class="success"
@@ -81,6 +73,7 @@
 import { getAuth } from "firebase/auth";
 import HeaderApp from "./components/HeaderApp.vue";
 import Footer from "./components/Footer.vue";
+import { emailRules, passwordRules } from './store/globals'
 
 export default {
   name: "App",
@@ -105,11 +98,8 @@ export default {
       password: "", //raismes",
     },
     // form
-    emailRules: [
-      (v) => !!v || "Veuillez saisir votre mail",
-      (v) => /.+@.+\..+/.test(v) || "Le mail n'est pas correct",
-    ],
-    passwordRules: [(v) => v.length > 5 || "Au moins 6 caractères"],
+    emailRules: emailRules,
+    passwordRules
   }),
   created() {
     console.log("APP CREATED");
@@ -141,7 +131,6 @@ export default {
     },
     async signIn() {
       if (!this.$refs.loginForm.validate()) {
-        console.log("sending request ");
         return
       }
       console.log("APPvue before signIN ");
