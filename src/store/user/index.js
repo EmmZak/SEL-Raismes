@@ -66,7 +66,8 @@ export default {
     async signIn({ commit }, user) {
       console.log("before singin IN ");
       let actualUser = await logIn(user.mail, user.password)
-      commit("setActualUser", actualUser);
+      //commit("setActualUser", actualUser);
+      return actualUser
     },
     async signOut({ commit }) {
       console.log("before sign OUT");

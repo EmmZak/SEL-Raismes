@@ -70,10 +70,11 @@
 
 <script>
 //import Header from "./components/Header.vue"
-import { getAuth } from "firebase/auth";
+//import { getAuth } from "firebase/auth";
 import HeaderApp from "./components/HeaderApp.vue";
 import Footer from "./components/Footer.vue";
 import { emailRules, passwordRules } from './store/globals'
+import { isConnected } from './store/firebaseService'
 
 export default {
   name: "App",
@@ -110,14 +111,17 @@ export default {
   },
   methods: {
     async openAuthDialog() {
+      console.log("opening auth dialog")
       let route = this.$route.name;
       if (route == "Feed" && !this.$store.getters.visitor) {
+        console.log("sign out")
         await this.signOut();
+        console.log("signed out")
         return;
       }
-
-      let authUser = getAuth().currentUser;
-      console.log("authUser", authUser);
+      console.log("checking if connected")
+      let authUser = isConnected();
+      console.log("isConnected authUser", authUser);
       if (authUser) {
         console.log("already logged");
         if (route != "Feed") {
@@ -137,7 +141,8 @@ export default {
       this.authLoading = true;
 
       try {
-        await this.$store.dispatch("signIn", this.authData);
+        let user = await this.$store.dispatch("signIn", this.authData);
+        console.log("auth user", user)
         this.authDialog = false;
         if (this.$route.name != "Feed") {
           this.$router.push("/feed");

@@ -78,7 +78,7 @@
                     <v-col>
                       <v-autocomplete
                         v-model="editedItem.town"
-                        :items="$store.getters.towns"
+                        :items="towns"
                         label="Ville - Code Postal"
                         prepend-icon="mdi-home-city"
                         :item-text="(item) => item.name + ', ' + item.code"
@@ -188,6 +188,7 @@ import {
   emailRules,
   numberRules,
   passwordRules,
+  towns,
 } from "./../../store/globals";
 
 export default {
@@ -200,6 +201,7 @@ export default {
       emailRules: emailRules,
       numberRules: numberRules,
       passwordRules: passwordRules,
+      towns: towns,
       // Data tab
       registrationError: null,
       search: "",

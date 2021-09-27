@@ -69,7 +69,7 @@
         <v-icon left dark>mdi-lock</v-icon>
         <div 
           v-text="this.$route.name == 'Feed' 
-            && !this.$store.getters.visitor ? 'Déconnexion': 'Espace Personnel'">
+            && !this.$store.getters.visitor ? 'Déconnexion': 'Se Connecter'">
         </div>
       </v-btn>
       <!-- <v-btn @click="user()">user</v-btn> -->

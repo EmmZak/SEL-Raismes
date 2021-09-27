@@ -165,7 +165,7 @@ export default {
       this.$router.push("/admin");
     },
     async loadItems() {
-      console.log("laoding items");
+      //console.log("laoding items");
       // close select menu
       this.$refs.categSelect.blur();
 
@@ -175,22 +175,22 @@ export default {
       } else {
         categList = this.categList;
       }
-      console.log(
-        "sort=",
-        this.sort,
-        ", page=",
-        this.page,
-        ", categ=",
-        categList,
-        categList.length
-      );
+      // console.log(
+      //   "sort=",
+      //   this.sort,
+      //   ", page=",
+      //   this.page,
+      //   ", categ=",
+      //   categList,
+      //   categList.length
+      // );
       //console.log("geetting items categlist", categList);
       //this.items = await findPublications(this.sort, categList);
       await this.fetchPublications({
         sort: this.sort,
         categList: categList,
       });
-      console.log("returned publications ", this.items);
+      //console.log("returned publications ", this.items);
     },
   },
   computed: {

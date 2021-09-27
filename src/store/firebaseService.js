@@ -24,6 +24,11 @@ import {
 /*
  * Auth
  */
+function isConnected() {
+  let user = auth.currentUser
+  console.log("service.isConnected user", user)
+  return user
+}
 async function logIn(mail, password) {
   await signInWithEmailAndPassword(auth, mail, password);
   let id = auth.currentUser.uid;
@@ -93,8 +98,8 @@ async function findAdmins() {
   return items;
 }
 async function createAdmin(user) {
-  await createUserWithEmailAndPassword(auth, user.mail, user.password);
-  user.id = auth.currentUser.uid;
+  await createUserWithEmailAndPassword(authManager, user.mail, user.password);
+  user.id = authManager.currentUser.uid;
   await setDoc(doc(db, "users", user.id), user);
   return user.id;
 }
@@ -131,19 +136,19 @@ async function findUsers() {
   return items;
 }
 async function createUser(user) {
-  console.log("service.createUser")
-  let res = await createUserWithEmailAndPassword(auth, user.mail, user.password);
-  console.log("got res", res)
-  console.log("currentUser", auth.currentUser)
-  user.id = auth.currentUser.uid;
+  ////console.log("service.createUser")
+  let res = await createUserWithEmailAndPassword(authManager, user.mail, user.password);
+  ////console.log("got res", res)
+  ////console.log("currentUser", auth.currentUser)
+  user.id = authManager.currentUser.uid;
   let userDoc = await setDoc(doc(db, "users", user.id), user);
-  console.log("set doc", userDoc)
+  ////console.log("set doc", userDoc)
   return user.id;
 }
 async function updateUser(user, backup) {
-  console.log("update user", user, "new mail", user.mail)
+  ////console.log("update user", user, "new mail", user.mail)
   if (user.mail != backup.mail) {
-    console.log("UPDATE MAIL")
+    ////console.log("UPDATE MAIL")
     // update auth object's mail
     await signInWithEmailAndPassword(authManager, backup.mail, backup.password);
     await updateEmail(authManager.currentUser, user.mail);
@@ -165,7 +170,7 @@ async function findPublications(sort, categs) {
   let items = [];
 
   let q = null
-  console.log("creating query sort categs", sort, categs)
+  ////console.log("creating query sort categs", sort, categs)
   if (sort==undefined && categs==undefined) {
     q = query(
       collection(db, "publications"),
@@ -185,20 +190,20 @@ async function findPublications(sort, categs) {
   }
 
   let querySnapshot =null
-  console.log("query created")
+  //console.log("query created")
   try {
     querySnapshot = await getDocs(q);
   } catch(err) {
-    console.log("err", err)
+    //console.log("err", err)
   }
   
-  console.log("got docs ")
+  //console.log("got docs ")
   querySnapshot.forEach((doc) => {
     var pub = doc.data();
     pub.id = doc.id;
     items.push(pub);
   });
-  console.log("retuning items")
+  //console.log("retuning items")
   return items;
 }
 async function findPublication(id) {
@@ -220,24 +225,6 @@ export {
   db,
   auth,
   authManager,
-  /* firestore
-  collection,
-  query,
-  where,
-  doc,
-  getDoc,
-  getDocs,
-  addDoc,
-  setDoc,
-  updateDoc,
-  deleteDoc, */
-  /* auth
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  updateProfile,
-  updateEmail,
-  deleteUser,
-  signOut, */
   // CRUD export
   // event
   findEvents,
@@ -263,6 +250,7 @@ export {
   updatePublication,
   removePublication,
   // auth
+  isConnected,
   logIn,
   logOut,
   updateAuthUser,
