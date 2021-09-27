@@ -2,14 +2,14 @@
   <!-- list  -->
   <v-container class="my-5 feed" fluid>
     <!-- NOTIF  -->
-    <v-dialog v-model="dialog" persistent max-width="700">
+    <v-dialog v-model="inDev" persistent max-width="700">
       <v-card>
         <v-card-title class="text-h5">
           La page est actuellement en développement
         </v-card-title>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="dialog = false">
+          <v-btn color="green darken-1" text @click="inDev = false">
             Fermer
           </v-btn>
         </v-card-actions>
@@ -146,7 +146,7 @@ export default {
       categories: categories,
       sortOptions: sortOptions,
       dialog: false,
-      done: false,
+      inDev: true,
       page: 1,
       townList: [],
       sort: "desc",
