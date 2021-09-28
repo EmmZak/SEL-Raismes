@@ -1,14 +1,83 @@
 <template>
   <div>
     <!-- test -->
-    <v-card v-if="false" class="card" elevation="10">
+    <v-card v-if="true" class="card" elevation="10">
       <v-card-text class="">
         <v-row class="">
-          <v-col class="grey">
-            <v-card class="d-flex align-start flex-column pa-0 green" >
-              <v-card class="mb-auto">start</v-card>
-              <v-card class="">end</v-card>
-            </v-card>
+          <v-col class="pa-2">
+            <v-container class="fill-height pa-0">
+              <v-row class="no-gutters flex-column fill-height">
+                <v-col cols="" class="">
+                  <v-row class="no-gutters">
+                    <v-col cols="8" class=""
+                      ><div class="text-lg-h5 text-md-h5">
+                        {{ item.categ }}
+                      </div></v-col
+                    >
+                    <v-col cols="4" class="" align="right">
+                      <div class="text-lg-h6">
+                        {{ formatDDMMYYYY(item.date) }}
+                      </div></v-col
+                    >
+                  </v-row>
+                </v-col>
+                <v-col cols="" class="">
+                  <v-row class="no-gutters">
+                    <v-col cols="8" class="">
+                      <div class="text-lg-subtitle-2 text-caption">
+                        Proposé par {{ item.user.name }}
+                      </div></v-col
+                    >
+                    <v-col cols="4" class="" align="right">
+                      <div
+                        v-if="item.startTime && item.endTime"
+                        class="text-lg-subtitle-2 text-caption"
+                      >
+                        {{ item.startTime }}h-{{ item.endTime }}h
+                      </div></v-col
+                    >
+                  </v-row>
+                </v-col>
+                <v-col></v-col>
+                <v-col cols="" class="">
+                  <v-row class="no-gutters " align="center">
+                    <v-col cols="1" class=" ">
+                      <v-col class="pa-0 " cols="8" align="left">
+                        <v-icon class="" :size="iconSize"
+                          >mdi-phone</v-icon
+                        >
+                      </v-col>
+                    </v-col>
+                    <v-col cols="10" class="" align="left">
+                      <div class="text-lg-h6 text-caption pl-5 ">
+                        {{
+                          item.user.number.replace(
+                            /(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/,
+                            "$1 $2 $3 $4 $5"
+                          )
+                        }}
+                      </div>
+                    </v-col>
+                  </v-row>
+                </v-col>
+                <v-col cols="" class="">
+                  <v-row class="no-gutters " align="center">
+                    <v-col cols="1" class="">
+                      <v-col class="pa-0 " cols="8" align="left">
+                        <v-icon class="" :size="iconSize"
+                          >mdi-email-outline</v-icon
+                        >
+                      </v-col>
+                    </v-col>
+                    <v-col cols="10" class="">
+                      <div class="text-lg-h6 text-caption pl-5">
+                        {{ item.user.mail }}
+                      </div>
+                    </v-col>
+                  </v-row>
+                </v-col>
+              </v-row>
+            </v-container>
           </v-col>
           <v-col class="pa-1" cols="4" lg="4">
             <v-img
@@ -18,8 +87,8 @@
         </v-row>
       </v-card-text>
     </v-card>
-    <!--  -->
-    <v-card class="card" elevation="10">
+    <!-- old -->
+    <v-card class="card" elevation="10" v-if="false">
       <v-card-text>
         <v-row justify="center" class="pa-">
           <v-col class="" cols="8" lg="8">
@@ -59,7 +128,10 @@
               <div class="text-lg-subtitle-2 text-caption">
                 Proposé par {{ item.user.name }}
               </div>
-              <div v-if="item.startTime && item.endTime" class="text-lg-subtitle-2 text-caption">
+              <div
+                v-if="item.startTime && item.endTime"
+                class="text-lg-subtitle-2 text-caption"
+              >
                 {{ item.startTime }}h-{{ item.endTime }}h
               </div>
               <!-- <div class="card_by">Proposé par {{ item.user.name }}</div>
@@ -178,7 +250,7 @@ import HelperFunctions from "./../helperFunctions/HelperFunctions";
 
 export default {
   name: "PublicationCard",
-  props: ["item"],
+  props: ["item", "isVisitor"],
   mixins: [HelperFunctions],
   data() {
     return {

@@ -105,6 +105,7 @@ export default {
   created() {
     console.log("APP CREATED");
     document.title = "Troc D'Heures Raismois";
+    
   },
   async mounted() {
     console.log("APP MOUNTED");
@@ -113,7 +114,7 @@ export default {
     async openAuthDialog() {
       console.log("opening auth dialog")
       let route = this.$route.name;
-      if (route == "Feed" && !this.$store.getters.visitor) {
+      if (route == "Feed" && isConnected() != null) {
         console.log("sign out")
         await this.signOut();
         console.log("signed out")
@@ -144,9 +145,10 @@ export default {
         let user = await this.$store.dispatch("signIn", this.authData);
         console.log("auth user", user)
         this.authDialog = false;
-        if (this.$route.name != "Feed") {
-          this.$router.push("/feed");
-        }
+        // if (this.$route.name != "Feed") {
+        //   this.$router.push("/feed");
+        // }
+        this.$router.push("/feed");
       } catch (error) {
         console.log("App.vue.signIn.error", error);
         this.authError = this.authErrorMap[error.code];

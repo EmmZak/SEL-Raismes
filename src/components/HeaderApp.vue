@@ -78,7 +78,8 @@
 </template>
 
 <script>
-import {getAuth} from "firebase/auth";
+import { isConnected } from "./../store/firebaseService";
+
 export default {
   name: "HeaderApp",
   data() {
@@ -105,11 +106,7 @@ export default {
   },
   methods: {
     user() {
-      let user = getAuth().currentUser
-      console.log("firebase user", user)
-
-      let storeUser = this.$store.getters.actualUser;
-      console.log("store user", storeUser)
+      
     },
     // trigers event to parent component for auth dialog
     emitAuthEvent() {
@@ -129,6 +126,10 @@ export default {
     },
   },
   computed: {
+    isVisitor() {
+      //return this.$store.getters.visitor
+      return isConnected()==null
+    },
     signInOutButtonText() {
       return this.$store.getters.actualUser.id == null
         ? "Espace Personnel"

@@ -1,6 +1,7 @@
 <template>
   <!-- list  -->
   <v-container class="my-5 feed" fluid>
+    <!-- <v-btn @click="test()">user hcekc</v-btn> -->
     <!-- NOTIF  -->
     <v-dialog v-model="inDev" persistent max-width="700">
       <v-card>
@@ -75,7 +76,7 @@
             v-for="(item, i) in items"
             :key="i"
           >
-            <publication-card :item="item" />
+            <publication-card :item="item" :isVisitor="isVisitor" />
           </v-col>
         </v-row>
       </v-col>
@@ -133,10 +134,11 @@
 </template>
 
 <script>
-import { findPublications } from "./../store/firebaseService";
+//import { findPublications } from "./../store/firebaseService";
 import { mapActions } from "vuex";
 import PublicationCard from "./../components/PublicationCard.vue";
 import { sortOptions, categories } from "./../store/globals";
+// import { isConnected } from './../store/firebaseService'
 
 export default {
   name: "Feed",
@@ -146,7 +148,7 @@ export default {
       categories: categories,
       sortOptions: sortOptions,
       dialog: false,
-      inDev: true,
+      inDev: false,
       page: 1,
       townList: [],
       sort: "desc",
@@ -160,6 +162,9 @@ export default {
     PublicationCard,
   },
   methods: {
+    test() {
+      console.log("feed store visitor", this.isVisitor)
+    },
     ...mapActions(["fetchUser", "fetchPublications"]),
     toAdminPage() {
       this.$router.push("/admin");
@@ -215,6 +220,9 @@ export default {
       // return [...a, ...a, ...a, ...a, ...a, ...a, ...a, ...a, ...a, ...a];
       return a;
     },
+    isVisitor() {
+      return this.$store.getters.visitor
+    }
   },
   async mounted() {
     await this.loadItems();
