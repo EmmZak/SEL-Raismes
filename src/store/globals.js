@@ -38,7 +38,7 @@ const categories = [
   "Garde d'Animaux",
   "Aide en cuisine",
   "Aide au jardinage",
-  "Coup de main ménager",
+  "Ménagers",
   //"OTHER",
 ];
 

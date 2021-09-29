@@ -120,7 +120,7 @@
           </v-list-item>
         </v-list>
       </v-toolbar>
-    </v-navigation-drawer>
+    </v-navigation-drawer> 
     <!-- pagination
     <v-pagination
       v-if="this.items.length > 0"
@@ -148,7 +148,7 @@ export default {
       categories: categories,
       sortOptions: sortOptions,
       dialog: false,
-      inDev: false,
+      inDev: true,
       page: 1,
       townList: [],
       sort: "desc",

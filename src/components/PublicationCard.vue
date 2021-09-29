@@ -4,52 +4,51 @@
     <v-card v-if="true" class="card" elevation="10">
       <v-card-text class="">
         <v-row class="">
-          <v-col class="pa-2">
+          <!-- info main column -->
+          <v-col class="pa-2" cols="8">
             <v-container class="fill-height pa-0">
+              <!-- info main row -->
               <v-row class="no-gutters flex-column fill-height">
-                <v-col cols="" class="">
-                  <v-row class="no-gutters">
-                    <v-col cols="8" class=""
-                      ><div class="text-lg-h5 text-md-h5">
+                <v-col cols="" class="pt-0">
+                  <v-row class="no-gutters" align="center">
+                    <v-col cols="8" class="">
+                      <div class="card_categ_class">
                         {{ item.categ }}
-                      </div></v-col
-                    >
+                      </div>
+                    </v-col>
                     <v-col cols="4" class="" align="right">
-                      <div class="text-lg-h6">
+                      <div class="card_date_class">
                         {{ formatDDMMYYYY(item.date) }}
                       </div></v-col
                     >
                   </v-row>
                 </v-col>
+                <!-- by-hour col=12 -->
                 <v-col cols="" class="">
                   <v-row class="no-gutters">
                     <v-col cols="8" class="">
-                      <div class="text-lg-subtitle-2 text-caption">
+                      <div class="card_by_user_class">
                         Proposé par {{ item.user.name }}
-                      </div></v-col
-                    >
+                      </div>
+                    </v-col>
                     <v-col cols="4" class="" align="right">
                       <div
                         v-if="item.startTime && item.endTime"
-                        class="text-lg-subtitle-2 text-caption"
+                        class="card_hour_class"
                       >
                         {{ item.startTime }}h-{{ item.endTime }}h
-                      </div></v-col
-                    >
+                      </div>
+                    </v-col>
                   </v-row>
                 </v-col>
                 <v-col></v-col>
                 <v-col cols="" class="">
-                  <v-row class="no-gutters " align="center">
-                    <v-col cols="1" class=" ">
-                      <v-col class="pa-0 " cols="8" align="left">
-                        <v-icon class="" :size="iconSize"
-                          >mdi-phone</v-icon
-                        >
-                      </v-col>
+                  <v-row class="no-gutters" align="center">
+                    <v-col cols="1" class="">
+                      <v-icon class="" :size="iconSize">mdi-phone</v-icon>
                     </v-col>
                     <v-col cols="10" class="" align="left">
-                      <div class="text-lg-h6 text-caption pl-5 ">
+                      <div class="card_mail_number_class pl-5">
                         {{
                           item.user.number.replace(
                             /(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/,
@@ -61,16 +60,14 @@
                   </v-row>
                 </v-col>
                 <v-col cols="" class="">
-                  <v-row class="no-gutters " align="center">
+                  <v-row class="no-gutters" align="center">
                     <v-col cols="1" class="">
-                      <v-col class="pa-0 " cols="8" align="left">
-                        <v-icon class="" :size="iconSize"
-                          >mdi-email-outline</v-icon
-                        >
-                      </v-col>
+                      <v-icon class="" :size="iconSize"
+                        >mdi-email-outline</v-icon
+                      >
                     </v-col>
                     <v-col cols="10" class="">
-                      <div class="text-lg-h6 text-caption pl-5">
+                      <div class="card_mail_number_class pl-5">
                         {{ item.user.mail }}
                       </div>
                     </v-col>
@@ -78,161 +75,6 @@
                 </v-col>
               </v-row>
             </v-container>
-          </v-col>
-          <v-col class="pa-1" cols="4" lg="4">
-            <v-img
-              :src="require(`@/assets/${categToImage[item.categ]}-300.jpg`)"
-            ></v-img>
-          </v-col>
-        </v-row>
-      </v-card-text>
-    </v-card>
-    <!-- old -->
-    <v-card class="card" elevation="10" v-if="false">
-      <v-card-text>
-        <v-row justify="center" class="pa-">
-          <v-col class="" cols="8" lg="8">
-            <v-row
-              justify="space-between"
-              :class="{
-                'pa-3 pr-1': $vuetify.breakpoint.lg,
-                'pa-2 pt-1 pb-0': $vuetify.breakpoint.xs,
-              }"
-            >
-              <v-col ref="categ" class="pa-0" cols="8">
-                <div class="text-lg-h5 text-md-h5">
-                  {{ item.categ }}
-                </div>
-                <!-- <div class="card_categ_title ">
-                {{ item.categ }}
-              </div> -->
-              </v-col>
-              <v-col class="pa-0" align="right" cols="4">
-                <div class="text-lg-h6">
-                  {{ formatDDMMYYYY(item.date) }}
-                </div>
-                <!-- <div class="card_date">
-                {{ formatDDMMYYYY(item.date) }}
-              </div> -->
-              </v-col>
-            </v-row>
-            <!-- {{ categTitleSize }} -->
-            <!-- service by -->
-            <v-row
-              justify="space-between"
-              :class="{
-                'pa-3 pr-1 pt-0': $vuetify.breakpoint.lg,
-                'pa-2 pt-0': $vuetify.breakpoint.xs,
-              }"
-            >
-              <div class="text-lg-subtitle-2 text-caption">
-                Proposé par {{ item.user.name }}
-              </div>
-              <div
-                v-if="item.startTime && item.endTime"
-                class="text-lg-subtitle-2 text-caption"
-              >
-                {{ item.startTime }}h-{{ item.endTime }}h
-              </div>
-              <!-- <div class="card_by">Proposé par {{ item.user.name }}</div>
-            <div class="card_by">{{ item.startTime }}h-{{ item.endTime }}h</div> -->
-            </v-row>
-            <!-- user info row/col -->
-            <v-row
-              :class="{
-                'pt-5': $vuetify.breakpoint.lg,
-                'pa-0 pt-2': $vuetify.breakpoint.xs,
-              }"
-            >
-              <v-col class="pa-2 pl-0 text-center" cols="2">
-                <v-icon class="text-lg-h4" :size="iconSize">mdi-phone</v-icon>
-              </v-col>
-              <!-- <v-col class="pa-2 pl-0 text-center" cols="2">
-              <v-icon class="mail_number_icon" :size="iconSize"
-                >mdi-phone</v-icon
-              >
-            </v-col> -->
-              <v-col class="pl-0" cols="10">
-                <div class="text-lg-h6 text-caption pl-0">
-                  <!-- {{ new Date(item.createdOn.seconds*1000) }} -->
-                  {{
-                    item.user.number.replace(
-                      /(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/,
-                      "$1 $2 $3 $4 $5"
-                    )
-                  }}
-                </div>
-                <!-- <div class="mail_number_text pl-0">
-                {{
-                  item.user.number.replace(
-                    /(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/,
-                    "$1 $2 $3 $4 $5"
-                  )
-                }}
-              </div> -->
-              </v-col>
-              <v-col class="pa-2 pl-0 text-center" cols="2">
-                <v-icon class="text-lg-h4" :size="iconSize"
-                  >mdi-email-outline</v-icon
-                >
-                <!-- <v-icon class="mail_number_icon" :size="iconSize"
-                >mdi-email-outline</v-icon
-              > -->
-              </v-col>
-              <v-col class="pl-0" cols="10">
-                <div class="text-lg-h6 text-caption pl-0">
-                  {{ item.user.mail }}
-                </div>
-                <!-- <div class="mail_number_text pl-0">
-                {{ item.user.mail }}
-              </div> -->
-              </v-col>
-            </v-row>
-
-            <!-- user info
-          <v-row
-            :class="{
-              'pt-3': $vuetify.breakpoint.lg,
-              'pa-0 pt-2': $vuetify.breakpoint.xs,
-            }"
-          >
-            <v-col
-              lg="12"
-              cols="12"
-              :class="{
-                'pt-3 d-flex align-center': $vuetify.breakpoint.lg,
-                'pt-1 pb-1 pl-2 d-flex align-center': $vuetify.breakpoint.xs,
-              }"
-            >
-              <v-icon class="mail_number_icon" :size="iconSize"
-                >mdi-phone</v-icon
-              >
-              <div class="mail_number_text pl-3">
-                {{
-                  item.user.number.replace(
-                    /(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/,
-                    "$1 $2 $3 $4 $5"
-                  )
-                }}
-              </div>
-            </v-col>
-            <v-col
-              lg="12"
-              cols="12"
-              :class="{
-                'pt-1 d-flex align-center': $vuetify.breakpoint.lg,
-                'pt-1 pb-1 pl-2 d-flex align-center': $vuetify.breakpoint.xs,
-              }"
-            >
-              <v-icon class="mail_number_icon" :size="iconSize"
-                >mdi-email-outline</v-icon
-              >
-              <div class="mail_number_text pl-3">
-                {{ item.user.mail }}
-              </div>
-            </v-col>
-          </v-row> -->
-            <!-- user info -->
           </v-col>
           <v-col class="pa-1" cols="4" lg="4">
             <v-img
@@ -271,9 +113,42 @@ export default {
     close() {
       this.dialog = false;
     },
+    // item -> {className, coef}
+    setFont(item) {
+      let elements = document.getElementsByClassName(item.className);
+      for (var i = 0; i < elements.length; i++) {
+        var relFontsize = elements[i].offsetWidth * item.coef;
+        elements[i].style.fontSize = relFontsize + "px";
+        //elements[i].style.color = color;
+      }
+    },
+    fitText() {
+      console.log("fit text trigger");
+      const class_coefs = [
+        { className: "card_categ_class", coef: 0.115 },
+        { className: "card_date_class", coef: 0.15 },
+        { className: "card_by_user_class", coef: 0.075 },
+        { className: "card_hour_class", coef: 0.13 },
+        { className: "card_mail_number_class", coef: 0.06 },
+      ];
+      class_coefs.forEach((item) => {
+        this.setFont(item);
+      });
+    },
+    test() {
+      console.log("resize trigger");
+    },
+  },
+  created() {
+    // window.addEventListener("load", this.fitText());
+    // window.addEventListener("resize", this.fitText);
+  },
+  destroyed() {
+    window.removeEventListener("load", this.fitText);
   },
   mounted() {
-    //console.log("MOUNTED")
+    window.addEventListener("load", this.fitText());
+    window.addEventListener("resize", this.fitText);
   },
   computed: {
     categTitleSize() {
@@ -326,9 +201,7 @@ export default {
   /* font-size: 4.5vw; */
   /* font-size: 1.5vw;  */
   /* font-size: 1.5vmin  */
-  font-size: 1.5vmax;
-
-  word-wrap: break-word;
+  font-size: 1.7vmax;
 }
 
 .card_date {
