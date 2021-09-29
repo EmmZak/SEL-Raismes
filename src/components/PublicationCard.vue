@@ -192,43 +192,33 @@ export default {
   border-radius: 10px;
 }
 
-.card_categ_title {
-  /* font-family: "Open Sans", sans-serif; */
-  color: #404040;
-
-  /* font-size: 26px; */
-  /* font-size: 16px; */
-  /* font-size: 4.5vw; */
-  /* font-size: 1.5vw;  */
-  /* font-size: 1.5vmin  */
-  font-size: 1.7vmax;
-}
-
-.card_date {
+.card_categ_class {
   font-family: "Open Sans", sans-serif;
-  /* font-size: 20px; */
-  /* font-size: 12px; */
-  font-size: 1vmax;
+  color: #202020;
 }
 
-.card_by {
+.card_date_class {
   font-family: "Open Sans", sans-serif;
-  /* font-size: 14px; */
-  /* font-size: 10px; */
-  font-size: 1vmax;
-  color: #404040;
+  color: #606060;
 }
 
-.mail_number_text {
-  /* font-size: 17px; */
-  /* font-size: 13px; */
-  /* font-size: 1vmax;  */
-  font-size: 1vmax;
-  color: #404040;
+.card_by_user_class {
+  font-family: "Open Sans", sans-serif;
+  color: #606060;
 }
 
-.mail_number_icon {
-  font-size: 1vmax;
-  color: #404040;
+.card_hour_class {
+  font-family: "Open Sans", sans-serif;
+  color: #606060;
+}
+
+.card_mail_number_class {
+  font-family: "Open Sans", sans-serif;
+  color: #202020;
+}
+
+.card_icon_class {
+  font-family: "Open Sans", sans-serif;
+  color: #202020;
 }
 </style>

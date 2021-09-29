@@ -57,7 +57,7 @@
 
     <v-row justify="center">
       <v-col v-if="!done" lg="11">
-        <div class="text-lg-h4">
+        <div class="text-lg-h4 text-md-h5 text-sm-h6">
           <div class="title-font pb-10 text-left">
             {{ items.length }} offre(s) disponible(s) pour votre recherche
           </div>
