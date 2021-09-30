@@ -166,7 +166,7 @@ export default {
         case "lg":
           return 36;
         case "xl":
-          return 200;
+          return 40;
       }
       return null;
     },
