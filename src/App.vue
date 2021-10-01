@@ -8,10 +8,11 @@
     <v-dialog v-model="authDialog" max-width="500px">
       <v-card>
         <v-card-title class="text-lg-h3 text-md-h3 text-sm-h3 text-h5">
-          <div class="title-font pa-2">Identification</div>
+          <div class="title-font pa-0">Identification</div>
         </v-card-title>
 
         <v-card-text>
+          <!-- form -->
           <v-form ref="loginForm">
             <v-row class="">
               <v-col class="">
@@ -34,14 +35,24 @@
               </v-col>
             </v-row>
             <!-- error -->
-            <v-row v-if="authError != ''" class="">
-              <v-col align="center">
-                <div class="title-font red--text text-h6">{{ authError }}</div>
+            <v-row v-if="authError != ''" class="pa-2">
+              <v-col align="center" class="pa-2 red lighten-4 rounded">
+                <div class="text-h6 red--text font-weight-bold">
+                  <div class="title-font">{{ authError }}</div>
+                </div>
               </v-col>
             </v-row>
             <!-- buttons -->
             <v-row justify="space-around" class="">
-              <v-col class="" align="center" xl="6" lg="6" md="6" sm="6" cols="12">
+              <v-col
+                class=""
+                align="center"
+                xl="6"
+                lg="6"
+                md="6"
+                sm="6"
+                cols="12"
+              >
                 <v-btn
                   class="success"
                   @click="signIn"
@@ -52,8 +63,21 @@
                   Se Connecter
                 </v-btn>
               </v-col>
-              <v-col class="" align="center" xl="6" lg="6" md="6" sm="6" cols="12">
-                <v-btn class="primary" @click="createAccountRequest" x-large block>
+              <v-col
+                class=""
+                align="center"
+                xl="6"
+                lg="6"
+                md="6"
+                sm="6"
+                cols="12"
+              >
+                <v-btn
+                  class="primary"
+                  @click="createAccountRequest"
+                  x-large
+                  block
+                >
                   Pas de compte ?
                 </v-btn></v-col
               >
