@@ -139,10 +139,6 @@ export default {
       console.log("resize trigger");
     },
   },
-  created() {
-    // window.addEventListener("load", this.fitText());
-    // window.addEventListener("resize", this.fitText);
-  },
   destroyed() {
     window.removeEventListener("load", this.fitText);
   },

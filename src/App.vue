@@ -13,8 +13,8 @@
 
         <v-card-text>
           <v-form ref="loginForm">
-            <v-row>
-              <v-col>
+            <v-row class="">
+              <v-col class="">
                 <v-text-field
                   v-model="authData.mail"
                   :rules="emailRules"
@@ -33,25 +33,35 @@
                 ></v-text-field>
               </v-col>
             </v-row>
-            <v-row justify="space-around">
-              <v-btn
-                class="success"
-                @click="signIn"
-                :loading="authLoading"
-                x-large
-              >
-                Se Connecter
-              </v-btn>
-              <v-btn class="primary" @click="createAccountRequest" x-large>
-                Pas de compte ?
-              </v-btn>
+            <!-- error -->
+            <v-row v-if="authError != ''" class="">
+              <v-col align="center">
+                <div class="title-font red--text text-h6">{{ authError }}</div>
+              </v-col>
             </v-row>
-            <v-row class="pa-5" justify="center">
-              <v-col>
-                <v-btn class="warning" x-large @click="visit">
-                  Continuer en tant que visiteur
+            <!-- buttons -->
+            <v-row justify="space-around" class="">
+              <v-col class="" align="center" xl="6" lg="6" md="6" sm="6" cols="12">
+                <v-btn
+                  class="success"
+                  @click="signIn"
+                  :loading="authLoading"
+                  x-large
+                  block
+                >
+                  Se Connecter
                 </v-btn>
               </v-col>
+              <v-col class="" align="center" xl="6" lg="6" md="6" sm="6" cols="12">
+                <v-btn class="primary" @click="createAccountRequest" x-large block>
+                  Pas de compte ?
+                </v-btn></v-col
+              >
+            </v-row>
+            <v-row class="pa-2" justify="center">
+              <v-btn class="warning" x-large @click="visit" block>
+                Visiter l'espace
+              </v-btn>
             </v-row>
           </v-form>
         </v-card-text>
@@ -73,8 +83,8 @@
 //import { getAuth } from "firebase/auth";
 import HeaderApp from "./components/HeaderApp.vue";
 import Footer from "./components/Footer.vue";
-import { emailRules, passwordRules } from './store/globals'
-import { isConnected } from './store/firebaseService'
+import { emailRules, passwordRules } from "./store/globals";
+import { isConnected } from "./store/firebaseService";
 
 export default {
   name: "App",
@@ -100,27 +110,26 @@ export default {
     },
     // form
     emailRules: emailRules,
-    passwordRules
+    passwordRules,
   }),
   created() {
     console.log("APP CREATED");
     document.title = "Troc D'Heures Raismois";
-    
   },
   async mounted() {
     console.log("APP MOUNTED");
   },
   methods: {
     async openAuthDialog() {
-      console.log("opening auth dialog")
+      console.log("opening auth dialog");
       let route = this.$route.name;
       if (route == "Feed" && isConnected() != null) {
-        console.log("sign out")
+        console.log("sign out");
         await this.signOut();
-        console.log("signed out")
+        console.log("signed out");
         return;
       }
-      console.log("checking if connected")
+      console.log("checking if connected");
       let authUser = isConnected();
       console.log("isConnected authUser", authUser);
       if (authUser) {
@@ -136,14 +145,14 @@ export default {
     },
     async signIn() {
       if (!this.$refs.loginForm.validate()) {
-        return
+        return;
       }
       console.log("APPvue before signIN ");
       this.authLoading = true;
 
       try {
         let user = await this.$store.dispatch("signIn", this.authData);
-        console.log("auth user", user)
+        console.log("auth user", user);
         this.authDialog = false;
         // if (this.$route.name != "Feed") {
         //   this.$router.push("/feed");
