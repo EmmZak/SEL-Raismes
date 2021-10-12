@@ -6,4 +6,12 @@ git add .
 git commit -m "'$*'"
 git push 
 
-/bin/bash deploy
+rm -rf dist
+npm run build
+
+cp .firebase dist
+cp .firebaserc dist
+cp firebase.json dist
+
+cd dist
+firebase deploy
