@@ -6,21 +6,29 @@
       </v-col>
       <v-col cols="12" lg="4" md="12" class="pl-0">
         <v-card flat class="">
-          <v-card-title class="text-xl-h3 text-lg-h3 text-md-h3 text-sm-h3 text-h5">
+          <v-card-title
+            class="text-xl-h3 text-lg-h3 text-md-h3 text-sm-h3 text-h5"
+          >
             <div class="title-font font-weight-bold">
               Troc D'Heures Raismois
             </div>
           </v-card-title>
 
-          <v-card-text :class="{ 'pt-10': $vuetify.breakpoint.lg }">
+          <v-card-text :class="{ 'pt-2': $vuetify.breakpoint.lg }">
             <v-divider class="pb-5"></v-divider>
-            <div class="text-lg-h5 text-md-h5 text-sm-h5 text-body-2">
-              Le Troc d'heures raismois est un Système d’Échanges Local (SEL)
-              qui a pour objet de créer du lien social et de promouvoir des
-              solidarités entre les individus grâce à des échanges multilatéraux
-              de services (compétences, temps, savoirs...) et de biens,
-              comptabilisés au moyen d'une unité d'échange symbolique, non
-              convertible en Euros, appelée « Ramis ».
+            <div class="text-lg-subtitle-1 text-md-h5 text-sm-h5 text-body-2">
+              Le Troc d'heures raismois est un
+              <strong>Système d’Échanges Local (SEL)</strong> qui a pour objet
+              de créer du lien social et de promouvoir des solidarités entre les
+              individus grâce à des échanges multilatéraux de services
+              (compétences, temps, savoirs...) et de biens, comptabilisés au
+              moyen d'une unité d'échange symbolique, non convertible en Euros,
+              appelée <strong>« Ramis »</strong>. <br />
+              Les adhérents sont appelés <strong>« selistes »</strong>. <br />
+              Les services sont ponctuels et de courte durée. Exemple : j’aide
+              un seliste à faire son jardin pendant une heure, je reçois
+              <strong>60 Ramis</strong> que je donnerai à un autre seliste pour
+              qu’il m’aide à remplir mes papiers.
             </div>
           </v-card-text>
           <v-divider></v-divider>
@@ -35,24 +43,48 @@
           <div class="title-font white--text">Comment ça fonctionne ?</div>
         </div>
       </v-col>
-      <v-col
-        v-for="(item, i) in mainPageIconInfos"
-        :key="i"
-        cols="12"
-        md="3"
-        sm="3"
-        xs="12"
-        class="pt-5"
-      >
+      <v-col cols="12" md="3" sm="3" xs="12" class="pt-5">
         <v-card flat class="" color="transparent">
           <v-card-title class="justify-center">
-            <v-icon size="100" :class="item.iconClass"></v-icon>
+            <v-icon size="100" class="fas fa-user-circle"></v-icon>
           </v-card-title>
           <v-card-title class="justify-center text-h5">
-            {{ item.title }}
+            1. Inscrivez-vous !
           </v-card-title>
           <v-card-text class="text-center text-body-1">
-            {{ item.text }}
+            Coût d'adhésion <strong>5€/an</strong>. <br />
+            Ouvert à tous (Raismois + extérieurs). <br />
+            Lors d’une permanence (avec originaux : pièce d’identité et contrat
+            Assurance Responsabilité Civile).
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="3" sm="3" xs="12" class="pt-5">
+        <v-card flat class="" color="transparent">
+          <v-card-title class="justify-center">
+            <v-icon size="100" class="fas fa-hand-holding-usd"></v-icon>
+          </v-card-title>
+          <v-card-title class="justify-center text-h5">
+            2. Proposez vos services/biens
+          </v-card-title>
+          <v-card-text class="text-center text-body-1">
+            Services individuels/collectifs à rendre/recevoir. <br />
+            <strong>1h</strong> d’aide apportée = <strong>60 Ramis</strong> reçus. <br />
+            Une feuille d’échanges à remplir pour mise à jour du compte de
+            Ramis.
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="3" sm="3" xs="12" class="pt-5">
+        <v-card flat class="" color="transparent">
+          <v-card-title class="justify-center">
+            <v-icon size="100" class="fas fa-handshake"></v-icon>
+          </v-card-title>
+          <v-card-title class="justify-center text-h5">
+            3. Recevez un autre service/bien
+          </v-card-title>
+          <v-card-text class="text-center text-body-1">
+            Avec vos Ramis reçus, vous obtenez des services ou des biens.
           </v-card-text>
         </v-card>
       </v-col>
@@ -66,15 +98,11 @@
       </v-col>
       <v-col md="8">
         <v-timeline width="50%">
-          <v-timeline-item
-            v-for="(event, i) in events"
-            :key="i"
-            fill-dot
-          >
+          <v-timeline-item v-for="(event, i) in events" :key="i" fill-dot>
             <v-card :color="timelineColors[i % 3]" dark>
               <v-card-title class="title">{{ event.type }}</v-card-title>
               <v-card-text class="white text--primary pa-5">
-                <p>
+                <p style="white-space: pre-line;">
                   {{ event.text }}
                 </p>
               </v-card-text>
@@ -144,19 +172,19 @@ export default {
           iconPath: "account",
           iconClass: "fas fa-user-circle",
           title: "1. Inscrivez-vous !",
-          text: "Coût d'adhésion 5 euros par an ouvert à tous les raismois.",
+          text: "Coût d'adhésion 5€/an. Ouvert à tous (Raismois + extérieurs). Lors d’une permanence (avec originaux : pièce d’identité et contrat Assurance Responsabilité Civile).",
         },
         {
           iconPath: "handholding",
           iconClass: "fas fa-hand-holding-usd",
-          title: "2. Proposez vos services",
-          text: "1h de travail vous apporte 60 RAMIS. Les services sont de nature occasionelle.",
+          title: "2. Proposez vos services/biens",
+          text: "Services individuels ou collectifs que vous aimeriez rendre ou recevoir => 1h d’aide apportée = 60 Ramis reçus. Des biens à prêter ou à donner vous évaluez leur valeur en Ramis. Une feuille d’échanges à remplir pour mise à jour du compte de Ramis.",
         },
         {
           iconPath: "handshake",
           iconClass: "fas fa-handshake",
-          title: "3. Recevez un autre service",
-          text: "Vous pouvez échanger les Ramis obtenus contre des services.",
+          title: "3. Recevez un autre service/bien",
+          text: "Avec vos Ramis reçus, vous obtenez des services ou des biens.",
         },
       ],
       events: [

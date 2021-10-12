@@ -34,13 +34,29 @@ const towns = [
  * Categories
  */
 const categories = [
-  //"Tout",
-  "Garde d'Animaux",
-  "Aide en cuisine",
-  "Aide au jardinage",
-  "Ménagers",
-  //"OTHER",
+  "Animaux",
+  "Bricolage, petits travaux, tâches ménagères",
+  "Cuisine",
+  "Décoration, Do It Yourself (DIY), Couture",
+  "Informatique et nouvelles technologies",
+  "Jardinage",
+  "Loisirs, jeux, sport",
+  "Mobilité",
+  "Savoirs, connaissances",
+  "Social (garde d'enfant...)"
 ];
+
+const loanCategories = [
+	"Prết/Don Biens culturels (livres, CD, DVD, magazine...)",
+	"Prết/Don Électroménager/Informatique",
+	"Prết/Don Jeux, Loisirs",
+	"Prết/Don Meubles",
+	"Prết/Don Outillage",
+	"Prết/Don Petite décoration",
+	"Prết/Don Textile",
+	"Prết/Don Plantes/Potager",
+	"Prết/Don Autres biens",
+  ];
 
 /**
  * Sort options
@@ -64,5 +80,6 @@ export {
   // lists
   towns,
   categories,
+  loanCategories,
   sortOptions,
 };

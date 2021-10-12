@@ -31,14 +31,6 @@
                         Proposé par {{ item.user.name }}
                       </div>
                     </v-col>
-                    <v-col cols="4" class="" align="right">
-                      <div
-                        v-if="item.startTime && item.endTime"
-                        class="card_hour_class"
-                      >
-                        {{ item.startTime }}h-{{ item.endTime }}h
-                      </div>
-                    </v-col>
                   </v-row>
                 </v-col>
                 <v-col></v-col>
@@ -78,7 +70,7 @@
           </v-col>
           <v-col class="pa-1" cols="4" lg="4">
             <v-img
-              :src="require(`@/assets/${categToImage[item.categ]}-300.jpg`)"
+              :src="require(`@/assets/images/categories/${categToImage[item.categ]}.jpg`)"
             ></v-img>
           </v-col>
         </v-row>
@@ -97,10 +89,25 @@ export default {
   data() {
     return {
       categToImage: {
-        "Garde d'Animaux": "Animaux",
-        "Aide en cuisine": "Cuisine",
-        "Aide au jardinage": "Jardinage",
-        "Coup de main ménager": "Ménagers",
+        Animaux: "animal",
+        "Bricolage, petits travaux, tâches ménagères": "home",
+        Cuisine: "kitchen",
+        "Décoration, Do It Yourself (DIY), Couture": "diy",
+        "Informatique et nouvelles technologies": "computer",
+        Jardinage: "garden",
+        "Loisirs, jeux, sport": "hobby",
+        Mobilité: "transport",
+        "Savoirs, connaissances": "teaching",
+        "Social (garde d'enfant...)": "social",
+        "Prết / Don Biens culturels (livres, CD, DVD, magazine...)": "cultural",
+        "Prết / Don Électroménager / Informatique": "hardware",
+        "Prết / Don Jeux, Loisirs": "game",
+        "Prết / Don Meubles": "furniture",
+        "Prết / Don Outillage": "tools",
+        "Prết / Don Petite décoration": "deco",
+        "Prết / Don Textile": "textil",
+        "Prết / Don Plantes / Potager": "plants",
+        "Prết / Don Autres biens": "other",
       },
       //avatarSize: 0,
       dialog: false,
