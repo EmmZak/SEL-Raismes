@@ -1,44 +1,53 @@
 <template>
-  <v-container class="pt-16" fluid>
+  <v-container class="blue" fluid>
     <v-row justify="center" class="">
       <!-- info section -->
-      <v-col cols="12" xs="6" md="4">
-        <v-card elevation="0" class="pa-5">
+      <v-col cols="12" lg="5" xs="6" md="6" class="red">
+        <v-card elevation="0" class="pa-2">
           <v-card-title
-            class="d-none d-sm-flex text-lg-h3 text-md-h3 text-sm-h3 text-h5"
+            :class="{ 'red lighten-1': $vuetify.breakpoint.xs }"
+            class="d-flex  text-lg-h4 text-md-h3 text-sm-h3 text-body-2"
           >
-            <div class="title-font font-weight-bold">Contactez-nous</div>
+            <div
+              :class="{ 'white--text': $vuetify.breakpoint.xs }"
+              class="title-font font-weight-bold"
+            >
+              Venez nous voir lors d'une permanence
+            </div>
+          </v-card-title>
+          <v-card-title class="text-h5">
+            Rez-de-chaussée Mairie Annexe De Sabatier <br />
+            Rue Léopold Dussart <br />
+            59590 Raismes
           </v-card-title>
           <v-card-title
+		  	:class="{ 'blue': $vuetify.breakpoint.xs }"
             class="
-              d-flex d-sm-none
-              blue
-              text-lg-h3 text-md-h3 text-sm-h3 text-h5
+              d-flex 
+              text-lg-h3 text-md-h3 text-sm-h3 text-h6
             "
           >
-            <div class="title-font font-weight-bold white--text">
+            <div :class="{ 'white--text': $vuetify.breakpoint.xs }" class="title-font font-weight-bold text-center">
               Contactez-nous
             </div>
           </v-card-title>
           <br />
-          <v-card-title class="text-h5">
-            Mairie Annexe De Sabatier <br />
-            Rue Léopold Dussart <br />
-            59590 <br />
-            Raismes
-          </v-card-title>
+
           <v-card-title class="text-h5 blue--text text-decoration-underline">
             trocdheuresraismois@gmail.com
           </v-card-title>
-          <v-card-title class="text-h5"> 03-27-25-54-89 </v-card-title>
+          <v-card-title class="text-h5">
+            03-27-25-54-89 (Lors d'une permanence ou bien laissez-nous un
+            message)</v-card-title
+          >
         </v-card>
       </v-col>
 
       <!--  -->
-      <v-col cols="12" xs="12" md="5">
-        <v-card v-if="!sentSucceess" elevation="0" class="pa-5 red-xs-only">
+      <v-col cols="12" xs="12" md="6">
+        <v-card v-if="!sentSucceess" elevation="0" class="pa-2 red-xs-only">
           <v-card-title
-            class="d-none d-sm-flex text-lg-h3 text-md-h3 text-sm-h3 text-h5"
+            class="d-none d-sm-flex text-lg-h3 text-md-h3 text-sm-h3 text-h6"
           >
             <div class="title-font font-weight-bold">
               Envoyez-nous un message
@@ -48,7 +57,7 @@
             class="
               d-flex d-sm-none
               green
-              text-lg-h3 text-md-h3 text-sm-h3 text-h5
+              text-lg-h3 text-md-h3 text-sm-h3 text-h6
             "
           >
             <div class="title-font font-weight-bold white--text">
@@ -102,10 +111,17 @@
                 <v-col cols="12" lg="6">
                   <v-text-field
                     v-model="number"
-                    :rules="numberRules"
                     label="Numéro"
                     prepend-icon="mdi-phone"
                   ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col>
+                  <v-file-input
+                    v-model="file"
+                    label="Joindre un fichier"
+                  ></v-file-input>
                 </v-col>
               </v-row>
               <v-row>
@@ -144,10 +160,15 @@ export default {
       sentSucceess: false,
       valid: false,
       subjects: [
+        "Proposition / Suppression d’échange de Services / Biens",
+        "Modification de coordonnées",
+        "Envoi mensuel de ma feuille d’échange",
+        "Autre",
+        /*
         "Création compte",
         "Renseignements",
         "Annonce",
-        "Demande de service",
+        "Demande de service", */
       ],
       AWS_LAMBDA_URL:
         "https://a5qvtjd4al.execute-api.us-east-2.amazonaws.com/default/pythonMail",
@@ -168,6 +189,7 @@ export default {
         (v) => v.length == 10 || "Le numéro n'est pas correct",
         (v) => !isNaN(v) || "Seuls les chiffres sont autorisés",
       ],
+      file: null,
       message: "",
       messageRules: [(v) => v.length < 100 || "Le message est très long"],
       headers: {
