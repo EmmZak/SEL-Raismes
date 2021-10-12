@@ -1,8 +1,8 @@
 <template>
-  <v-container class="blue" fluid>
+  <v-container class="" fluid>
     <v-row justify="center" class="">
       <!-- info section -->
-      <v-col cols="12" lg="5" xs="6" md="6" class="red">
+      <v-col cols="12" lg="5" xs="6" md="6" class="">
         <v-card elevation="0" class="pa-2">
           <v-card-title
             :class="{ 'red lighten-1': $vuetify.breakpoint.xs }"
@@ -21,7 +21,7 @@
             59590 Raismes
           </v-card-title>
           <v-card-title
-		  	:class="{ 'blue': $vuetify.breakpoint.xs }"
+		  	:class="{ '': $vuetify.breakpoint.xs }"
             class="
               d-flex 
               text-lg-h3 text-md-h3 text-sm-h3 text-h6

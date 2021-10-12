@@ -1,10 +1,5 @@
 #!/bin/bash
 
-export NVM_DIR=$HOME/.nvm;
-source $NVM_DIR/nvm.sh;
-
-nvm use 14
-
 rm -rf dist
 npm run build
 
@@ -14,5 +9,3 @@ cp firebase.json dist
 
 cd dist
 firebase deploy
-
-google-chrome https://sel-raismes.web.app/
