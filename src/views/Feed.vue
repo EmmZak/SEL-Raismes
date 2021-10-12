@@ -76,7 +76,7 @@
             v-for="(item, i) in items"
             :key="i"
           >
-            <publication-card :item="item" :isVisitor="isVisitor" />
+            <publication-card :item="item" :visit="visit" />
           </v-col>
         </v-row>
       </v-col>
@@ -120,7 +120,7 @@
           </v-list-item>
         </v-list>
       </v-toolbar>
-    </v-navigation-drawer> 
+    </v-navigation-drawer>
     <!-- pagination
     <v-pagination
       v-if="this.items.length > 0"
@@ -138,13 +138,14 @@
 import { mapActions } from "vuex";
 import PublicationCard from "./../components/PublicationCard.vue";
 import { sortOptions, categories } from "./../store/globals";
-// import { isConnected } from './../store/firebaseService'
+import { isConnected } from "./../store/firebaseService";
 
 export default {
   name: "Feed",
 
   data() {
     return {
+      visit: false,
       categories: categories,
       sortOptions: sortOptions,
       dialog: false,
@@ -163,7 +164,7 @@ export default {
   },
   methods: {
     test() {
-      console.log("feed store visitor", this.isVisitor)
+      console.log("feed store visitor", this.isVisitor);
     },
     ...mapActions(["fetchUser", "fetchPublications"]),
     toAdminPage() {
@@ -221,10 +222,15 @@ export default {
       return a;
     },
     isVisitor() {
-      return this.$store.getters.visitor
-    }
+      return this.$store.getters.visitor;
+    },
   },
   async mounted() {
+    let user = isConnected();
+    console.log("feeed.user ", user);
+    if (user == null) {
+		this.visit = true
+    }
     await this.loadItems();
     // set parameters from url
     /*
@@ -281,29 +287,4 @@ export default {
   height: 40px;
   font-size: 20pt;
 }
-/* 
-.publication_card {
-  max-width: 200px;
-}
-
-.categ_image {
-  max-height: 150px;
-  max-width: 300px;
-}
-
-.card-title {
-  font-size: 1em;
-}
-
-.card-cost {
-  font-size: 1em;
-}
-
-.card-slots-text {
-  font-size: 1em;
-}
-
-.card-user-name {
-  font-size: 1em;
-} */
 </style>

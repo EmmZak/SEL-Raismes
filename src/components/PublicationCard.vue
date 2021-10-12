@@ -34,7 +34,10 @@
                   </v-row>
                 </v-col>
                 <v-col></v-col>
-                <v-col cols="" class="">
+                <v-col
+                  cols=""
+                  :class="{ 'visit_blur': visit }"
+                >
                   <v-row class="no-gutters" align="center">
                     <v-col cols="1" class="">
                       <v-icon class="" :size="iconSize">mdi-phone</v-icon>
@@ -51,7 +54,7 @@
                     </v-col>
                   </v-row>
                 </v-col>
-                <v-col cols="" class="">
+                <v-col cols="" :class="{ 'visit_blur': visit }">
                   <v-row class="no-gutters" align="center">
                     <v-col cols="1" class="">
                       <v-icon class="" :size="iconSize"
@@ -70,7 +73,11 @@
           </v-col>
           <v-col class="pa-1" cols="4" lg="4">
             <v-img
-              :src="require(`@/assets/images/categories/${categToImage[item.categ]}.jpg`)"
+              :src="
+                require(`@/assets/images/categories/${
+                  categToImage[item.categ]
+                }.jpg`)
+              "
             ></v-img>
           </v-col>
         </v-row>
@@ -84,7 +91,7 @@ import HelperFunctions from "./../helperFunctions/HelperFunctions";
 
 export default {
   name: "PublicationCard",
-  props: ["item", "isVisitor"],
+  props: ["item", "visit"],
   mixins: [HelperFunctions],
   data() {
     return {
@@ -223,5 +230,10 @@ export default {
 .card_icon_class {
   font-family: "Open Sans", sans-serif;
   color: #202020;
+}
+
+/* visit blur */
+.visit_blur {
+  filter: blur(4px);
 }
 </style>
