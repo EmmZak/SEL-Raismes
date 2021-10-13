@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- test -->
+	<!-- actual card -->
     <v-card v-if="true" class="card" elevation="10">
       <v-card-text class="">
         <v-row class="">
@@ -18,7 +18,9 @@
                     </v-col>
                     <v-col cols="4" class="" align="right">
                       <div class="card_date_class">
-                        {{ formatDDMMYYYY(item.date) }}
+                        {{
+                          item.createdOn.toDate().toLocaleString().split(",")[0]
+                        }}
                       </div></v-col
                     >
                   </v-row>
@@ -34,10 +36,7 @@
                   </v-row>
                 </v-col>
                 <v-col></v-col>
-                <v-col
-                  cols=""
-                  :class="{ 'visit_blur': visit }"
-                >
+                <v-col cols="" :class="{ visit_blur: visit }">
                   <v-row class="no-gutters" align="center">
                     <v-col cols="1" class="">
                       <v-icon class="" :size="iconSize">mdi-phone</v-icon>
@@ -54,7 +53,7 @@
                     </v-col>
                   </v-row>
                 </v-col>
-                <v-col cols="" :class="{ 'visit_blur': visit }">
+                <v-col cols="" :class="{ visit_blur: visit }">
                   <v-row class="no-gutters" align="center">
                     <v-col cols="1" class="">
                       <v-icon class="" :size="iconSize"
@@ -76,7 +75,7 @@
               :src="
                 require(`@/assets/images/categories/${
                   categToImage[item.categ]
-                }.jpg`)
+                }`)
               "
             ></v-img>
           </v-col>
@@ -96,16 +95,16 @@ export default {
   data() {
     return {
       categToImage: {
-        Animaux: "animal",
-        "Bricolage, petits travaux, tâches ménagères": "home",
-        Cuisine: "kitchen",
-        "Décoration, Do It Yourself (DIY), Couture": "diy",
-        "Informatique et nouvelles technologies": "computer",
-        Jardinage: "garden",
-        "Loisirs, jeux, sport": "hobby",
-        Mobilité: "transport",
-        "Savoirs, connaissances": "teaching",
-        "Social (garde d'enfant...)": "social",
+        Animaux: "animal.jpg",
+        "Bricolage, travaux, tâches ménagères": "home.jpg",
+        Cuisine: "kitchen.jpg",
+        "Décoration, DIY, Couture": "diy.jpeg",
+        Informatique: "computer.jpeg",
+        Jardinage: "garden.jpg",
+        "Loisirs, jeux, sport": "hobby.png",
+        Mobilité: "transport.jpeg",
+        "Savoirs, connaissances": "teaching.jpeg",
+        "Social (garde d'enfant...)": "social.jpeg",
         "Prết / Don Biens culturels (livres, CD, DVD, magazine...)": "cultural",
         "Prết / Don Électroménager / Informatique": "hardware",
         "Prết / Don Jeux, Loisirs": "game",
@@ -234,6 +233,6 @@ export default {
 
 /* visit blur */
 .visit_blur {
-  filter: blur(4px);
+  /* filter: blur(4px); */
 }
 </style>

@@ -35,10 +35,10 @@ const towns = [
  */
 const categories = [
   "Animaux",
-  "Bricolage, petits travaux, tâches ménagères",
+  "Bricolage, travaux, tâches ménagères",
   "Cuisine",
-  "Décoration, Do It Yourself (DIY), Couture",
-  "Informatique et nouvelles technologies",
+  "Décoration, DIY, Couture",
+  "Informatique",
   "Jardinage",
   "Loisirs, jeux, sport",
   "Mobilité",

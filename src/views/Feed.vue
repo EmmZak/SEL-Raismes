@@ -55,6 +55,36 @@
       ></v-col>
     </v-row>
 
+    <!-- sort options -->
+    <v-row>
+      <v-col>
+        <v-select
+          v-model="sort"
+          :items="sortOptions"
+          prepend-icon="mdi-sort"
+          label="Trier"
+          item-text="title"
+          item-value="value"
+          @change="loadItems()"
+        ></v-select>
+      </v-col>
+      <v-col>
+        <v-select
+          ref="categSelect"
+          chips
+          v-model="categList"
+          :items="categories"
+          prepend-icon="mdi-feature-search"
+          label="Choisir la catégorie"
+          item-text="title"
+          item-value="value"
+          @change="loadItems()"
+          multiple
+        ></v-select>
+      </v-col>
+    </v-row>
+
+    <!-- items rendering -->
     <v-row justify="center">
       <v-col lg="11">
         <div class="text-lg-h4 text-md-h5 text-sm-h6">
@@ -62,7 +92,123 @@
             {{ items.length }} offre(s) disponible(s) pour votre recherche
           </div>
         </div>
+		
+        <v-row>
+          <v-col>
+            <v-btn class="primary" @click="dialog = true">
+              <v-icon>mdi-plus</v-icon>
+              <span>Nouvelle Publication</span>
+            </v-btn>
+          </v-col>
+        </v-row>
+
         <v-row class="">
+          <!-- crud dialog -->
+          <v-dialog v-model="dialog" max-width="800px">
+            <v-card>
+              <!-- form -->
+              <v-card-text>
+                <v-form ref="publicationFormFeed">
+                  <v-row class="pa-0">
+                    <v-col>
+                      <v-row>
+                        <v-col class="">
+                          <v-card-title class="pl-0">
+                            <span class="text-h4">Création Publication</span>
+                          </v-card-title>
+                        </v-col> </v-row
+                      ><v-row>
+                        <v-col>
+                          <v-select
+                            :items="categories"
+                            label="Catégorie"
+                            v-model="editedItem.categ"
+                            prepend-icon="mdi-shape"
+                            :rules="requiredRules"
+                          ></v-select>
+                        </v-col>
+                        <v-col>
+                          <v-textarea
+                            v-model="editedItem.desc"
+                            label="Description ..."
+                            prepend-icon="mdi-info"
+                          ></v-textarea>
+                        </v-col>
+                      </v-row>
+                    </v-col>
+                  </v-row>
+                  <v-row class="pt-0 pb-0">
+                    <v-col class="pt-0">
+                      <v-card-title class="pa-0">
+                        <span class="text-h4">Séliste</span>
+                      </v-card-title>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col>
+                      <v-text-field
+                        v-model="editedItem.user.name"
+                        label="Prénom"
+                        prepend-icon="mdi-account"
+                        :rules="requiredRules"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col>
+                      <v-text-field
+                        v-model="editedItem.user.surname"
+                        label="Nom"
+                        prepend-icon="mdi-account"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col>
+                      <v-text-field
+                        v-model="editedItem.user.mail"
+                        label="E-mail"
+                        prepend-icon="mdi-email"
+                        :rules="emailRules"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col>
+                      <v-text-field
+                        v-model="editedItem.user.number"
+                        label="Numéro"
+                        prepend-icon="mdi-phone"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                </v-form>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="close">
+                  Annuler
+                </v-btn>
+                <v-btn color="blue darken-1" text @click="save">
+                  Enregistrer
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+          <!-- delete dialog -->
+          <v-dialog v-model="deleteDialog" max-width="500px">
+            <v-card>
+              <v-card-title class="text-h10"
+                >Vous êtes sûr de vouloir supprimer l'annonce ?</v-card-title
+              >
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="closeDelete"
+                  >Annuler</v-btn
+                >
+                <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+                  >OK</v-btn
+                >
+                <v-spacer></v-spacer>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
           <v-col
             cols="12"
             lg="6"
@@ -76,51 +222,33 @@
             v-for="(item, i) in items"
             :key="i"
           >
+            <!-- crud actions -->
+            <v-card elevation="0" class="pb-1">
+              <v-row>
+                <v-col>
+                  <v-btn
+                    class="primary"
+                    @click="(dialog = true), (editedItem = item)"
+                  >
+                    <v-icon>mdi-pencil</v-icon>
+                    <span>Modifier</span> </v-btn
+                  ><v-btn
+                    class="error"
+                    @click="(deleteDialog = true), (itemToDelete = item)"
+                  >
+                    <v-icon>mdi-delete</v-icon>
+                    <span>Supprimer</span>
+                  </v-btn></v-col
+                >
+              </v-row>
+            </v-card>
+            <!-- item -->
             <publication-card :item="item" :visit="visit" />
           </v-col>
         </v-row>
       </v-col>
     </v-row>
-    <!-- left app bar  -->
-    <v-navigation-drawer
-      :drawer="true"
-      app
-      clipped
-      fixed
-      :permanent="$vuetify.breakpoint.smAndUp"
-      class="pt-16"
-    >
-      <v-toolbar></v-toolbar>
-      <v-toolbar flat>
-        <v-list>
-          <v-list-item class="pt-16">
-            <v-select
-              v-model="sort"
-              :items="sortOptions"
-              prepend-icon="mdi-sort"
-              label="Trier"
-              item-text="title"
-              item-value="value"
-              @change="loadItems()"
-            ></v-select>
-          </v-list-item>
-          <v-list-item class="pt-16">
-            <v-select
-              ref="categSelect"
-              chips
-              v-model="categList"
-              :items="categories"
-              prepend-icon="mdi-feature-search"
-              label="Choisir la catégorie"
-              item-text="title"
-              item-value="value"
-              @change="loadItems()"
-              multiple
-            ></v-select>
-          </v-list-item>
-        </v-list>
-      </v-toolbar>
-    </v-navigation-drawer>
+
     <!-- pagination
     <v-pagination
       v-if="this.items.length > 0"
@@ -137,7 +265,13 @@
 //import { findPublications } from "./../store/firebaseService";
 import { mapActions } from "vuex";
 import PublicationCard from "./../components/PublicationCard.vue";
-import { sortOptions, categories } from "./../store/globals";
+import {
+  requiredRules,
+  emailRules,
+  numberRules,
+  sortOptions,
+  categories,
+} from "./../store/globals";
 import { isConnected } from "./../store/firebaseService";
 
 export default {
@@ -145,11 +279,51 @@ export default {
 
   data() {
     return {
-      visit: false,
+      // Form
+      requiredRules: requiredRules,
+      emailRules: emailRules,
+      numberRules: numberRules,
       categories: categories,
-      sortOptions: sortOptions,
+      // Form dialog
       dialog: false,
-      inDev: true,
+      deleteDialog: false,
+      // crud objects
+      editedIndex: -1,
+      editedItem: {
+        id: null,
+        categ: "",
+        desc: "",
+        user: {
+          name: "",
+          number: "",
+          mail: "",
+        },
+      },
+      actualItemBackup: {
+        id: null,
+        categ: "",
+        desc: "",
+        user: {
+          name: "",
+          number: "",
+          mail: "",
+        },
+      },
+      defaultItem: {
+        id: null,
+        categ: "",
+        desc: "",
+        user: {
+          name: "",
+          number: "",
+          mail: "",
+        },
+      },
+      itemToDelete: {},
+      // other
+      visit: false,
+      sortOptions: sortOptions,
+      inDev: false,
       page: 1,
       townList: [],
       sort: "desc",
@@ -198,6 +372,81 @@ export default {
       });
       //console.log("returned publications ", this.items);
     },
+    // crud
+    async save() {
+      console.log("this refs", this.$refs);
+      if (!this.$refs.publicationFormFeed.validate()) {
+        console.log(
+          "mail-number",
+          this.editedItem.user.mail,
+          this.editedItem.user.number
+        );
+        return;
+      }
+      this.processing = true;
+      // add creation date for sorting
+      this.editedItem["createdOn"] = new Date();
+      try {
+        await this.$store.dispatch("savePublication", {
+          publication: this.editedItem,
+          backup: this.actualItemBackup,
+        });
+      } catch (err) {
+        console.log("try-catch", err);
+      }
+
+      // reload
+      await this.fetchPublications({
+        sort: "asc",
+        categList: categories,
+      });
+
+      this.processing = false;
+      this.close();
+    },
+    async editItem(item) {
+      // backup
+      this.actualItemBackup = { ...item };
+      console.log("editItem.item", item);
+      console.log("backup.item", this.actualItemBackup);
+
+      this.editedIndex = this.publications.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialog = true;
+    },
+    deleteItem(item) {
+      //console.log("deleteItem.item", item)
+      this.itemToDelete = item;
+      this.editedIndex = this.publications.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.deleteDialog = true;
+    },
+    async deleteItemConfirm() {
+      try {
+        await this.$store.dispatch("deletePublication", this.itemToDelete);
+      } catch (err) {
+        console.log(err);
+      }
+      //reload
+      console.log("reloading items");
+      await this.loadItems();
+      console.log("reloaded items");
+
+      this.itemToDelete = {};
+      this.closeDelete();
+    },
+    close() {
+      this.dialog = false;
+      //this.editedItem = {}
+      this.editedItem = Object.assign({}, this.defaultItem);
+      this.editedIndex = -1;
+    },
+    closeDelete() {
+      // cancel deleting
+      //console.log("closeDelete")
+      this.deleteDialog = false;
+      this.close();
+    },
   },
   computed: {
     nbPages() {
@@ -229,7 +478,7 @@ export default {
     let user = isConnected();
     console.log("feeed.user ", user);
     if (user == null) {
-		this.visit = true
+      this.visit = true;
     }
     await this.loadItems();
     // set parameters from url

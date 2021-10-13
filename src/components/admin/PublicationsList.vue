@@ -60,41 +60,14 @@
                             v-model="editedItem.categ"
                             prepend-icon="mdi-shape"
                             :rules="rules"
-                          ></v-select> </v-col
-                      ></v-row>
-                      <v-row>
+                          ></v-select>
+                        </v-col>
                         <v-col>
-                          <v-text-field
-                            v-model="editedItem.startTime"
-                            label="Heure Début"
-                            prepend-icon="mdi-clock"
-                          ></v-text-field> </v-col
-                        ><v-col>
-                          <v-text-field
-                            v-model="editedItem.endTime"
-                            label="Heure Fin"
-                            prepend-icon="mdi-clock"
-                          ></v-text-field>
-                        </v-col>
-                      </v-row>
-                      <v-row>
-                        <v-col md="6">
-                          <v-text-field
-                            v-model="editedItem.cost"
-                            label="Coût"
-                            prepend-icon="mdi-currency-eur"
-                          ></v-text-field>
-                        </v-col>
-                      </v-row>
-                    </v-col>
-                    <v-col lg="6" class="" justify-center>
-                      <v-row justify="center">
-                        <v-col lg="10">
-                          <v-date-picker
-                            v-model="editedItem.date"
-                            color="green lighten-1"
-                            locale="fr-FR"
-                          ></v-date-picker>
+                          <v-textarea
+                            v-model="editedItem.desc"
+                            label="Description ..."
+                            prepend-icon="mdi-info"
+                          ></v-textarea>
                         </v-col>
                       </v-row>
                     </v-col>
@@ -213,71 +186,68 @@ export default {
         // { text: "ID", value: "id" },
         { text: "Catégorie", value: "categ" },
         //{ text: "Séliste", value: "user" },
-        { text: "Nom", value: "user.surname" },
+        //{ text: "Nom", value: "user.surname" },
         { text: "Prénom", value: "user.name" },
         { text: "Numéro", value: "user.number" },
         { text: "E-mail", value: "user.mail" },
+        { text: "Description", value: "desc" },
         //{ text: "Adresse", value: "adresse" },
-        { text: "Crénaux", value: "startTime" },
-        { text: "Date", value: "date" },
-        { text: "Coût", value: "cost" },
+        //{ text: "Crénaux", value: "startTime" },
+        //{ text: "Date", value: "date" },
+        //{ text: "Coût", value: "cost" },
         { text: "Actions", value: "actions", sortable: false },
       ],
       editedIndex: -1,
       editedItem: {
         id: null,
         categ: "",
+		desc: "",
         user: {
           name: "",
-          surname: "",
+          //surname: "",
           number: "",
           mail: "",
         },
         //adresse: "",
-        startTime: null,
-        endTime: null,
-        date: null,
-        cost: "",
+        //startTime: null,
+        //endTime: null,
+        //date: null,
+        //cost: "",
       },
       actualItemBackup: {
         id: null,
         categ: "",
+		desc: "",
         user: {
           name: "",
-          surname: "",
+          //surname: "",
           number: "",
           mail: "",
         },
         //adresse: "",
-        startTime: null,
-        endTime: null,
-        date: null,
-        cost: "",
+        // startTime: null,
+        // endTime: null,
+        // date: null,
+        // cost: "",
       },
       defaultItem: {
         id: null,
         categ: "",
+		desc: "",
         user: {
           name: "",
-          surname: "",
+          //surname: "",
           number: "",
           mail: "",
         },
         //adresse: "",
-        startTime: null,
-        endTime: null,
-        slots: "",
-        date: null,
-        cost: "",
+        // startTime: null,
+        // endTime: null,
+        // slots: "",
+        // date: null,
+        // cost: "",
       },
       itemToDelete: {},
-      selectMenuProps: {
-        auto: true,
-        overflowY: false,
-        disableKeys: true,
-        openOnClick: false,
-        maxHeight: 304,
-      },
       processing: false,
       sort: "asc",
     };
