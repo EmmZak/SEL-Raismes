@@ -16,6 +16,9 @@
       :search="search"
       class="elevation-1"
     >
+      <!-- <template v-slot:[`item`]="{ item }">
+      <publication-card :item="item" :visit="false" />
+      </template> -->
       <!------------------------ Custom field rendering ------------------------>
       <!-- date column -->
       <template v-slot:[`item.date`]="{ item }">
@@ -156,6 +159,7 @@
 </template>
 
 <script>
+import PublicationCard from "./../../components/PublicationCard.vue";
 import HelperFunctions from "./../../helperFunctions/HelperFunctions";
 //import { mapGetters } from 'vuex'
 import { mapActions } from "vuex";
@@ -169,6 +173,9 @@ import {
 export default {
   name: "PublicationsList",
   mixins: [HelperFunctions],
+  components: {
+    PublicationCard,
+  },
   data() {
     return {
       // Form
@@ -201,7 +208,7 @@ export default {
       editedItem: {
         id: null,
         categ: "",
-		desc: "",
+        desc: "",
         user: {
           name: "",
           //surname: "",
@@ -217,7 +224,7 @@ export default {
       actualItemBackup: {
         id: null,
         categ: "",
-		desc: "",
+        desc: "",
         user: {
           name: "",
           //surname: "",
@@ -233,7 +240,7 @@ export default {
       defaultItem: {
         id: null,
         categ: "",
-		desc: "",
+        desc: "",
         user: {
           name: "",
           //surname: "",

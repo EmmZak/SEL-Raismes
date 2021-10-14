@@ -21,43 +21,16 @@
       Interface ADMIN
     </v-btn>
 
-    <!-- options  -->
-    <v-row
-      v-if="$vuetify.breakpoint.xs"
-      align="center"
-      justify="space-around"
-      class=""
-    >
-      <v-col>
-        <v-select
-          v-model="sort"
-          :items="sortOptions"
-          prepend-icon="mdi-sort"
-          label="Trier"
-          item-text="title"
-          item-value="value"
-          @change="loadItems()"
-        ></v-select>
-      </v-col>
-      <v-col>
-        <v-select
-          ref="categSelect"
-          chips
-          v-model="categList"
-          :items="categories"
-          prepend-icon="mdi-feature-search"
-          label="Choisir la catégorie"
-          item-text="title"
-          item-value="value"
-          @change="loadItems()"
-          multiple
-        ></v-select
-      ></v-col>
-    </v-row>
-
     <!-- sort options -->
-    <v-row>
-      <v-col>
+    <v-row class="" justify="space-around">
+      <v-col cols="12" lg="3">
+        <v-text-field
+          v-model="search"
+          label="Recherche"
+          @input="filterItems()"
+        ></v-text-field>
+      </v-col>
+      <v-col lg="3">
         <v-select
           v-model="sort"
           :items="sortOptions"
@@ -68,7 +41,7 @@
           @change="loadItems()"
         ></v-select>
       </v-col>
-      <v-col>
+      <v-col lg="3">
         <v-select
           ref="categSelect"
           chips
@@ -92,7 +65,7 @@
             {{ items.length }} offre(s) disponible(s) pour votre recherche
           </div>
         </div>
-		
+
         <v-row>
           <v-col>
             <v-btn class="primary" @click="dialog = true">
@@ -226,16 +199,10 @@
             <v-card elevation="0" class="pb-1">
               <v-row>
                 <v-col>
-                  <v-btn
-                    class="primary"
-                    @click="(dialog = true), (editedItem = item)"
-                  >
+                  <v-btn class="primary" @click="editItem(item)">
                     <v-icon>mdi-pencil</v-icon>
                     <span>Modifier</span> </v-btn
-                  ><v-btn
-                    class="error"
-                    @click="(deleteDialog = true), (itemToDelete = item)"
-                  >
+                  ><v-btn class="error" @click="deleteItem(item)">
                     <v-icon>mdi-delete</v-icon>
                     <span>Supprimer</span>
                   </v-btn></v-col
@@ -329,6 +296,7 @@ export default {
       sort: "desc",
       categList: [],
       nbItems: 2,
+      search: "",
       admin: false,
       //items: [],
     };
@@ -344,33 +312,16 @@ export default {
     toAdminPage() {
       this.$router.push("/admin");
     },
+    filterItems() {
+      console.log("search ", this.search);
+    },
     async loadItems() {
-      //console.log("laoding items");
-      // close select menu
       this.$refs.categSelect.blur();
-
-      let categList = [];
-      if (this.categList.length == 0) {
-        categList = categories;
-      } else {
-        categList = this.categList;
-      }
-      // console.log(
-      //   "sort=",
-      //   this.sort,
-      //   ", page=",
-      //   this.page,
-      //   ", categ=",
-      //   categList,
-      //   categList.length
-      // );
-      //console.log("geetting items categlist", categList);
-      //this.items = await findPublications(this.sort, categList);
+      let categList = this.categList.length == 0 ? categories : this.categList;
       await this.fetchPublications({
         sort: this.sort,
         categList: categList,
       });
-      //console.log("returned publications ", this.items);
     },
     // crud
     async save() {
@@ -394,7 +345,6 @@ export default {
       } catch (err) {
         console.log("try-catch", err);
       }
-
       // reload
       await this.fetchPublications({
         sort: "asc",
@@ -410,14 +360,15 @@ export default {
       console.log("editItem.item", item);
       console.log("backup.item", this.actualItemBackup);
 
-      this.editedIndex = this.publications.indexOf(item);
-      this.editedItem = Object.assign({}, item);
+      this.editedIndex = this.items.indexOf(item);
+      //this.editedItem = Object.assign({}, item);
+      this.editedItem = {...item, user: {...item.user}}
       this.dialog = true;
     },
     deleteItem(item) {
       //console.log("deleteItem.item", item)
       this.itemToDelete = item;
-      this.editedIndex = this.publications.indexOf(item);
+      this.editedIndex = this.items.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.deleteDialog = true;
     },
