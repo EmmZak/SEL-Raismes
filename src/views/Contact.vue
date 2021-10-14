@@ -44,7 +44,7 @@
       </v-col>
 
       <!--  -->
-      <v-col cols="12" xs="12" md="6">
+      <v-col cols="12" lg="5" xs="12" md="6">
         <v-card v-if="!sentSucceess" elevation="0" class="pa-2 red-xs-only">
           <v-card-title
             class="d-none d-sm-flex text-lg-h3 text-md-h3 text-sm-h3 text-h6"

@@ -16,9 +16,9 @@
       :search="search"
       class="elevation-1"
     >
-      <!-- <template v-slot:[`item`]="{ item }">
+      <template v-slot:[`item`]="{ item }">
       <publication-card :item="item" :visit="false" />
-      </template> -->
+      </template>
       <!------------------------ Custom field rendering ------------------------>
       <!-- date column -->
       <template v-slot:[`item.date`]="{ item }">
