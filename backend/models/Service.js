@@ -20,6 +20,6 @@ Service.belongsTo(User)
 const init = async () => {
 	await sequelize.sync({ force: true });
 }
-init()
+//init()
 
 module.exports = Service

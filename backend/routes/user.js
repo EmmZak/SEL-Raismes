@@ -7,4 +7,10 @@ router.get("/", async (req, res) => {
 	res.send(users)
 })
 
+router.get("/:id", async (req, res) => {
+	let id = req.params.id
+	const o = await User.findByPk(id)
+	res.send(o)
+})
+
 module.exports = router

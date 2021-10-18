@@ -4,9 +4,13 @@ const print = console.log
 
 router.get("/", async (req, res) => {
 	const towns = await Town.findAll()
-	print("Town", towns)
 	res.send(towns)
-	//res.send("ok")
+})
+
+router.get("/:id", async (req, res) => {
+	let id = req.params.id
+	const t = await Town.findByPk(id)
+	res.send(t)
 })
 
 module.exports = router
