@@ -2,7 +2,6 @@ ui/.DS_Store
 ui/node_modules
 ui/dist
 
-
 # local env files
 ui/.env.local
 ui/.env.*.local
@@ -21,3 +20,27 @@ ui/*.ntvs*
 ui/*.njsproj
 ui/*.sln
 ui/*.sw?
+
+# backend
+backend/.DS_Store
+backend/node_modules
+backend/dist
+
+# local env files
+backend/.env.local
+backend/.env.*.local
+
+# Log files
+backend/npm-debug.log*
+backend/yarn-debug.log*
+backend/yarn-error.log*
+backend/pnpm-debug.log*
+
+# Editor directories and files
+backend/.idea
+backend/.vscode
+backend/*.suo
+backend/*.ntvs*
+backend/*.njsproj
+backend/*.sln
+backend/*.sw?
