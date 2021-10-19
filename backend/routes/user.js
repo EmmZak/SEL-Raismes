@@ -3,15 +3,40 @@ const { Town, User, Category } = require("../models/Models")
 const { associations } = require("../models/Town")
 const print = console.log
 
+router.get("/count", async (req, res) => {
+	const n = await User.count()
+	res.status(200).send({count: n})
+})
+
+// pagination, offset, limit, order ASC or DESC
 router.get("/", async (req, res) => {
-	const users = await User.findAll({ include: [Town, Category] })
-	res.send(users)
+
+	try {
+		const offset = req.query.offset
+		const limit = req.query.limit
+		const order = req.query.order
+
+		const users = await User.findAll(
+			{
+				offset: offset,
+				limit: limit,
+				order: [
+					['createdAt', order]
+				],
+				include: [Town]
+			}
+		)
+		res.send(users)
+	} catch(err) {
+		res.send(err)
+	}
+
 })
 
 router.get("/:id", async (req, res) => {
-	let id = req.params.id
 	try {
-		const o = await User.findByPk(id)
+		let id = req.params.id
+		const o = await User.findByPk(id, { include: [Town] })
 		res.send(o)
 	} catch (err) {
 		res.send(err)
@@ -19,9 +44,9 @@ router.get("/:id", async (req, res) => {
 })
 
 router.post("/", async (req, res) => {
-	let userTown = await Town.findByPk(req.body.townId)
-
 	try {
+		let userTown = await Town.findByPk(req.body.townId)
+
 		let user = await User.create({
 			firebaseID: req.body.firebaseID,
 			mail: req.body.mail,
@@ -66,9 +91,9 @@ router.put("/", async (req, res) => {
 
 // localhost:5000/users/id
 router.delete("/:id", async (req, res) => {
-	let id = req.params.id
-
 	try {
+		let id = req.params.id
+
 		let deleteUser = await User.destroy({
 			where: {
 				id: id

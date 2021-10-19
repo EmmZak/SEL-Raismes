@@ -4,24 +4,35 @@ const { Service, Category, User } = require("../models/Models")
 const print = console.log
 
 router.get("/count", async (req, res) => {
-	const n = await Service.count()
-	res.status(200).send({count: n})
+	try {
+		const n = await Service.count()
+		res.status(200).send({ count: n })
+	} catch (err) {
+		res.send(err)
+	}
 })
 
 // pagination, offset, limit, order ASC or DESC
 router.get("/", async (req, res) => {
-	print("req.params", req.query)
-	const items = await Service.findAll(
-		{
-			offset: req.query.offset,
-			limit: req.query.limit,
-			order: [
-				['createdAt', req.query.order]
-			]
-		},
-		{ include: [Category, User] }
-	)
-	res.send(items)
+	try {
+		const offset = req.query.offset
+		const limit = req.query.limit
+		const order = req.query.order
+
+		const items = await Service.findAll(
+			{
+				offset: req.query.offset,
+				limit: req.query.limit,
+				order: [
+					['createdAt', req.query.order]
+				],
+				include: [Category, User]
+			}
+		)
+		res.send(items)
+	} catch (err) {
+		res.send(err)
+	}
 })
 
 // find services by user
@@ -44,8 +55,9 @@ router.get("/user/:id", async (req, res) => {
 
 // find services by category
 router.get("/category/:id", async (req, res) => {
-	const categoryId = req.params.id
 	try {
+		const categoryId = req.params.id
+
 		const items = await Service.findAll(
 			{
 				where: {
@@ -61,8 +73,8 @@ router.get("/category/:id", async (req, res) => {
 })
 
 router.get("/:id", async (req, res) => {
-	let id = req.params.id
 	try {
+		let id = req.params.id
 		const o = await Service.findByPk(id, { include: [Category, User] })
 		res.send(o)
 	} catch (err) {
@@ -71,10 +83,10 @@ router.get("/:id", async (req, res) => {
 })
 
 router.post("/", async (req, res) => {
-	let user = await User.findByPk(req.body.userId)
-	let category = await Category.findByPk(req.body.categoryId)
-
 	try {
+		let user = await User.findByPk(req.body.userId)
+		let category = await Category.findByPk(req.body.categoryId)
+
 		let service = await Service.create({
 			description: req.body.description,
 		})
@@ -84,7 +96,6 @@ router.post("/", async (req, res) => {
 		service = await service.save()
 		res.send(service)
 	} catch (err) {
-		print("err", err)
 		res.send(err)
 	}
 })
@@ -111,8 +122,9 @@ router.put("/", async (req, res) => {
 
 // localhost:5000/services/id
 router.delete("/:id", async (req, res) => {
-	let id = req.params.id
 	try {
+		let id = req.params.id
+
 		let service = await Service.destroy({
 			where: {
 				id: id
