@@ -44,6 +44,10 @@ Service.belongsTo(Category)
 const init = async () => {
 	await sequelize.sync({ force: true });
 
+	Event.bulkCreate([
+		{text: "venez nois voir tel jour", rdv: new Date()}
+	])
+
 	Town.bulkCreate([
 		{name: "Raismes", code: "59590"},
 		{name: "VA", code: "59300"},
@@ -74,7 +78,7 @@ const init = async () => {
 		{description: "animaux test",  userId: "2", categoryId: "4"},
 		{description: "jardinage description",  userId: "2", categoryId: "5"},
 		{description: "sfd description",  userId: "3", categoryId: "5"},
-		{description: "fffff description",  userId: "2", categoryId: "6"},
+		{description: "fffff description",  userId: "2", categoryId: "3"},
 		{description: "a description",  userId: "5", categoryId: "1"},
 		{description: "fdsfdsf description",  userId: "2", categoryId: "3"},
 		{description: "4 description",  userId: "5", categoryId: "2"},
