@@ -1,10 +1,10 @@
 const router = require("express").Router()
-const {Town, User} = require("../models/Models")
+const {Town, User, Category} = require("../models/Models")
 const { associations } = require("../models/Town")
 const print = console.log
 
-router.get("/all", async (req, res) => {
-	const users = await User.findAll()
+router.get("/", async (req, res) => {
+	const users = await User.findAll({include: [Town, Category]})
 	res.send(users)
 })
 
@@ -15,7 +15,7 @@ router.get("/:id", async (req, res) => {
 })
 
 
-router.post("/add", async (req, res) => {
+router.post("/", async (req, res) => {
 	let userTown = await Town.findByPk(req.body.townId)
 
 	try {

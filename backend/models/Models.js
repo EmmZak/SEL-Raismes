@@ -35,6 +35,12 @@ const Service = sequelize.define("service", {
 Town.hasMany(User)
 User.belongsTo(Town)
 
+User.hasMany(Service, {onDelete: "CASCADE"})
+Service.belongsTo(User)
+
+Category.hasMany(Service)
+Service.belongsTo(Category)
+
 const init = async () => {
 	await sequelize.sync({ force: true });
 
@@ -48,6 +54,25 @@ const init = async () => {
 		{name: "Animaux"},
 		{name: "Informatique"},
 		{name: "Jardinage"},
+		{name: "Cuisine"},
+		{name: "Game"},
+		{name: "Mac"},
+		{name: "Love"},
+		{name: "Python"},
+	])
+
+	User.bulkCreate([
+		{firebaseID: "f-1", mail: "e@e", name: "manu", surname: "ee", admin: true, credit: 33, townId: "1"},
+		{firebaseID: "f-2", mail: "a@a", name: "zak", surname: "aa", admin: true, credit: 55, townId: "2"},
+		{firebaseID: "f-3", mail: "b@b", name: "deph", surname: "dd", admin: false, credit: 66, townId: "3"},
+		{firebaseID: "f-4", mail: "c@c", name: "ler", surname: "ff", admin: false, credit: 444, townId: "2"},
+		{firebaseID: "f-5", mail: "i@i", name: "miko", surname: "vv", admin: false, credit: 3334, townId: "1"},
+	])
+
+	Service.bulkCreate([
+		{description: "first description",  userId: "1", categoryId: "3"},
+		{description: "animaux test",  userId: "2", categoryId: "4"},
+		{description: "jardinage description",  userId: "2", categoryId: "5"},
 	])
 }
 //init()
