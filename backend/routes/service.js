@@ -8,6 +8,42 @@ router.get("/", async (req, res) => {
 	res.send(items)
 })
 
+// find services by user
+router.get("/user/:id", async (req, res) => {
+	const userId = req.params.id
+	try {
+		const items = await Service.findAll(
+			{
+				where: {
+					userId: userId
+				}
+			},
+			{ include: [Category, User] }
+		)
+		res.send(items)
+	} catch (err) {
+		res.send(err)
+	}
+})
+
+// find services by category
+router.get("/category/:id", async (req, res) => {
+	const categoryId = req.params.id
+	try {
+		const items = await Service.findAll(
+			{
+				where: {
+					categoryId: categoryId
+				}
+			},
+			{ include: [Category, User] }
+		)
+		res.send(items)
+	} catch (err) {
+		res.send(err)
+	}
+})
+
 router.get("/:id", async (req, res) => {
 	let id = req.params.id
 	try {
@@ -60,7 +96,6 @@ router.put("/", async (req, res) => {
 // localhost:5000/services/id
 router.delete("/:id", async (req, res) => {
 	let id = req.params.id
-
 	try {
 		let service = await Service.destroy({
 			where: {
@@ -71,7 +106,7 @@ router.delete("/:id", async (req, res) => {
 	} catch (err) {
 		res.send(err)
 	}
-
 })
+
 
 module.exports = router
