@@ -11,6 +11,7 @@ const Town = sequelize.define("town", {
 	code: DataTypes.STRING
 })
 
+
 //print("before async function exec")
 const init = async () => {
 	await sequelize.sync({ force: true });

@@ -14,12 +14,16 @@ const User = sequelize.define("user", {
 	admin: DataTypes.BOOLEAN,
 	credit: DataTypes.INTEGER,
 })
-Town.hasMany(User)
-User.belongsTo(Town)
+//Town.hasMany(User)
+//User.belongsTo(Town)
+User.Town = User.belongsTo(Town)
 
 const init = async () => {
 	await sequelize.sync({ force: true });
 }
 //init()
 
-module.exports = User
+module.exports = {
+	User: User,
+	UserTownRef: User
+} 

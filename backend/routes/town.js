@@ -1,5 +1,5 @@
 const router = require("express").Router()
-const Town = require("../models/Town")
+const {Town} = require("../models/Models")
 const print = console.log
 
 router.get("/", async (req, res) => {

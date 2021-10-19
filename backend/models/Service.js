@@ -1,5 +1,5 @@
 const { Sequelize, Model, DataTypes, DATE } = require('sequelize');
-const User = require("./User")
+const {User} = require("./User")
 const Category = require("./Category")
 
 const sequelize = new Sequelize('troc-db', 'emzak', 'postgres', {

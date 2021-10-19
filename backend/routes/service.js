@@ -1,5 +1,6 @@
 const router = require("express").Router()
-const Service = require("../models/Service")
+const {Service} = require("../models/Models")
+
 const print = console.log
 
 router.get("/", async (req, res) => {
