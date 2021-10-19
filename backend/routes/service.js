@@ -38,7 +38,6 @@ router.post("/", async (req, res) => {
 })
 
 router.put("/", async (req, res) => {
-	print("req body", req.body)
 	try {
 		let service = await Service.update(
 			{
@@ -53,9 +52,26 @@ router.put("/", async (req, res) => {
 				}
 			})
 		res.send(service)
-	} catch(err) {
+	} catch (err) {
 		res.send(err)
 	}
+})
+
+// localhost:5000/services/id
+router.delete("/:id", async (req, res) => {
+	let id = req.params.id
+
+	try {
+		let service = await Service.destroy({
+			where: {
+				id: id
+			}
+		})
+		res.status(200).send({ done: service == 1 ? true : false })
+	} catch (err) {
+		res.send(err)
+	}
+
 })
 
 module.exports = router
