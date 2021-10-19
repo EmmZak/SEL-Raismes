@@ -1,10 +1,10 @@
 const router = require("express").Router()
-const {Town, User, Category} = require("../models/Models")
+const { Town, User, Category } = require("../models/Models")
 const { associations } = require("../models/Town")
 const print = console.log
 
 router.get("/", async (req, res) => {
-	const users = await User.findAll({include: [Town, Category]})
+	const users = await User.findAll({ include: [Town, Category] })
 	res.send(users)
 })
 
@@ -13,7 +13,7 @@ router.get("/:id", async (req, res) => {
 	try {
 		const o = await User.findByPk(id)
 		res.send(o)
-	} catch(err) {
+	} catch (err) {
 		res.send(err)
 	}
 })
@@ -41,7 +41,6 @@ router.post("/", async (req, res) => {
 })
 
 router.put("/", async (req, res) => {
-
 	try {
 		let user = await User.update(
 			{
@@ -60,13 +59,13 @@ router.put("/", async (req, res) => {
 				}
 			})
 		res.send(user)
-	} catch(err) {
+	} catch (err) {
 		res.send(err)
 	}
 })
 
 // localhost:5000/users/id
-router.delete("/:id", async(req, res) => {
+router.delete("/:id", async (req, res) => {
 	let id = req.params.id
 
 	try {
@@ -75,9 +74,9 @@ router.delete("/:id", async(req, res) => {
 				id: id
 			}
 		})
-		
-		res.status(200).send({done: deleteUser==1? true: false})
-	} catch(err) {
+
+		res.status(200).send({ done: deleteUser == 1 ? true : false })
+	} catch (err) {
 		res.send(err)
 	}
 

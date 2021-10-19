@@ -3,8 +3,24 @@ const { Service, Category, User } = require("../models/Models")
 
 const print = console.log
 
+router.get("/count", async (req, res) => {
+	const n = await Service.count()
+	res.status(200).send({count: n})
+})
+
+// pagination, offset, limit, order ASC or DESC
 router.get("/", async (req, res) => {
-	const items = await Service.findAll({ include: [Category, User] })
+	print("req.params", req.query)
+	const items = await Service.findAll(
+		{
+			offset: req.query.offset,
+			limit: req.query.limit,
+			order: [
+				['createdAt', req.query.order]
+			]
+		},
+		{ include: [Category, User] }
+	)
 	res.send(items)
 })
 

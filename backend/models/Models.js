@@ -73,6 +73,12 @@ const init = async () => {
 		{description: "first description",  userId: "1", categoryId: "3"},
 		{description: "animaux test",  userId: "2", categoryId: "4"},
 		{description: "jardinage description",  userId: "2", categoryId: "5"},
+		{description: "sfd description",  userId: "3", categoryId: "5"},
+		{description: "fffff description",  userId: "2", categoryId: "6"},
+		{description: "a description",  userId: "5", categoryId: "1"},
+		{description: "fdsfdsf description",  userId: "2", categoryId: "3"},
+		{description: "4 description",  userId: "5", categoryId: "2"},
+		{description: "d description",  userId: "2", categoryId: "4"},
 	])
 }
 //init()
