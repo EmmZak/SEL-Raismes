@@ -34,19 +34,16 @@ router.post("/", async (req, res) => {
 		user = await user.save()
 
 		res.send(user)
-
 	} catch (err) {
 		print("err", err)
 		res.send(err)
 	}
-
-	res.send("error")
 })
 
 router.put("/", async (req, res) => {
 
 	try {
-		let updateUser = await User.update(
+		let user = await User.update(
 			{
 				firebaseID: req.body.firebaseID,
 				mail: req.body.mail,
@@ -62,12 +59,10 @@ router.put("/", async (req, res) => {
 					id: req.body.id
 				}
 			})
-	
-		res.send(updateUser)
+		res.send(user)
 	} catch(err) {
 		res.send(err)
 	}
-
 })
 
 // localhost:5000/users/id
