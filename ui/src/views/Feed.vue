@@ -128,9 +128,9 @@
                           prepend-icon="mdi-account"
                           :item-text="
                             (user) =>
-                              `${user.name}, ${user.surname}, ${user.mail}, ${user.number}, ${user.credit}, ${user.town.name}, ${user.town.code}`
+                              `${user.name}, ${user.surname}, ${user.mail}, ${user.number}, ${user.town.name}, ${user.town.code}`
                           "
-						  item-value="id"
+                          item-value="id"
                           :rules="requiredRules"
                         ></v-autocomplete>
                         <!-- <v-select
@@ -271,7 +271,7 @@ import {
 import { isConnected } from "./../store/firebaseService";
 
 import { getCategories } from "./../services/category";
-import { getServices, getCount, createService } from "./../services/service";
+import { getServices, getCount, createService, updateService, deleteService } from "./../services/service";
 import { getUsers } from "./../services/user";
 
 export default {
@@ -293,19 +293,19 @@ export default {
         id: null,
         category: "",
         description: "",
-        userId: ""
+        userId: "",
       },
       actualItemBackup: {
         id: null,
         category: "",
         description: "",
-        userId: ""
+        userId: "",
       },
       defaultItem: {
         id: null,
         category: "",
         description: "",
-        userId: ""
+        userId: "",
       },
       itemToDelete: {},
       // other
@@ -359,21 +359,25 @@ export default {
       }
       this.processing = true;
 
-	  console.log("this.editedItem", this.editedItem)
+      console.log("this.editedItem", this.editedItem);
 
-	  await createService(this.editedItem)
-	  await this.loadServices();
-	  
-    //   // add creation date for sorting
-    //   this.editedItem["createdOn"] = new Date();
-    //   try {
-    //     await this.$store.dispatch("savePublication", {
-    //       publication: this.editedItem,
-    //       backup: this.actualItemBackup,
-    //     });
-    //   } catch (err) {
-    //     console.log("try-catch", err);
-    //   }
+      if (this.editedItem.id) {
+        await updateService(this.editedItem);
+      } else {
+        await createService(this.editedItem);
+      }
+      await this.loadServices();
+
+      //   // add creation date for sorting
+      //   this.editedItem["createdOn"] = new Date();
+      //   try {
+      //     await this.$store.dispatch("savePublication", {
+      //       publication: this.editedItem,
+      //       backup: this.actualItemBackup,
+      //     });
+      //   } catch (err) {
+      //     console.log("try-catch", err);
+      //   }
 
       this.processing = false;
       this.close();
@@ -398,7 +402,7 @@ export default {
     },
     async deleteItemConfirm() {
       try {
-        await this.$store.dispatch("deletePublication", this.itemToDelete);
+        //await this.$store.dispatch("deletePublication", this.itemToDelete);
       } catch (err) {
         console.log(err);
       }

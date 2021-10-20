@@ -101,10 +101,19 @@
           <v-timeline-item v-for="(event, i) in events" :key="i" fill-dot>
             <v-card :color="timelineColors[i % 3]" dark>
               <v-card-title class="title">
-				  	{{event.type}} - {{ formatISOonlydate(event.date) }} 
+				  <v-row class="pa-2" justify="space-between">
+					  <div><strong>{{event.type}}</strong></div>
+					  <div>
+						  {{ formatISOonlydate(event.date) }} 
 					de {{ event.start }} 
 					à {{ event.end }}
+					  </div>
+				  </v-row>
+				   <!-- <strong>{{event.type}}</strong> &nbsp; {{ formatISOonlydate(event.date) }} 
+					de {{ event.start }} 
+					à {{ event.end }} -->
 			  </v-card-title>
+
               <v-card-text class="white text--primary pa-5">
                 <p style="white-space: pre-line;">
                   {{ event.text }} 

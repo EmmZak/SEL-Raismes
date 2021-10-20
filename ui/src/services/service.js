@@ -5,7 +5,7 @@ const print = console.log
 
 // Service
 async function getCount(pagination) {
-	return axios.get(API+"count")
+	return axios.get(API + "count")
 }
 
 async function getServices(pagination) {
@@ -18,8 +18,18 @@ async function createService(service) {
 	return axios.post(API, service)
 }
 
+async function updateService(service) {
+	return axios.put(API, service)
+}
+
+async function deleteService(id) {
+	return axios.delete(`${API}/${id}`)
+}
+
 export {
 	getCount,
 	getServices,
-	createService
+	createService,
+	updateService,
+	deleteService
 }
