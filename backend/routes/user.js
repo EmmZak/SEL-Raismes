@@ -12,17 +12,17 @@ router.get("/count", async (req, res) => {
 router.get("/", async (req, res) => {
 
 	try {
-		const offset = req.query.offset
-		const limit = req.query.limit
-		const order = req.query.order
+		// const offset = req.query.offset
+		// const limit = req.query.limit
+		// const order = req.query.order
 
 		const users = await User.findAll(
 			{
-				offset: offset,
-				limit: limit,
-				order: [
-					['createdAt', order]
-				],
+				// offset: offset,
+				// limit: limit,
+				// order: [
+				// 	['createdAt', order]
+				// ],
 				include: [Town]
 			}
 		)

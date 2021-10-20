@@ -14,7 +14,12 @@ async function getServices(pagination) {
 	})
 }
 
+async function createService(service) {
+	return axios.post(API, service)
+}
+
 export {
 	getCount,
-	getServices
+	getServices,
+	createService
 }

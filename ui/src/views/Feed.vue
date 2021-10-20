@@ -96,14 +96,14 @@
                             :items="categories"
                             item-text="name"
                             label="Catégorie"
-                            v-model="editedItem.categ"
+                            v-model="editedItem.category"
                             prepend-icon="mdi-shape"
                             :rules="requiredRules"
                           ></v-select>
                         </v-col>
                         <v-col>
                           <v-textarea
-                            v-model="editedItem.desc"
+                            v-model="editedItem.description"
                             label="Description ..."
                             prepend-icon="mdi-info"
                           ></v-textarea>
@@ -118,6 +118,36 @@
                       </v-card-title>
                     </v-col>
                   </v-row>
+                  <v-row>
+                    <v-col>
+                      <v-col>
+                        <v-autocomplete
+                          :items="users"
+                          v-model="editedItem.userId"
+                          label="Séliste"
+                          prepend-icon="mdi-account"
+                          :item-text="
+                            (user) =>
+                              `${user.name}, ${user.surname}, ${user.mail}, ${user.number}, ${user.credit}, ${user.town.name}, ${user.town.code}`
+                          "
+						  item-value="id"
+                          :rules="requiredRules"
+                        ></v-autocomplete>
+                        <!-- <v-select
+                          :items="users"
+                          :item-text="
+                            (user) =>
+                              `${user.name}, ${user.surname}, ${user.mail}, ${user.number}, ${user.credit}, ${user.town.name}, ${user.town.code}`
+                          "
+                          label="Séliste"
+                          v-model="editedItem.user"
+                          prepend-icon="mdi-shape"
+                          :rules="requiredRules"
+                        ></v-select> -->
+                      </v-col>
+                    </v-col>
+                  </v-row>
+                  <!-- Field notation
                   <v-row>
                     <v-col>
                       <v-text-field
@@ -151,7 +181,7 @@
                         prepend-icon="mdi-phone"
                       ></v-text-field>
                     </v-col>
-                  </v-row>
+                  </v-row> -->
                 </v-form>
               </v-card-text>
               <v-card-actions>
@@ -241,7 +271,8 @@ import {
 import { isConnected } from "./../store/firebaseService";
 
 import { getCategories } from "./../services/category";
-import { getServices, getCount } from "./../services/service";
+import { getServices, getCount, createService } from "./../services/service";
+import { getUsers } from "./../services/user";
 
 export default {
   name: "Feed",
@@ -260,33 +291,21 @@ export default {
       editedIndex: -1,
       editedItem: {
         id: null,
-        categ: "",
-        desc: "",
-        user: {
-          name: "",
-          number: "",
-          mail: "",
-        },
+        category: "",
+        description: "",
+        userId: ""
       },
       actualItemBackup: {
         id: null,
-        categ: "",
-        desc: "",
-        user: {
-          name: "",
-          number: "",
-          mail: "",
-        },
+        category: "",
+        description: "",
+        userId: ""
       },
       defaultItem: {
         id: null,
-        categ: "",
-        desc: "",
-        user: {
-          name: "",
-          number: "",
-          mail: "",
-        },
+        category: "",
+        description: "",
+        userId: ""
       },
       itemToDelete: {},
       // other
@@ -295,7 +314,7 @@ export default {
         offset: 0,
         limit: 10,
         order: "desc",
-		categories: []
+        categories: [],
       },
       visit: false,
       sortOptions: sortOptions,
@@ -308,6 +327,7 @@ export default {
       search: "",
       admin: false,
       //items: [],
+      users: [],
       services: [],
       count: 0,
     };
@@ -317,7 +337,7 @@ export default {
   },
   methods: {
     test() {
-      console.log("feed store visitor", this.isVisitor);
+      console.log("this.editedItem", this.editedItem);
     },
     ...mapActions(["fetchUser", "fetchPublications", "fetchCategories"]),
     toAdminPage() {
@@ -330,29 +350,30 @@ export default {
     async save() {
       console.log("this refs", this.$refs);
       if (!this.$refs.publicationFormFeed.validate()) {
-        console.log(
-          "mail-number",
-          this.editedItem.user.mail,
-          this.editedItem.user.number
-        );
+        // console.log(
+        //   "mail-number",
+        //   this.editedItem.user.mail,
+        //   this.editedItem.user.number
+        // );
         return;
       }
       this.processing = true;
-      // add creation date for sorting
-      this.editedItem["createdOn"] = new Date();
-      try {
-        await this.$store.dispatch("savePublication", {
-          publication: this.editedItem,
-          backup: this.actualItemBackup,
-        });
-      } catch (err) {
-        console.log("try-catch", err);
-      }
-      // reload
-      await this.fetchPublications({
-        sort: "asc",
-        selectedCategories: this.categories,
-      });
+
+	  console.log("this.editedItem", this.editedItem)
+
+	  await createService(this.editedItem)
+	  await this.loadServices();
+	  
+    //   // add creation date for sorting
+    //   this.editedItem["createdOn"] = new Date();
+    //   try {
+    //     await this.$store.dispatch("savePublication", {
+    //       publication: this.editedItem,
+    //       backup: this.actualItemBackup,
+    //     });
+    //   } catch (err) {
+    //     console.log("try-catch", err);
+    //   }
 
       this.processing = false;
       this.close();
@@ -402,11 +423,13 @@ export default {
       this.close();
     },
 
-	// load services
+    // load services
     async loadServices() {
       this.$refs.categSelect.blur();
       this.pagination.categories =
-        this.selectedCategories.length == 0 ? this.categories.map(e => e.name) : this.selectedCategories;
+        this.selectedCategories.length == 0
+          ? this.categories.map((e) => e.name)
+          : this.selectedCategories;
 
       let items = await getServices(this.pagination);
       console.log("feed.services", items.data);
@@ -416,12 +439,19 @@ export default {
       //     selectedCategories: selectedCategories,
       //   });
     },
+    // load users
+    async loadUsers() {
+      let items = await getUsers();
+      console.log("feed users", items.data);
+      this.users = items.data;
+    },
   },
   async mounted() {
     this.categories = this.$store.getters.categories;
     console.log("FEED.categories", this.categories);
 
     await this.loadServices();
+    await this.loadUsers();
 
     let res = await getCount();
     console.log("feed.count", res);
@@ -457,23 +487,8 @@ export default {
 </script>
 
 <style scoped>
-/* .feed {
-  background: linear-gradient(
-    34deg,
-    rgba(233, 148, 224, 1) 0%,
-    rgba(180, 215, 166, 1) 46%,
-    rgba(0, 212, 255, 1) 100%
-  );
-} */
-
 .feed {
   background-color: rgb(255, 255, 255);
-  /* background: linear-gradient(
-    34deg,
-    rgba(233, 148, 224, 1) 0%,
-    rgba(180, 215, 166, 1) 46%,
-    rgba(0, 212, 255, 1) 100%
-  ); */
 }
 
 .title-font {
