@@ -109,6 +109,7 @@ import HeaderApp from "./components/HeaderApp.vue";
 import Footer from "./components/Footer.vue";
 import { emailRules, passwordRules } from "./store/globals";
 import { isConnected } from "./store/firebaseService";
+import { mapActions } from "vuex";
 
 export default {
   name: "App",
@@ -136,14 +137,17 @@ export default {
     emailRules: emailRules,
     passwordRules,
   }),
-  created() {
+  async created() {
     console.log("APP CREATED");
     document.title = "Troc D'Heures Raismois";
+	//await this.fetchCategories()
   },
   async mounted() {
-    console.log("APP MOUNTED");
+    console.log("MOUNTED: init, fetching categories");
+	//await this.fetchCategories()
   },
   methods: {
+	...mapActions(["fetchCategories"]),
     async openAuthDialog() {
       console.log("opening auth dialog");
       let route = this.$route.name;

@@ -1,6 +1,6 @@
 <template>
   <div>
-	<!-- actual card -->
+    <!-- actual card -->
     <v-card v-if="true" class="card" elevation="10">
       <v-card-text class="">
         <v-row class="">
@@ -11,28 +11,37 @@
               <v-row class="no-gutters flex-column fill-height">
                 <v-col cols="" class="pt-0">
                   <v-row class="no-gutters" align="center">
-                    <v-col cols="8" class="">
+                    <v-col cols="12" class="">
                       <div class="card_categ_class">
-                        {{ item.categ }}
+                        {{ item.category }}
                       </div>
                     </v-col>
-                    <v-col cols="4" class="" align="right">
+                    <!-- <v-col cols="4" class="" align="right">
                       <div class="card_date_class">
                         {{
                           item.createdOn.toDate().toLocaleString().split(",")[0]
                         }}
                       </div></v-col
-                    >
+                    > -->
                   </v-row>
                 </v-col>
-                <!-- by-hour col=12 -->
+                <!-- by-date col=12 -->
                 <v-col cols="" class="">
-                  <v-row class="no-gutters">
+                  <v-row class="no-gutters ">
+                    <!-- by -->
                     <v-col cols="8" class="">
                       <div class="card_by_user_class">
-                        Proposé par {{ item.user.name }}
+                        Par {{ item.user.name }}
                       </div>
                     </v-col>
+                    <!-- date -->
+                    <v-col cols="4" class="" align="right">
+                      <!-- <div class="card_date_class">
+                        {{
+                          item.createdAt.toDate().toLocaleString().split(",")[0]
+                        }}
+                      </div> -->
+					</v-col>
                   </v-row>
                 </v-col>
                 <v-col></v-col>
@@ -74,7 +83,7 @@
             <v-img
               :src="
                 require(`@/assets/images/categories/${
-                  categToImage[item.categ]
+                  categToImage[item.category]
                 }`)
               "
             ></v-img>
@@ -95,25 +104,26 @@ export default {
   data() {
     return {
       categToImage: {
-        Animaux: "animal.jpg",
+		"Autre": "animal.jpg",
+        "Animaux": "animal.jpg",
         "Bricolage, travaux, tâches ménagères": "home.jpg",
-        Cuisine: "kitchen.jpg",
+        "Cuisine": "kitchen.jpg",
         "Décoration, DIY, Couture": "diy.jpeg",
-        Informatique: "computer.jpeg",
-        Jardinage: "garden.jpg",
+        "Informatique": "computer.jpeg",
+        "Jardinage": "garden.jpg",
         "Loisirs, jeux, sport": "hobby.png",
-        Mobilité: "transport.jpeg",
+        "Mobilité": "transport.jpeg",
         "Savoirs, connaissances": "teaching.jpeg",
         "Social (garde d'enfant...)": "social.jpeg",
-        "Prết / Don Biens culturels (livres, CD, DVD, magazine...)": "cultural",
-        "Prết / Don Électroménager / Informatique": "hardware",
-        "Prết / Don Jeux, Loisirs": "game",
-        "Prết / Don Meubles": "furniture",
-        "Prết / Don Outillage": "tools",
-        "Prết / Don Petite décoration": "deco",
-        "Prết / Don Textile": "textil",
-        "Prết / Don Plantes / Potager": "plants",
-        "Prết / Don Autres biens": "other",
+        "Prêt/Don Biens culturels (livres, CD)": "cultural",
+        "Prêt/Don Électroménager/Informatique": "hardware",
+        "Prêt/Don Jeux, Loisirs": "game",
+        "Prêt/Don Meubles": "furniture",
+        "Prêt/Don Outillage": "tools",
+        "Prêt/Don Petite décoration": "deco",
+        "Prêt/Don Textile": "textil",
+        "Prêt/Don Plantes/Potager": "plants",
+        "Prêt/Don Autres biens": "other",
       },
       //avatarSize: 0,
       dialog: false,
@@ -138,7 +148,7 @@ export default {
     fitText() {
       console.log("fit text trigger");
       const class_coefs = [
-        { className: "card_categ_class", coef: 0.115 },
+        { className: "card_categ_class", coef: 0.09 },
         { className: "card_date_class", coef: 0.15 },
         { className: "card_by_user_class", coef: 0.075 },
         { className: "card_hour_class", coef: 0.13 },

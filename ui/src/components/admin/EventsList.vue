@@ -148,6 +148,9 @@ export default {
       headers: [
         { text: "Type", value: "type" },
         { text: "Contenu de l'événement", value: "text" },
+		{ text: "Date", value: "date" },
+		{ text: "Début", value: "start" },
+		{ text: "Fin", value: "end" },
         { text: "Actions", value: "actions", sortable: false },
       ],
       // Form Dialog

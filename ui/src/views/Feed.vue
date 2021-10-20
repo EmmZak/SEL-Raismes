@@ -32,26 +32,26 @@
       </v-col>
       <v-col lg="3">
         <v-select
-          v-model="sort"
+          v-model="pagination.order"
           :items="sortOptions"
           prepend-icon="mdi-sort"
           label="Trier"
           item-text="title"
           item-value="value"
-          @change="loadItems()"
+          @change="loadServices()"
         ></v-select>
       </v-col>
       <v-col lg="3">
         <v-select
           ref="categSelect"
           chips
-          v-model="categList"
+          v-model="selectedCategories"
           :items="categories"
           prepend-icon="mdi-feature-search"
           label="Choisir la catégorie"
-          item-text="title"
+          item-text="name"
           item-value="value"
-          @change="loadItems()"
+          @change="loadServices()"
           multiple
         ></v-select>
       </v-col>
@@ -62,7 +62,7 @@
       <v-col lg="11">
         <div class="text-lg-h4 text-md-h5 text-sm-h6">
           <div class="title-font pb-10 text-left">
-            {{ items.length }} offre(s) disponible(s) pour votre recherche
+            {{ services.length }} offre(s) disponible(s) pour votre recherche
           </div>
         </div>
 
@@ -94,6 +94,7 @@
                         <v-col>
                           <v-select
                             :items="categories"
+                            item-text="name"
                             label="Catégorie"
                             v-model="editedItem.categ"
                             prepend-icon="mdi-shape"
@@ -192,17 +193,17 @@
               'pa-5': $vuetify.breakpoint.lg,
               'pa-2': $vuetify.breakpoint.xs,
             }"
-            v-for="(item, i) in items"
+            v-for="(service, i) in services"
             :key="i"
           >
             <!-- crud actions -->
             <v-card elevation="0" class="pb-1">
               <v-row>
                 <v-col>
-                  <v-btn class="primary" @click="editItem(item)">
+                  <v-btn class="primary" @click="editItem(service)">
                     <v-icon>mdi-pencil</v-icon>
                     <span>Modifier</span> </v-btn
-                  ><v-btn class="error" @click="deleteItem(item)">
+                  ><v-btn class="error" @click="deleteItem(service)">
                     <v-icon>mdi-delete</v-icon>
                     <span>Supprimer</span>
                   </v-btn></v-col
@@ -210,21 +211,20 @@
               </v-row>
             </v-card>
             <!-- item -->
-            <publication-card :item="item" :visit="visit" />
+            <publication-card :item="service" :visit="visit" />
           </v-col>
         </v-row>
       </v-col>
     </v-row>
 
-    <!-- pagination
     <v-pagination
-      v-if="this.items.length > 0"
+      v-if="this.services.length > 0"
       class="pt-5"
-      v-model="page"
+      v-model="pagination.page"
       :length="nbPages"
-      :page="page"
+      :page="pagination.page"
       :total-visible="5"
-    ></v-pagination>  -->
+    ></v-pagination>
   </v-container>
 </template>
 
@@ -237,9 +237,11 @@ import {
   emailRules,
   numberRules,
   sortOptions,
-  categories,
 } from "./../store/globals";
 import { isConnected } from "./../store/firebaseService";
+
+import { getCategories } from "./../services/category";
+import { getServices, getCount } from "./../services/service";
 
 export default {
   name: "Feed",
@@ -250,7 +252,7 @@ export default {
       requiredRules: requiredRules,
       emailRules: emailRules,
       numberRules: numberRules,
-      categories: categories,
+      categories: [],
       // Form dialog
       dialog: false,
       deleteDialog: false,
@@ -288,17 +290,26 @@ export default {
       },
       itemToDelete: {},
       // other
+      pagination: {
+        page: 1,
+        offset: 0,
+        limit: 10,
+        order: "desc",
+		categories: []
+      },
       visit: false,
       sortOptions: sortOptions,
       inDev: false,
       page: 1,
       townList: [],
       sort: "desc",
-      categList: [],
-      nbItems: 2,
+      selectedCategories: [],
+      itemsPerPage: 10,
       search: "",
       admin: false,
       //items: [],
+      services: [],
+      count: 0,
     };
   },
   components: {
@@ -308,20 +319,12 @@ export default {
     test() {
       console.log("feed store visitor", this.isVisitor);
     },
-    ...mapActions(["fetchUser", "fetchPublications"]),
+    ...mapActions(["fetchUser", "fetchPublications", "fetchCategories"]),
     toAdminPage() {
       this.$router.push("/admin");
     },
     filterItems() {
       console.log("search ", this.search);
-    },
-    async loadItems() {
-      this.$refs.categSelect.blur();
-      let categList = this.categList.length == 0 ? categories : this.categList;
-      await this.fetchPublications({
-        sort: this.sort,
-        categList: categList,
-      });
     },
     // crud
     async save() {
@@ -348,7 +351,7 @@ export default {
       // reload
       await this.fetchPublications({
         sort: "asc",
-        categList: categories,
+        selectedCategories: this.categories,
       });
 
       this.processing = false;
@@ -362,7 +365,7 @@ export default {
 
       this.editedIndex = this.items.indexOf(item);
       //this.editedItem = Object.assign({}, item);
-      this.editedItem = {...item, user: {...item.user}}
+      this.editedItem = { ...item, user: { ...item.user } };
       this.dialog = true;
     },
     deleteItem(item) {
@@ -380,7 +383,7 @@ export default {
       }
       //reload
       console.log("reloading items");
-      await this.loadItems();
+      await this.loadServices();
       console.log("reloaded items");
 
       this.itemToDelete = {};
@@ -398,13 +401,38 @@ export default {
       this.deleteDialog = false;
       this.close();
     },
+
+	// load services
+    async loadServices() {
+      this.$refs.categSelect.blur();
+      this.pagination.categories =
+        this.selectedCategories.length == 0 ? this.categories.map(e => e.name) : this.selectedCategories;
+
+      let items = await getServices(this.pagination);
+      console.log("feed.services", items.data);
+      this.services = items.data;
+      //   await this.fetchPublications({
+      //     sort: this.sort,
+      //     selectedCategories: selectedCategories,
+      //   });
+    },
+  },
+  async mounted() {
+    this.categories = this.$store.getters.categories;
+    console.log("FEED.categories", this.categories);
+
+    await this.loadServices();
+
+    let res = await getCount();
+    console.log("feed.count", res);
+    this.count = res.data;
   },
   computed: {
     nbPages() {
-      if (this.items.length <= this.nbItems) {
+      if (this.services.length <= this.pagination.limit) {
         return 1;
       }
-      let n = this.items.length / this.nbItems;
+      let n = this.services.length / this.pagination.limit;
       if (n % 2 != 0) {
         return (n | 0) + 1;
       }
@@ -424,33 +452,6 @@ export default {
     isVisitor() {
       return this.$store.getters.visitor;
     },
-  },
-  async mounted() {
-    let user = isConnected();
-    console.log("feeed.user ", user);
-    if (user == null) {
-      this.visit = true;
-    }
-    await this.loadItems();
-    // set parameters from url
-    /*
-    if (this.$route.page) {
-      this.page = this.$route.page
-    }
-    if (this.$route.town) {
-      this.town = this.$route.town
-    } */
-
-    //await this.fetchPublications();
-    // check if auth user
-    //await this.fetchUser();
-
-    // check if user is admin
-    let storeUser = this.$store.getters.actualUser;
-    console.log("Feed.actualUser", storeUser);
-    if (storeUser.admin) {
-      this.admin = true;
-    }
   },
 };
 </script>

@@ -1,5 +1,5 @@
 const router = require("express").Router()
-const { Town, User, Category } = require("../models/Models")
+const { Town, User } = require("../models/Models")
 const { associations } = require("../models/Town")
 const print = console.log
 

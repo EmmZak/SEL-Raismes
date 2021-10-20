@@ -1,32 +1,52 @@
 const router = require("express").Router()
-const { Service, Category, User } = require("../models/Models")
+const { Service, User } = require("../models/Models")
 
 const print = console.log
 
 router.get("/count", async (req, res) => {
 	try {
 		const n = await Service.count()
-		res.status(200).send({ count: n })
+		res.status(200).send(n)
 	} catch (err) {
 		res.send(err)
 	}
 })
 
-// pagination, offset, limit, order ASC or DESC
+router.get("/all", async (req, res) => {
+	try {
+		const items = await Service.findAll(
+			{
+				include: [User]
+			}
+		)
+		res.send(items)
+	} catch (err) {
+		res.send(err)
+	}
+})
+
+// pagination, offset, limit, order ASC or DESC, categories
 router.get("/", async (req, res) => {
+	print("INTO get services")
 	try {
 		const offset = req.query.offset
 		const limit = req.query.limit
 		const order = req.query.order
+		const categories = req.query.categories
+		print(req.query)
+		//const loan = req.query.loan
 
 		const items = await Service.findAll(
 			{
 				offset: req.query.offset,
 				limit: req.query.limit,
+				where: {
+					category: categories
+				},
 				order: [
 					['createdAt', req.query.order]
 				],
-				include: [Category, User]
+				include: [User]
 			}
 		)
 		res.send(items)
@@ -45,7 +65,7 @@ router.get("/user/:id", async (req, res) => {
 					userId: userId
 				}
 			},
-			{ include: [Category, User] }
+			{ include: [User] }
 		)
 		res.send(items)
 	} catch (err) {
@@ -54,17 +74,17 @@ router.get("/user/:id", async (req, res) => {
 })
 
 // find services by category
-router.get("/category/:id", async (req, res) => {
+router.get("/category/:category", async (req, res) => {
 	try {
-		const categoryId = req.params.id
+		const category = req.params.category
 
 		const items = await Service.findAll(
 			{
 				where: {
-					categoryId: categoryId
+					category: category
 				}
 			},
-			{ include: [Category, User] }
+			{ include: [User] }
 		)
 		res.send(items)
 	} catch (err) {
@@ -75,7 +95,7 @@ router.get("/category/:id", async (req, res) => {
 router.get("/:id", async (req, res) => {
 	try {
 		let id = req.params.id
-		const o = await Service.findByPk(id, { include: [Category, User] })
+		const o = await Service.findByPk(id, { include: [User] })
 		res.send(o)
 	} catch (err) {
 		res.send(err)
@@ -85,13 +105,12 @@ router.get("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
 	try {
 		let user = await User.findByPk(req.body.userId)
-		let category = await Category.findByPk(req.body.categoryId)
 
 		let service = await Service.create({
 			description: req.body.description,
+			category: req.body.category,
 		})
 		service.setUser(user)
-		service.setCategory(category)
 
 		service = await service.save()
 		res.send(service)
@@ -106,7 +125,7 @@ router.put("/", async (req, res) => {
 			{
 				description: req.body.description,
 				userId: req.body.userId,
-				categoryId: req.body.categoryId,
+				category: req.body.category,
 			},
 			{
 				returning: true,

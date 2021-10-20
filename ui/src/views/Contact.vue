@@ -6,7 +6,7 @@
         <v-card elevation="0" class="pa-2">
           <v-card-title
             :class="{ 'red lighten-1': $vuetify.breakpoint.xs }"
-            class="d-flex  text-lg-h4 text-md-h3 text-sm-h3 text-body-2"
+            class="d-flex text-lg-h4 text-md-h3 text-sm-h3 text-body-2"
           >
             <div
               :class="{ 'white--text': $vuetify.breakpoint.xs }"
@@ -21,13 +21,13 @@
             59590 Raismes
           </v-card-title>
           <v-card-title
-		  	:class="{ '': $vuetify.breakpoint.xs }"
-            class="
-              d-flex 
-              text-lg-h3 text-md-h3 text-sm-h3 text-h6
-            "
+            :class="{ '': $vuetify.breakpoint.xs }"
+            class="d-flex text-lg-h3 text-md-h3 text-sm-h3 text-h6"
           >
-            <div :class="{ 'white--text': $vuetify.breakpoint.xs }" class="title-font font-weight-bold text-center">
+            <div
+              :class="{ 'white--text': $vuetify.breakpoint.xs }"
+              class="title-font font-weight-bold text-center"
+            >
               Contactez-nous
             </div>
           </v-card-title>

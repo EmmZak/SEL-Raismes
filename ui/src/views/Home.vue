@@ -100,10 +100,14 @@
         <v-timeline width="50%">
           <v-timeline-item v-for="(event, i) in events" :key="i" fill-dot>
             <v-card :color="timelineColors[i % 3]" dark>
-              <v-card-title class="title">{{ event.type }}</v-card-title>
+              <v-card-title class="title">
+				  	{{event.type}} - {{ formatISOonlydate(event.date) }} 
+					de {{ event.start }} 
+					à {{ event.end }}
+			  </v-card-title>
               <v-card-text class="white text--primary pa-5">
                 <p style="white-space: pre-line;">
-                  {{ event.text }}
+                  {{ event.text }} 
                 </p>
               </v-card-text>
             </v-card>
@@ -135,6 +139,7 @@
 <script>
 import { mapActions } from "vuex";
 // import { VRow, VCol, VContainer, VCard, VCardText, VCardTitle, VDivider } from 'vuetify/lib'
+import { formatISOonlydate, formatISOdateToHours} from "./../store/globals"
 
 export default {
   name: "Home",
@@ -143,6 +148,8 @@ export default {
   },
   data() {
     return {
+		formatISOdateToHours: formatISOdateToHours,
+		formatISOonlydate: formatISOonlydate,
       // map
       coor: {
         x: 50.403774,
@@ -217,7 +224,9 @@ export default {
   },
   computed: {},
   async mounted() {
+	console.log("HOME: fetching events")
     await this.fetchEvents();
+	console.log("HOME: fetched")
 
     this.events = this.$store.getters.events;
     console.log("home.mounted.events", this.events);
