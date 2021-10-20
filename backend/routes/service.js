@@ -44,7 +44,7 @@ router.get("/", async (req, res) => {
 					category: categories
 				},
 				order: [
-					['createdAt', req.query.order]
+					['updatedAt', req.query.order]
 				],
 				include: [User]
 			}
