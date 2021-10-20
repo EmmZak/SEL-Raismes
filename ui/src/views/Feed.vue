@@ -368,17 +368,6 @@ export default {
       }
       await this.loadServices();
 
-      //   // add creation date for sorting
-      //   this.editedItem["createdOn"] = new Date();
-      //   try {
-      //     await this.$store.dispatch("savePublication", {
-      //       publication: this.editedItem,
-      //       backup: this.actualItemBackup,
-      //     });
-      //   } catch (err) {
-      //     console.log("try-catch", err);
-      //   }
-
       this.processing = false;
       this.close();
     },
@@ -402,14 +391,14 @@ export default {
     },
     async deleteItemConfirm() {
       try {
+		console.log("this.itemToDelete", this.itemToDelete)
+		await deleteService(this.itemToDelete.id)
         //await this.$store.dispatch("deletePublication", this.itemToDelete);
       } catch (err) {
         console.log(err);
       }
       //reload
-      console.log("reloading items");
       await this.loadServices();
-      console.log("reloaded items");
 
       this.itemToDelete = {};
       this.closeDelete();
