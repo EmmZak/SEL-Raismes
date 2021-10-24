@@ -160,7 +160,7 @@
 
 <script>
 import PublicationCard from "./../../components/PublicationCard.vue";
-import HelperFunctions from "./../../helperFunctions/HelperFunctions";
+//import { formatDDMMYYYY } from "./../../services/general"
 //import { mapGetters } from 'vuex'
 import { mapActions } from "vuex";
 import {
@@ -172,7 +172,6 @@ import {
 
 export default {
   name: "PublicationsList",
-  mixins: [HelperFunctions],
   components: {
     PublicationCard,
   },

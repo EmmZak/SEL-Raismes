@@ -1,17 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import UserStore from './user'
-import PublicationStore from './publication'
-import EventStore from './event'
+
+import ServiceStore from "./service"
 
 Vue.use(Vuex)
 
-export const store = new Vuex.Store({
+export default new Vuex.Store({
   modules: {
-    user: UserStore,
-    publication: PublicationStore,
-    event: EventStore
+    service: ServiceStore
   }
 })
-
-export default store

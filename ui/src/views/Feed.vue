@@ -259,8 +259,7 @@
 </template>
 
 <script>
-//import { findPublications } from "./../store/firebaseService";
-import { mapActions } from "vuex";
+//import { mapActions } from "vuex";
 import PublicationCard from "./../components/PublicationCard.vue";
 import {
   requiredRules,
@@ -268,9 +267,8 @@ import {
   numberRules,
   sortOptions,
 } from "./../store/globals";
-import { isConnected } from "./../store/firebaseService";
 
-import { getCategories } from "./../services/category";
+//import { getCategories } from "./../services/category";
 import { getServices, getCount, createService, updateService, deleteService } from "./../services/service";
 import { getUsers } from "./../services/user";
 
@@ -339,7 +337,7 @@ export default {
     test() {
       console.log("this.editedItem", this.editedItem);
     },
-    ...mapActions(["fetchUser", "fetchPublications", "fetchCategories"]),
+    //...mapActions(["fetchUser", "fetchPublications", "fetchCategories"]),
     toAdminPage() {
       this.$router.push("/admin");
     },
@@ -377,15 +375,15 @@ export default {
       console.log("editItem.item", item);
       console.log("backup.item", this.actualItemBackup);
 
-      this.editedIndex = this.items.indexOf(item);
+      this.editedIndex = this.services.indexOf(item);
       //this.editedItem = Object.assign({}, item);
       this.editedItem = { ...item, user: { ...item.user } };
       this.dialog = true;
     },
     deleteItem(item) {
-      //console.log("deleteItem.item", item)
+      console.log("deleteItem.item", item)
       this.itemToDelete = item;
-      this.editedIndex = this.items.indexOf(item);
+      this.editedIndex = this.services.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.deleteDialog = true;
     },

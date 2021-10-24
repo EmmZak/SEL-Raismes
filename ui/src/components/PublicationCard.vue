@@ -95,12 +95,11 @@
 </template>
 
 <script>
-import HelperFunctions from "./../helperFunctions/HelperFunctions";
+
 
 export default {
   name: "PublicationCard",
   props: ["item", "visit"],
-  mixins: [HelperFunctions],
   data() {
     return {
       categToImage: {

@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const API = "http://localhost:5000/users/"
-const print = console.log
+//const print = console.log
 
 // User
 
@@ -17,5 +17,6 @@ async function createUser(user) {
 }
 
 export {
-	getUsers
+	getUsers,
+	createUser
 }

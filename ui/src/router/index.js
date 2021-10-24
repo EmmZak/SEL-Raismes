@@ -1,13 +1,11 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
+import Home from "../views/Home.vue"
 import Feed from "../views/Feed.vue";
 import Admin from "../views/Admin.vue";
 import Contact from "../views/Contact.vue";
-import News from "../views/News.vue";
 import About from "../views/About.vue";
-import store from "../store/index.js"
-import { isConnected } from './../store/firebaseService'
+// import store from "../store/index.js"
 
 Vue.use(VueRouter);
 
@@ -26,11 +24,6 @@ const routes = [
     path: "/contact",
     name: "Contact",
     component: Contact,
-  },
-  {
-    path: "/news",
-    name: "News",
-    component: News,
   },
   {
     path: "/feed",
@@ -60,7 +53,7 @@ router.beforeEach((to, from, next) => {
     // if guest/visitor
     //let visitor = store.getters.visitor
     //console.log("router visitor", visitor);
-    let user = isConnected()  
+    let user = null
     console.log("ROUTER.user", user)
     if (user.id) {
       next();

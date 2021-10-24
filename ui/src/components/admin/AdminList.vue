@@ -194,7 +194,7 @@
 </template>
 
 <script>
-import HelperFunctions from "./../../helperFunctions/HelperFunctions";
+//import { formatDDMMYYYY } from "./../../services/general"
 import { mapActions } from "vuex";
 import {
   requiredRules,
@@ -206,7 +206,6 @@ import {
 
 export default {
   name: "AdminList",
-  mixins: [HelperFunctions],
   data() {
     return {
       // form

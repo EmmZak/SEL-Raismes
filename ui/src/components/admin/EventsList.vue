@@ -125,12 +125,11 @@
 </template>
 
 <script>
-import HelperFunctions from "./../../helperFunctions/HelperFunctions";
+//import { formatDDMMYYYY } from "./../../services/general"
 import { mapActions } from "vuex";
 
 export default {
   name: "EventsList",
-  mixins: [HelperFunctions],
   data() {
     return {
       types: ["Information", "Inscription", "Important"],

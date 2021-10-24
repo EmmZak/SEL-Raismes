@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import {Firestore} from './../firebaseConfig';
 
 export default {
     name: "Demandes",

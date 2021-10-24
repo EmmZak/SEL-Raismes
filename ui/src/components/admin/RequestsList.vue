@@ -161,13 +161,12 @@
 </template>
 
 <script>
-import HelperFunctions from "./../../helperFunctions/HelperFunctions";
+//import { formatDDMMYYYY } from "./../../services/general"
 //import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
 
 export default {
     name: "DemandesList",
-    mixins: [HelperFunctions],
     data() {
         return {
             // Form

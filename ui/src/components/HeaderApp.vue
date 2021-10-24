@@ -78,7 +78,6 @@
 </template>
 
 <script>
-import { isConnected } from "./../store/firebaseService";
 
 export default {
   name: "HeaderApp",
@@ -128,7 +127,8 @@ export default {
   computed: {
     isVisitor() {
       //return this.$store.getters.visitor
-      return isConnected()==null
+      return false
+      //return isConnected()==null
     },
     signInOutButtonText() {
       return this.$store.getters.actualUser.id == null

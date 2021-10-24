@@ -1,10 +1,10 @@
 import axios from "axios"
 
 const API = "http://localhost:5000/services/"
-const print = console.log
+//const print = console.log
 
 // Service
-async function getCount(pagination) {
+async function getCount() {
 	return axios.get(API + "count")
 }
 
