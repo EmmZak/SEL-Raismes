@@ -19,12 +19,13 @@
               <v-col>
                 <v-btn class="primary" @click="editItem(event)">
                   <v-icon>mdi-pencil</v-icon>
-                  <span>Modifier</span> 
+                  <span>Modifier</span>
                 </v-btn>
                 <v-btn class="error" @click="deleteItem(event)">
                   <v-icon>mdi-delete</v-icon>
                   <span>Supprimer</span>
-                </v-btn></v-col>
+                </v-btn></v-col
+              >
             </v-row>
           </v-card>
           <!-- event card -->
@@ -50,11 +51,93 @@
         </v-timeline-item>
       </v-timeline>
     </v-col>
+    <!-- dialog -->
+    <v-dialog v-model="dialog" max-width="800px">
+      <v-card>
+        <v-card-title>
+          <span class="text-h5"> Création d'un événement </span>
+        </v-card-title>
+        <v-card-text>
+          <v-form ref="eventForm">
+            <v-row class="">
+              <v-col class="">
+                <v-row>
+                  <v-col cols="12">
+                    <v-text-field
+                      v-model="editedItem.type"
+                      label="Nature de l'événement"
+                      :rules="[(v) => !!v || 'Le type est obligatoire']"
+                      required
+                    ></v-text-field>
+                  </v-col>
+                  <v-col>
+                    <v-text-field
+                      v-model="editedItem.start"
+                      label="Heure début"
+                      required
+                    ></v-text-field>
+                  </v-col>
+                  <v-col>
+                    <v-text-field
+                      v-model="editedItem.end"
+                      label="Heure fin"
+                      required
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-textarea
+                      v-model="editedItem.text"
+                      label="Description"
+                      :rules="[(v) => !!v || 'La description est obligatoire']"
+                      required
+                    ></v-textarea>
+                  </v-col>
+                </v-row>
+              </v-col>
+              <v-col class="text-center">
+                <v-date-picker
+                  v-model="editedItem.date"
+                  locale="fr-FR"
+                  :rules="[(v) => !!v || 'La date est obligatoire']"
+                ></v-date-picker>
+              </v-col>
+            </v-row>
+          </v-form>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="close"> Annuler </v-btn>
+          <v-btn color="blue darken-1" text @click="save"> Enregistrer </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <!-- end dialog -->
+    <!-- delete dialog -->
+    <v-dialog v-model="deleteDialog" max-width="500px">
+      <v-card>
+        <v-card-title class="text-h10"
+          >Vous êtes sûr de vouloir supprimer l'événement ?</v-card-title
+        >
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="closeDelete">Annuler</v-btn>
+          <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+            >OUI</v-btn
+          >
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-row>
 </template>
 
 <script>
-import { getEvents } from "./../../services/event";
+import {
+  getEvents,
+  createEvent,
+  updateEvent,
+  deleteEvent,
+} from "./../../services/event";
 import { formatISOonlydate, formatISOdateToHours } from "./../../store/globals";
 
 export default {
@@ -67,15 +150,90 @@ export default {
       events: [],
       // form
       dialog: false,
+      deleteDialog: false,
+      editedIndex: -1,
+      editedItem: {
+        id: null,
+        type: "",
+        date: "",
+        start: "",
+        end: "",
+        text: "",
+      },
+      defaultItem: {
+        id: null,
+        type: "",
+        date: "",
+        start: "",
+        end: "",
+        text: "",
+      },
+      itemToDelete: {},
     };
   },
   methods: {
-    // todo crud
+    async loadEvents() {
+      let events = await getEvents();
+      //console.log("HOME: events", events.data);
+      this.events = events.data;
+    },
+    async save() {
+      if (!this.$refs.eventForm.validate()) {
+        return;
+      }
+      if (this.editedItem.date == "") {
+        alert("La date est obligatoire");
+        return;
+      }
+      console.log("this.editedItem", this.editedItem);
+
+      if (this.editedItem.id) {
+        console.log("updating event");
+        await updateEvent(this.editedItem);
+      } else {
+        console.log("creating event");
+        await createEvent(this.editedItem);
+      }
+
+      await this.loadEvents();
+      this.close();
+    },
+    async editItem(item) {
+      this.editedIndex = this.events.indexOf(item);
+      this.editedItem = { ...item };
+      this.dialog = true;
+    },
+    deleteItem(item) {
+      console.log("deleteItem.item", item);
+      this.itemToDelete = item;
+      this.editedIndex = this.events.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.deleteDialog = true;
+    },
+    async deleteItemConfirm() {
+      try {
+        await deleteEvent(this.itemToDelete.id);
+      } catch (err) {
+        console.log(err);
+      }
+
+      await this.loadEvents();
+
+      this.itemToDelete = {};
+      this.closeDelete();
+    },
+    close() {
+      this.dialog = false;
+      this.editedItem = Object.assign({}, this.defaultItem);
+      this.editedIndex = -1;
+    },
+    closeDelete() {
+      this.deleteDialog = false;
+      this.close();
+    },
   },
   async mounted() {
-    let events = await getEvents();
-    console.log("HOME: events", events.data);
-    this.events = events.data;
+    await this.loadEvents();
   },
 };
 </script>

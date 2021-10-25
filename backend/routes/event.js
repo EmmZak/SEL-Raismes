@@ -18,13 +18,17 @@ router.put("/", async (req, res) => {
 		const id = req.body.id
 		const type = req.body.type
 		const text = req.body.text
-		const rdv = req.body.rdv
+		const date = req.body.date
+		const start = req.body.start
+		const end = req.body.end
 
 		let e = await Event.update(
 			{
 				type: type,
 				text: text,
-				rdv: rdv
+				date: date,
+				start: start,
+				end: end
 			},
 			{
 				returning: true,
@@ -40,16 +44,21 @@ router.put("/", async (req, res) => {
 })
 
 router.post("/", async (req, res) => {
+	console.log("post request events req.body", req.body)
 	try {
 		const type = req.body.type
 		const text = req.body.text
-		const rdv = req.body.rdv
+		const date = req.body.date
+		const start = req.body.start
+		const end = req.body.end
 
 		e = await Event.create(
 			{
 				type: type,
 				text: text,
-				rdv: rdv
+				date: date,
+				start: start,
+				end: end
 			}
 		)
 		res.status(200).send(e)

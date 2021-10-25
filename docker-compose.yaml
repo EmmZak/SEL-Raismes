@@ -20,6 +20,7 @@ services:
     depends_on:
       - db
   
+  # host = db.container_name
   pgadmin:
       container_name: pgadmin4_container
       image: dpage/pgadmin4

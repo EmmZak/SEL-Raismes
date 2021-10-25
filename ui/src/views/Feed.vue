@@ -133,17 +133,6 @@
                           item-value="id"
                           :rules="requiredRules"
                         ></v-autocomplete>
-                        <!-- <v-select
-                          :items="users"
-                          :item-text="
-                            (user) =>
-                              `${user.name}, ${user.surname}, ${user.mail}, ${user.number}, ${user.credit}, ${user.town.name}, ${user.town.code}`
-                          "
-                          label="Séliste"
-                          v-model="editedItem.user"
-                          prepend-icon="mdi-shape"
-                          :rules="requiredRules"
-                        ></v-select> -->
                       </v-col>
                     </v-col>
                   </v-row>
@@ -207,7 +196,7 @@
                   >Annuler</v-btn
                 >
                 <v-btn color="blue darken-1" text @click="deleteItemConfirm"
-                  >OK</v-btn
+                  >OUI</v-btn
                 >
                 <v-spacer></v-spacer>
               </v-card-actions>
@@ -269,7 +258,13 @@ import {
 } from "./../store/globals";
 
 //import { getCategories } from "./../services/category";
-import { getServices, getCount, createService, updateService, deleteService } from "./../services/service";
+import {
+  getServices,
+  getCount,
+  createService,
+  updateService,
+  deleteService,
+} from "./../services/service";
 import { getUsers } from "./../services/user";
 
 export default {
@@ -381,7 +376,7 @@ export default {
       this.dialog = true;
     },
     deleteItem(item) {
-      console.log("deleteItem.item", item)
+      console.log("deleteItem.item", item);
       this.itemToDelete = item;
       this.editedIndex = this.services.indexOf(item);
       this.editedItem = Object.assign({}, item);
@@ -389,8 +384,8 @@ export default {
     },
     async deleteItemConfirm() {
       try {
-		console.log("this.itemToDelete", this.itemToDelete)
-		await deleteService(this.itemToDelete.id)
+        console.log("this.itemToDelete", this.itemToDelete);
+        await deleteService(this.itemToDelete.id);
         //await this.$store.dispatch("deletePublication", this.itemToDelete);
       } catch (err) {
         console.log(err);

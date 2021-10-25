@@ -8,6 +8,21 @@ async function getEvents() {
 	return axios.get(API)
 }
 
+async function createEvent(event) {
+	return axios.post(API, event)
+}
+
+async function updateEvent(event) {
+	return axios.put(API, event)
+}
+
+async function deleteEvent(id) {
+	return axios.delete(`${API}/${id}`)
+}
+
 export {
-	getEvents
+	getEvents,
+	createEvent,
+	updateEvent,
+	deleteEvent
 }
