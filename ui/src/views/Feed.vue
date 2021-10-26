@@ -261,8 +261,7 @@ import {
 import {
   getServices,
   getCount,
-  createService,
-  updateService,
+  saveService,
   deleteService,
 } from "./../services/service";
 import { getUsers } from "./../services/user";
@@ -343,22 +342,18 @@ export default {
     async save() {
       console.log("this refs", this.$refs);
       if (!this.$refs.publicationFormFeed.validate()) {
-        // console.log(
-        //   "mail-number",
-        //   this.editedItem.user.mail,
-        //   this.editedItem.user.number
-        // );
         return;
       }
       this.processing = true;
 
       console.log("this.editedItem", this.editedItem);
 
-      if (this.editedItem.id) {
-        await updateService(this.editedItem);
-      } else {
-        await createService(this.editedItem);
+      try {
+        await saveService(this.editedItem)
+      } catch(err) {
+        console.log("Feed.save.err", err)
       }
+
       await this.loadServices();
 
       this.processing = false;

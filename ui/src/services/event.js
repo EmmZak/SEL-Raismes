@@ -8,13 +8,21 @@ async function getEvents() {
 	return axios.get(API)
 }
 
-async function createEvent(event) {
-	return axios.post(API, event)
-}
+async function saveEvent(e) {
+	if (e.id) {
+		return axios.put(API, e)
+	} else {
+		return axios.post(API, e)
+	}
+} 
 
-async function updateEvent(event) {
-	return axios.put(API, event)
-}
+// async function createEvent(event) {
+// 	return axios.post(API, event)
+// }
+
+// async function updateEvent(event) {
+// 	return axios.put(API, event)
+// }
 
 async function deleteEvent(id) {
 	return axios.delete(`${API}/${id}`)
@@ -22,7 +30,6 @@ async function deleteEvent(id) {
 
 export {
 	getEvents,
-	createEvent,
-	updateEvent,
+	saveEvent,
 	deleteEvent
 }

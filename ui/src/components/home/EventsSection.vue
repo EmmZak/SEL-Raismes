@@ -168,8 +168,7 @@
 <script>
 import {
   getEvents,
-  createEvent,
-  updateEvent,
+  saveEvent,
   deleteEvent,
 } from "./../../services/event";
 import { formatISOonlydate, formatISOdateToHours } from "./../../store/globals";
@@ -183,32 +182,7 @@ export default {
       timelineColors: ["pink lighten-1", "blue lighten-1", "success"],
       events: [],
       // form
-      hourRange: [
-        "1",
-        "2",
-        "3",
-        "4",
-        "5",
-        "5",
-        "6",
-        "7",
-        "8",
-        "9",
-        "10",
-        "11",
-        "12",
-        "13",
-        "14",
-        "15",
-        "16",
-        "17",
-        "18",
-        "19",
-        "20",
-        "21",
-        "22",
-        "23",
-      ],
+      hourRange: Array.from({length: 23}, (_, i) => i + 1).toString().split(','),
       minuteRange: ["", "15", "30", "45"],
       dialog: false,
       deleteDialog: false,
@@ -252,12 +226,10 @@ export default {
       }
       console.log("this.editedItem", this.editedItem);
 
-      if (this.editedItem.id) {
-        console.log("updating event");
-        await updateEvent(this.editedItem);
-      } else {
-        console.log("creating event");
-        await createEvent(this.editedItem);
+      try {
+        await saveEvent(this.editedItem)
+      } catch(err) {
+        console.log("EventSection.save.err", err)
       }
 
       await this.loadEvents();

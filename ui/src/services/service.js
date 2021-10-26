@@ -14,13 +14,13 @@ async function getServices(pagination) {
 	})
 }
 
-async function createService(service) {
-	return axios.post(API, service)
-}
-
-async function updateService(service) {
-	return axios.put(API, service)
-}
+async function saveService(service) {
+	if (service.id) {
+		return axios.put(API, service)
+	} else {
+		return axios.post(API, service)
+	}
+} 
 
 async function deleteService(id) {
 	return axios.delete(`${API}/${id}`)
@@ -29,7 +29,6 @@ async function deleteService(id) {
 export {
 	getCount,
 	getServices,
-	createService,
-	updateService,
+	saveService,
 	deleteService
 }
