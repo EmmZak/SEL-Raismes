@@ -20,6 +20,7 @@ services:
     depends_on:
       - db
   
+  # http://localhost:5050/
   # host = db.container_name
   pgadmin:
       container_name: pgadmin4_container

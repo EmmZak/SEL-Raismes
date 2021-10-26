@@ -19,16 +19,20 @@ router.put("/", async (req, res) => {
 		const type = req.body.type
 		const text = req.body.text
 		const date = req.body.date
-		const start = req.body.start
-		const end = req.body.end
+		const startHour = req.body.startHour
+		const startMinute = req.body.startMinute
+		const endHour = req.body.endHour
+		const endMinute = req.body.endMinute
 
 		let e = await Event.update(
 			{
 				type: type,
 				text: text,
 				date: date,
-				start: start,
-				end: end
+				startHour: startHour,
+				startMinute: startMinute,
+				endHour: endHour,
+				endMinute: endMinute
 			},
 			{
 				returning: true,
@@ -49,16 +53,20 @@ router.post("/", async (req, res) => {
 		const type = req.body.type
 		const text = req.body.text
 		const date = req.body.date
-		const start = req.body.start
-		const end = req.body.end
+		const startHour = req.body.startHour
+		const startMinute = req.body.startMinute
+		const endHour = req.body.endHour
+		const endMinute = req.body.endMinute
 
 		e = await Event.create(
 			{
 				type: type,
 				text: text,
 				date: date,
-				start: start,
-				end: end
+				startHour: startHour,
+				startMinute: startMinute,
+				endHour: endHour,
+				endMinute: endMinute
 			}
 		)
 		res.status(200).send(e)

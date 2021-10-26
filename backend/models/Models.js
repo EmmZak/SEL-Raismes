@@ -9,8 +9,10 @@ const Event = sequelize.define("event", {
 	type: DataTypes.STRING,
 	text: DataTypes.STRING,
 	date: DataTypes.DATEONLY,
-	start: DataTypes.STRING,
-	end: DataTypes.STRING
+	startHour: DataTypes.STRING,
+	startMinute: DataTypes.STRING,
+	endHour: DataTypes.STRING,
+	endMinute: DataTypes.STRING,
 })
 
 const Town = sequelize.define("town", {
@@ -51,9 +53,7 @@ const init = async () => {
 	await sequelize.sync({ force: true });
 
 	Event.bulkCreate([
-		{ type: "Permanences", text: "venez nois voir tel jour", date: new Date(), start: "14h30", end: "15h" },
-		{ type: "Inscription", text: "venez vous inscrre les amis", date: new Date(), start: "3h", end: "9h" },
-		{ type: "Fête", text: "venez deguster les amis", date: new Date(), start: "4h", end: "14h" }
+		{ type: "Permanences", text: "venez nois voir tel jour", date: new Date(), startHour: "14", startMinute: "15", endHour: "15", endMinute: "45" }
 	])
 
 	Town.bulkCreate([

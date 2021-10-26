@@ -37,7 +37,8 @@
                 </div>
                 <div>
                   {{ formatISOonlydate(event.date) }}
-                  de {{ event.start }} à {{ event.end }}
+                  de {{ event.startHour }}h{{ event.startMinute }} à
+                  {{ event.endHour }}h{{ event.endMinute }}
                 </div>
               </v-row>
             </v-card-title>
@@ -61,7 +62,7 @@
           <v-form ref="eventForm">
             <v-row class="">
               <v-col class="">
-                <v-row>
+                <v-row class="">
                   <v-col cols="12">
                     <v-text-field
                       v-model="editedItem.type"
@@ -70,20 +71,53 @@
                       required
                     ></v-text-field>
                   </v-col>
-                  <v-col>
-                    <v-text-field
-                      v-model="editedItem.start"
-                      label="Heure début"
-                      required
-                    ></v-text-field>
+                </v-row>
+                <!-- start -->
+                <v-row class="" align="center">
+                  <v-col cols="4">
+                    <span class="text-h5">Début</span>
                   </v-col>
-                  <v-col>
-                    <v-text-field
-                      v-model="editedItem.end"
-                      label="Heure fin"
+                  <v-col cols="4">
+                    <v-select
+                      :items="hourRange"
+                      v-model="editedItem.startHour"
+                      label="Heure"
                       required
-                    ></v-text-field>
+                    ></v-select>
                   </v-col>
+                  <v-col cols="4">
+                    <v-select
+                      :items="minuteRange"
+                      v-model="editedItem.startMinute"
+                      label="Minute"
+                      required
+                    ></v-select>
+                  </v-col>
+                </v-row>
+                <!-- end -->
+                <v-row class="" align="center">
+                  <v-col cols="4">
+                    <span class="text-h5">Fin</span>
+                  </v-col>
+                  <v-col cols="4">
+                    <v-select
+                      :items="hourRange"
+                      v-model="editedItem.endHour"
+                      label="Heure"
+                      required
+                    ></v-select>
+                  </v-col>
+                  <v-col cols="4">
+                    <v-select
+                      :items="minuteRange"
+                      v-model="editedItem.endMinute"
+                      label="Minute"
+                      required
+                    ></v-select>
+                  </v-col>
+                </v-row>
+                <!-- desc -->
+                <v-row>
                   <v-col cols="12">
                     <v-textarea
                       v-model="editedItem.text"
@@ -149,6 +183,33 @@ export default {
       timelineColors: ["pink lighten-1", "blue lighten-1", "success"],
       events: [],
       // form
+      hourRange: [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "22",
+        "23",
+      ],
+      minuteRange: ["", "15", "30", "45"],
       dialog: false,
       deleteDialog: false,
       editedIndex: -1,
@@ -156,16 +217,20 @@ export default {
         id: null,
         type: "",
         date: "",
-        start: "",
-        end: "",
+        startHour: "",
+        startMinute: "",
+        endHour: "",
+        endMinute: "",
         text: "",
       },
       defaultItem: {
         id: null,
         type: "",
         date: "",
-        start: "",
-        end: "",
+        startHour: "",
+        startMinute: "",
+        endHour: "",
+        endMinute: "",
         text: "",
       },
       itemToDelete: {},
