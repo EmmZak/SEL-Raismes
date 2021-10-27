@@ -36,8 +36,8 @@
                   <strong>{{ event.type }}</strong>
                 </div>
                 <div>
-                  {{ formatISOonlydate(event.date) }}
-                  de {{ event.startHour }}h{{ event.startMinute }} à
+                  {{ formatISOonlydate(event.date) }},
+                  {{ event.startHour }}h{{ event.startMinute }} à
                   {{ event.endHour }}h{{ event.endMinute }}
                 </div>
               </v-row>

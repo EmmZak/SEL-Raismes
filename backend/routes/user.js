@@ -43,13 +43,30 @@ router.get("/:id", async (req, res) => {
 	}
 })
 
+router.get("/firebase/:id", async (req, res) => {
+	try {
+		let firebaseID = req.params.id
+		print("firebase id", firebaseID)
+		const o = await User.findOne({
+			where: {
+				firebaseID: firebaseID
+			}
+		})
+		res.status(200).send(o)
+	} catch (err) {
+		res.status(400).send(err)
+	}
+})
+
 router.post("/", async (req, res) => {
 	try {
 		let userTown = await Town.findByPk(req.body.townId)
 
 		let user = await User.create({
 			firebaseID: req.body.firebaseID,
+			idToken: req.body.idToken,
 			mail: req.body.mail,
+			number: req.body.number,
 			name: req.body.name,
 			surname: req.body.surname,
 			admin: req.body.admin,
@@ -70,7 +87,9 @@ router.put("/", async (req, res) => {
 		let user = await User.update(
 			{
 				firebaseID: req.body.firebaseID,
+				idToken: req.body.idToken,
 				mail: req.body.mail,
+				number: req.body.number,
 				name: req.body.name,
 				surname: req.body.surname,
 				admin: req.body.admin,
@@ -90,19 +109,19 @@ router.put("/", async (req, res) => {
 })
 
 // localhost:5000/users/id
-router.delete("/:id", async (req, res) => {
+router.delete("/firebase/:id", async (req, res) => {
 	try {
-		let id = req.params.id
+		let firebaseID = req.params.id
 
 		let deleteUser = await User.destroy({
 			where: {
-				id: id
+				firebaseID: firebaseID
 			}
 		})
 
 		res.status(200).send({ done: deleteUser == 1 ? true : false })
 	} catch (err) {
-		res.send(err)
+		res.status(400).send(err)
 	}
 
 })

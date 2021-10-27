@@ -1,49 +1,44 @@
 <template>
-  <v-card>
-    <v-card-title>
-      <v-text-field
-        v-model="search"
-        append-icon="mdi-magnify"
-        label="Rechercher"
-        single-line
-        hide-details
-      ></v-text-field>
-    </v-card-title>
+  <v-container class="" fluid>
+    <v-card class="pa-5">
+      <!-- title -->
+      <v-card-title>
+        <div class="text-h5">Gestion d'utilisateurs et d'administrateurs</div>
+      </v-card-title>
+      <!-- search -->
+      <v-card-title>
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Rechercher"
+          single-line
+          hide-details
+        ></v-text-field>
+      </v-card-title>
+      <!-- data table -->
+      <v-data-table
+        :headers="headers"
+        :items="users"
+        :search="search"
+        class="elevation-1"
+      >
+        <!-- town column -->
+        <template v-slot:[`item.town`]="{ item }">
+          <span>{{ item.town.name }}, {{ item.town.code }}</span>
+        </template>
 
-    <v-data-table
-      :headers="headers"
-      :items="users"
-      :search="search"
-      class="elevation-1"
-    >
-      <!-- date column -->
-      <template v-slot:[`item.date`]="{ item }">
-        <span>{{ formatDDMMYYYY(item.date) }}</span>
-      </template>
-
-      <template v-slot:top>
-        <v-toolbar flat>
-          <!-- Header (search, new) -->
-          <v-toolbar-title>Gestions de sélistes</v-toolbar-title>
-          <v-divider class="mx-4" inset vertical></v-divider>
-          <v-btn @click="toPDF(users)" class="red white--text">
-            <v-icon>mdi-file-pdf-box</v-icon>Exporter</v-btn
-          >
-          <v-spacer></v-spacer>
-
-          <!-- User Form -->
-          <v-dialog v-model="dialog" max-width="500px">
+        <template v-slot:top>
+          <v-dialog v-model="dialog" max-width="500px" persistent>
             <template v-slot:activator="{ on, attrs }">
-              <v-btn @click="test()">test</v-btn>
-              <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
+              <v-btn color="primary" dark v-bind="attrs" v-on="on">
                 Nouveau Séliste
               </v-btn>
             </template>
+            <!-- form -->
             <v-card>
               <v-card-title>
-                <span class="text-h5">{{ formTitle }}</span>
+                <div class="text-h5">Créer/modifier un Séliste</div>
               </v-card-title>
-
               <v-card-text>
                 <v-form ref="userForm">
                   <v-row>
@@ -52,7 +47,8 @@
                         v-model="editedItem.surname"
                         label="Nom"
                         prepend-icon="mdi-account"
-                        :rules="requiredRules"
+                        :rules="[(v) => !!v || 'Le nom est obligatoire']"
+                        required
                       ></v-text-field>
                     </v-col>
                     <v-col>
@@ -60,29 +56,22 @@
                         v-model="editedItem.name"
                         label="Prénom"
                         prepend-icon="mdi-account"
-                        :rules="requiredRules"
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col>
-                      <v-text-field
-                        v-model="editedItem.adresse"
-                        label="Adresse"
-                        prepend-icon="mdi-map-marker"
-                        :rules="requiredRules"
+                        :rules="[(v) => !!v || 'Le prénom est obligatoire']"
+                        required
                       ></v-text-field>
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-col>
                       <v-autocomplete
-                        v-model="editedItem.town"
+                        v-model="editedItem.townId"
                         :items="towns"
                         label="Ville - Code Postal"
                         prepend-icon="mdi-home-city"
                         :item-text="(item) => item.name + ', ' + item.code"
-                        :rules="requiredRules"
+                        item-value="id"
+                        :rules="[(v) => !!v || 'La ville est obligatoire']"
+                        required
                       ></v-autocomplete>
                     </v-col>
                   </v-row>
@@ -96,7 +85,7 @@
                       ></v-text-field>
                     </v-col>
                   </v-row>
-                  <v-row>
+                  <v-row v-if="!EDIT_MODE">
                     <v-col>
                       <v-text-field
                         v-model="editedItem.password"
@@ -104,6 +93,18 @@
                         prepend-icon="mdi-lock"
                         :rules="passwordRules"
                       ></v-text-field>
+                    </v-col>
+                    <v-col cols="3">
+                      <v-select
+                        v-model="editedItem.admin"
+                        :items="[
+                          { text: 'OUI', value: true },
+                          { text: 'NON', value: false },
+                        ]"
+                        item-text="text"
+                        item-value="value"
+                        label="Admin"
+                      ></v-select>
                     </v-col>
                   </v-row>
                   <v-row>
@@ -113,31 +114,22 @@
                         label="Numéro"
                         prepend-icon="mdi-phone"
                         :rules="numberRules"
+                        required
                       ></v-text-field>
                     </v-col>
                   </v-row>
-
-                  <!-- default sold is 60 Ramis -->
                   <v-row>
-                    <v-col cols="12" sm="6" md="4">
+                    <v-col cols="3">
                       <v-text-field
                         v-model="editedItem.credit"
                         label="Solde"
-                        prepend-icon="mdi-currency-eur"
+                        prepend-icon="mdi-phone"
                       ></v-text-field>
-                    </v-col>
-                  </v-row>
-                  <!-- registration error div -->
-                  <v-row>
-                    <v-col>
-                      <div class="text-h5 pa-12 text-wrap hidden-md-and-up">
-                        {{ registrationError }}
-                      </div>
                     </v-col>
                   </v-row>
                 </v-form>
               </v-card-text>
-
+              <!-- actions -->
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" text @click="close">
@@ -149,13 +141,12 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
-          <!-- User Form -->
-          <!--  -->
-          <!-- Confirm dialog -->
-          <v-dialog v-model="dialogDelete" max-width="500px">
+          <!-- delete dialog -->
+          <v-dialog v-model="deleteDialog" max-width="500px">
             <v-card>
               <v-card-title class="text-h10"
-                >Vous êtes sûr de vouloir supprimer le séliste ?</v-card-title
+                >Vous êtes sûr de vouloir supprimer l'utilisateur
+                ?</v-card-title
               >
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -163,134 +154,120 @@
                   >Annuler</v-btn
                 >
                 <v-btn color="blue darken-1" text @click="deleteItemConfirm"
-                  >OK</v-btn
+                  >OUI</v-btn
                 >
                 <v-spacer></v-spacer>
               </v-card-actions>
             </v-card>
           </v-dialog>
-          <!-- Confirm dialog -->
-        </v-toolbar>
-      </template>
-      <template v-slot:[`item.actions`]="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-        <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
-      </template>
-    </v-data-table>
-  </v-card>
+        </template>
+        <!-- actions -->
+        <template v-slot:[`item.actions`]="{ item }">
+          <v-icon small class="mr-2" @click="editItem(item)">
+            mdi-pencil
+          </v-icon>
+          <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+        </template>
+      </v-data-table>
+    </v-card>
+  </v-container>
 </template>
 
 <script>
-//import { formatDDMMYYYY } from "./../../services/general"
-import { mapActions } from "vuex";
+import { getUsers } from "../services/user";
+import { getTowns } from "../services/town";
 import {
-  requiredRules,
   emailRules,
   numberRules,
   passwordRules,
-  towns,
-} from "./../../store/globals";
+  onlyNumbersRules,
+} from "../store/globals";
+import { saveAuthUser, deleteAuthUser } from "../services/auth";
 
 export default {
-  name: "UsersList",
+  name: "UserManager",
   data() {
     return {
-      // form
-      requiredRules: requiredRules,
+      EDIT_MODE: false,
+      CREATE_MODE: false,
       emailRules: emailRules,
       numberRules: numberRules,
       passwordRules: passwordRules,
-      towns: towns,
-      // Data tab
-      registrationError: null,
+      onlyNumbersRules: onlyNumbersRules,
+      users: [],
+      towns: [],
       search: "",
       headers: [
-        // { text: "ID", value: "id" },
         { text: "Nom", value: "surname" },
         { text: "Prénom", value: "name" },
         { text: "Mail", value: "mail" },
         { text: "Numéro", value: "number" },
-        { text: "Adresse", value: "adresse" },
         { text: "Ville", value: "town" },
-        { text: "Inscription", value: "date" },
+        { text: "Inscription", value: "updatedAt" },
         { text: "Crédit", value: "credit" },
         { text: "Actions", value: "actions", sortable: false },
       ],
-      // Form Dialog
-      dialog: false,
-      dialogDelete: false,
-      editedIndex: -1,
-      // while updating, this'll check if any field has changed or not
-      actualItemBackup: {
-        id: null,
-        name: "",
-        surname: "",
-        adresse: "",
-        town: null,
-        number: "",
-        mail: "",
-        password: "",
-        date: null,
-        credit: "",
-        admin: false,
-      },
       editedItem: {
         id: null,
+        firebaseID: "",
+        idToken: "",
         name: "",
         surname: "",
-        adresse: "",
-        town: null,
+        //adresse: "",
+        townId: null,
         number: "",
         mail: "",
         password: "",
-        date: null,
         credit: "",
         admin: false,
       },
       defaultItem: {
         id: null,
+        firebaseID: "",
+        idToken: "",
         name: "",
         surname: "",
-        adresse: "",
-        town: null,
+        //adresse: "",
+        townId: null,
+        number: "",
         mail: "",
         password: "",
-        number: "",
-        date: null,
         credit: "",
         admin: false,
       },
       itemToDelete: {},
-      // registration
-      errorCodeMap: {
-        "auth/invalid-email": "Format du mail incorrect",
-        "auth/email-already-in-use": "Le mail est déjà utilisé",
-      },
-      processing: false,
+      dialog: false,
+      deleteDialog: false,
+      editedIndex: -1,
     };
   },
   methods: {
-    ...mapActions(["fetchUsers"]),
+    async loadUsers() {
+      let items = await getUsers();
+      console.log("feed users", items.data);
+      this.users = items.data;
+    },
+    async loadTowns() {
+      let items = await getTowns();
+      //console.log("feed towns", items.data);
+      this.towns = items.data;
+    },
     async save() {
       if (!this.$refs.userForm.validate()) {
         return;
       }
-      this.processing = true;
-      console.log("before signup");
+      console.log("this.editedItem", this.editedItem);
+
       try {
-        await this.$store.dispatch("signUpUser", {
-          user: this.editedItem,
-          backup: this.actualItemBackup,
-        });
+        await saveAuthUser(this.editedItem);
       } catch (err) {
-        console.log("try-catch", err);
+        console.log("UserManager.save err", err);
       }
+      // 0766445500
+      await this.loadUsers();
 
-      console.log("after signup");
-      // reload
-      await this.fetchUsers({ admin: false });
-
-      this.processing = false;
+      this.EDIT_MODE = false;
+      this.CREATE_MODE = false;
       this.close();
     },
     // UPDATE
@@ -298,10 +275,11 @@ export default {
       // backup
       this.actualItemBackup = { ...item };
       console.log("editItem.item", item);
-      console.log("backup.item", this.actualItemBackup);
+      //console.log("backup.item", this.actualItemBackup);
 
       this.editedIndex = this.users.indexOf(item);
       this.editedItem = Object.assign({}, item);
+      this.EDIT_MODE = true;
       this.dialog = true;
     },
     // DELETE
@@ -310,55 +288,35 @@ export default {
       this.itemToDelete = item;
       this.editedIndex = this.users.indexOf(item);
       this.editedItem = Object.assign({}, item);
-      this.dialogDelete = true;
+      this.deleteDialog = true;
     },
     async deleteItemConfirm() {
-      console.log("deleteItemCOndifrm");
-
-      console.log("before delete");
       try {
-        await this.$store.dispatch("deleteUser", this.itemToDelete);
+        await deleteAuthUser(this.itemToDelete);
       } catch (err) {
-        console.log("try-catch", err);
+        console.log(err);
       }
-      // reload
-      await this.fetchUsers({ admin: false });
+
+      await this.loadUsers();
 
       this.itemToDelete = {};
       this.closeDelete();
     },
     close() {
+      this.EDIT_MODE = false;
+      this.CREATE_MODE = false;
       this.dialog = false;
       this.editedItem = Object.assign({}, this.defaultItem);
       this.editedIndex = -1;
     },
     closeDelete() {
-      // cancel deleting
-      console.log("closeDelete");
-      this.dialogDelete = false;
+      this.deleteDialog = false;
       this.close();
     },
   },
-  computed: {
-    users() {
-      return this.$store.getters.users;
-    },
-    formTitle() {
-      return this.editedIndex === -1
-        ? "Création Séliste"
-        : "Modification Séliste";
-    },
-  },
-  watch: {
-    dialog(val) {
-      val || this.close();
-    },
-    dialogDelete(val) {
-      val || this.closeDelete();
-    },
-  },
   async mounted() {
-    await this.fetchUsers({ admin: false });
+    await this.loadUsers();
+    await this.loadTowns();
   },
 };
 </script>

@@ -5,7 +5,8 @@ import Feed from "../views/Feed.vue";
 import Admin from "../views/Admin.vue";
 import Contact from "../views/Contact.vue";
 import About from "../views/About.vue";
-// import store from "../store/index.js"
+import UserManager from "../views/UserManager.vue"
+//import { isConnected, isAdmin } from "../services/auth"
 
 Vue.use(VueRouter);
 
@@ -29,6 +30,14 @@ const routes = [
     path: "/feed",
     name: "Feed",
     component: Feed,
+    meta: {
+      authRequired: false,
+    },
+  },
+  {
+    path: "/users",
+    name: "UserManager",
+    component: UserManager,
     meta: {
       authRequired: false,
     },

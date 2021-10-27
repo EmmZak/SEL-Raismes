@@ -3,7 +3,7 @@
  */
 const nameRules = [(v) => !!v || "Veuillez saisir un nom/prénom"];
 const emailRules = [
-	(v) => !!v || "Veuillez saisir votre mail",
+	(v) => !!v || "Veuillez saisir un mail",
 	(v) => /.+@.+\..+/.test(v) || "Le mail n'est pas correct",
 ];
 const numberRules = [
@@ -16,6 +16,7 @@ const messageRules = [(v) => v.length < 100 || "Le message est très long"];
 const subjectRules = [(v) => !!v || "Veuillez choisir un sujét"]
 const requiredRules = [(v) => !!v || "Champ obligatoire"]
 const passwordRules = [(v) => v.length > 5 || "Au moins 6 caractères"]
+const onlyNumbersRules = [(v) => !!v || "Saisir le solde", (v) => !isNaN(v) || "Seuls les chiffres sont autorisés",]
 /**
  * Towns
  */
@@ -92,6 +93,7 @@ export {
 	nameRules,
 	emailRules,
 	numberRules,
+	onlyNumbersRules,
 	messageRules,
 	subjectRules,
 	// lists

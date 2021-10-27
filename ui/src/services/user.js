@@ -10,6 +10,14 @@ async function getUsers() {
 	// })
 }
 
+async function getUser(id) {
+	return axios.get(`${API}/${id}`)
+}
+
+async function getUserByFirebaseId(id) {
+	return axios.get(`${API}/firebase/${id}`)
+}
+
 async function saveUser(user) {
 	if (user.id) {
 		return axios.put(API, user)
@@ -18,7 +26,14 @@ async function saveUser(user) {
 	}
 }
 
+async function deleteUser(id) {
+	return axios.delete(`${API}/firebase/${id}`)
+}
+
 export {
+	getUser,
+	getUserByFirebaseId,
 	getUsers,
-	saveUser
+	saveUser,
+	deleteUser
 }

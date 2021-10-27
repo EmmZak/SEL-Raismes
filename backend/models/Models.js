@@ -27,6 +27,7 @@ const Town = sequelize.define("town", {
 
 const User = sequelize.define("user", {
 	firebaseID: DataTypes.STRING,
+	idToken: DataTypes.STRING(1000),
 	mail: DataTypes.STRING,
 	number: DataTypes.STRING,
 	name: DataTypes.STRING,
@@ -84,36 +85,36 @@ const init = async () => {
 		{ name: "Prêt/Don Plantes/Potager", loan: true },
 		{ name: "Prêt/Don Autres biens", loan: true }
 	]
-	User.bulkCreate([
-		{ firebaseID: "f-1", mail: "e@e", number: "0766554490", name: "manu", surname: "ee", admin: true, credit: 33, townId: "1" },
-		{ firebaseID: "f-2", mail: "a@a", number: "0766554490", name: "zak", surname: "aa", admin: true, credit: 55, townId: "2" },
-		{ firebaseID: "f-3", mail: "b@b", number: "0766554490", name: "deph", surname: "dd", admin: false, credit: 66, townId: "3" },
-		{ firebaseID: "f-4", mail: "c@c", number: "0766554490", name: "ler", surname: "ff", admin: false, credit: 444, townId: "2" },
-		{ firebaseID: "f-5", mail: "i@i", number: "0766554490", name: "miko", surname: "vv", admin: false, credit: 3334, townId: "1" },
-	])
+	// User.bulkCreate([
+	// 	{ firebaseID: "f-1", mail: "e@e", number: "0766554490", name: "manu", surname: "ee", admin: true, credit: 33, townId: "1" },
+	// 	{ firebaseID: "f-2", mail: "a@a", number: "0766554490", name: "zak", surname: "aa", admin: true, credit: 55, townId: "2" },
+	// 	{ firebaseID: "f-3", mail: "b@b", number: "0766554490", name: "deph", surname: "dd", admin: false, credit: 66, townId: "3" },
+	// 	{ firebaseID: "f-4", mail: "c@c", number: "0766554490", name: "ler", surname: "ff", admin: false, credit: 444, townId: "2" },
+	// 	{ firebaseID: "f-5", mail: "i@i", number: "0766554490", name: "miko", surname: "vv", admin: false, credit: 3334, townId: "1" },
+	// ])
 
-	Service.bulkCreate([
-		{ description: "first description", userId: "1", category: categories[0].name },
-		{ description: "animaux test", userId: "2", category: categories[1].name },
-		{ description: "jardinage description", userId: "2", category: categories[2].name },
-		{ description: "sfd description", userId: "3", category: categories[3].name },
-		{ description: "fffff description", userId: "2", category: categories[4].name },
-		{ description: "a description", userId: "5", category: categories[5].name },
-		{ description: "fdsfdsf description", userId: "2", category: categories[6].name },
-		{ description: "4 description", userId: "5", category: categories[1].name },
-		{ description: "d description", userId: "2", category: categories[2].name },
-		{ description: "first description", userId: "1", category: categories[3].name },
-		{ description: "first description", userId: "1", category: categories[0].name },
-		{ description: "animaux test", userId: "2", category: categories[1].name },
-		{ description: "jardinage description", userId: "2", category: categories[2].name },
-		{ description: "sfd description", userId: "3", category: categories[3].name },
-		{ description: "fffff description", userId: "2", category: categories[4].name },
-		{ description: "a description", userId: "5", category: categories[5].name },
-		{ description: "fdsfdsf description", userId: "2", category: categories[6].name },
-		{ description: "4 description", userId: "5", category: categories[1].name },
-		{ description: "d description", userId: "2", category: categories[2].name },
-		{ description: "first description", userId: "1", category: categories[3].name }
-	])
+	// Service.bulkCreate([
+	// 	{ description: "first description", userId: "1", category: categories[0].name },
+	// 	{ description: "animaux test", userId: "2", category: categories[1].name },
+	// 	{ description: "jardinage description", userId: "2", category: categories[2].name },
+	// 	{ description: "sfd description", userId: "3", category: categories[3].name },
+	// 	{ description: "fffff description", userId: "2", category: categories[4].name },
+	// 	{ description: "a description", userId: "5", category: categories[5].name },
+	// 	{ description: "fdsfdsf description", userId: "2", category: categories[6].name },
+	// 	{ description: "4 description", userId: "5", category: categories[1].name },
+	// 	{ description: "d description", userId: "2", category: categories[2].name },
+	// 	{ description: "first description", userId: "1", category: categories[3].name },
+	// 	{ description: "first description", userId: "1", category: categories[0].name },
+	// 	{ description: "animaux test", userId: "2", category: categories[1].name },
+	// 	{ description: "jardinage description", userId: "2", category: categories[2].name },
+	// 	{ description: "sfd description", userId: "3", category: categories[3].name },
+	// 	{ description: "fffff description", userId: "2", category: categories[4].name },
+	// 	{ description: "a description", userId: "5", category: categories[5].name },
+	// 	{ description: "fdsfdsf description", userId: "2", category: categories[6].name },
+	// 	{ description: "4 description", userId: "5", category: categories[1].name },
+	// 	{ description: "d description", userId: "2", category: categories[2].name },
+	// 	{ description: "first description", userId: "1", category: categories[3].name }
+	// ])
 }
 //init()
 
