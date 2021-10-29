@@ -68,7 +68,7 @@
                         :items="towns"
                         label="Ville - Code Postal"
                         prepend-icon="mdi-home-city"
-                        :item-text="(item) => item.name + ', ' + item.code"
+                        :item-text="(item) => item.name + ', ' + item.value"
                         item-value="id"
                         :rules="[(v) => !!v || 'La ville est obligatoire']"
                         required
@@ -175,7 +175,6 @@
 
 <script>
 import { getUsers } from "../services/user";
-import { getTowns } from "../services/town";
 import {
   emailRules,
   numberRules,
@@ -183,6 +182,7 @@ import {
   onlyNumbersRules,
 } from "../store/globals";
 import { saveAuthUser, deleteAuthUser } from "../services/auth";
+import { towns } from "./../common/towns"
 
 export default {
   name: "UserManager",
@@ -195,7 +195,7 @@ export default {
       passwordRules: passwordRules,
       onlyNumbersRules: onlyNumbersRules,
       users: [],
-      towns: [],
+      towns: towns,
       search: "",
       headers: [
         { text: "Nom", value: "surname" },
@@ -246,11 +246,6 @@ export default {
       let items = await getUsers();
       console.log("feed users", items.data);
       this.users = items.data;
-    },
-    async loadTowns() {
-      let items = await getTowns();
-      //console.log("feed towns", items.data);
-      this.towns = items.data;
     },
     async save() {
       if (!this.$refs.userForm.validate()) {
@@ -315,8 +310,7 @@ export default {
     },
   },
   async mounted() {
-    await this.loadUsers();
-    await this.loadTowns();
+    await this.loadUsers()
   },
 };
 </script>

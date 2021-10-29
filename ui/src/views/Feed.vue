@@ -265,6 +265,8 @@ import {
   deleteService,
 } from "./../services/service";
 import { getUsers } from "./../services/user";
+import { categories } from "./../common/categories"
+import { towns } from "./../common/towns"
 
 export default {
   name: "Feed",
@@ -275,7 +277,9 @@ export default {
       requiredRules: requiredRules,
       emailRules: emailRules,
       numberRules: numberRules,
-      categories: [],
+      // common
+      categories: categories,
+      towns: towns,
       // Form dialog
       dialog: false,
       deleteDialog: false,
@@ -428,7 +432,7 @@ export default {
     },
   },
   async mounted() {
-    this.categories = this.$store.getters.categories;
+    //this.categories = this.$store.getters.categories;
     console.log("FEED.categories", this.categories);
 
     await this.loadServices();
@@ -449,10 +453,6 @@ export default {
       }
       console.log("n -> ", n);
       return n;
-    },
-    towns() {
-      console.log("returning towns");
-      return this.$store.getters.towns;
     },
     items() {
       let a = this.$store.getters.publications;

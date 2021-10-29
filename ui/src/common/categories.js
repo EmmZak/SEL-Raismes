@@ -2,7 +2,7 @@
  * value is stored in DB
  */
 
-categories = [
+const categories = [
     { name: "Autre", value: "other", image: "animal.jpg" },
     { name: "Animaux", value: "animal", image: "animal.jpg" },
     { name: "Bricolage, travaux, tâches ménagères", value: "home", image: "home.jpg" },
