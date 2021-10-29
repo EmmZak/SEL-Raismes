@@ -95,7 +95,7 @@
 </template>
 
 <script>
-
+import { categories, getCategoryNameByValue, getCategoryImageByValue } from "../../../common/categories"
 
 export default {
   name: "PublicationCard",

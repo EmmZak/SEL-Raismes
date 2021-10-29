@@ -1,6 +1,5 @@
 const router = require("express").Router()
-const { Town, User } = require("../models/Models")
-const { associations } = require("../models/Town")
+const { User } = require("../models/Models")
 const print = console.log
 
 router.get("/count", async (req, res) => {
@@ -22,8 +21,7 @@ router.get("/", async (req, res) => {
 				// limit: limit,
 				// order: [
 				// 	['createdAt', order]
-				// ],
-				include: [Town]
+				// ]
 			}
 		)
 		res.send(users)
@@ -36,7 +34,7 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
 	try {
 		let id = req.params.id
-		const o = await User.findByPk(id, { include: [Town] })
+		const o = await User.findByPk(id)
 		res.send(o)
 	} catch (err) {
 		res.send(err)
@@ -60,8 +58,6 @@ router.get("/firebase/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
 	try {
-		let userTown = await Town.findByPk(req.body.townId)
-
 		let user = await User.create({
 			firebaseID: req.body.firebaseID,
 			idToken: req.body.idToken,
@@ -69,10 +65,10 @@ router.post("/", async (req, res) => {
 			number: req.body.number,
 			name: req.body.name,
 			surname: req.body.surname,
+			town: req.body.town,
 			admin: req.body.admin,
 			credit: req.body.credit
 		})
-		user.setTown(userTown)
 		user = await user.save()
 
 		res.send(user)
@@ -94,7 +90,7 @@ router.put("/", async (req, res) => {
 				surname: req.body.surname,
 				admin: req.body.admin,
 				credit: req.body.credit,
-				townId: req.body.townId
+				town: req.body.town
 			},
 			{
 				returning: true,

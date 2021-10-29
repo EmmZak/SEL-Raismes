@@ -15,16 +15,6 @@ const Event = sequelize.define("event", {
 	endMinute: DataTypes.STRING,
 })
 
-const Town = sequelize.define("town", {
-	name: DataTypes.STRING,
-	code: DataTypes.STRING
-})
-
-// const Category = sequelize.define("category", {
-// 	name: DataTypes.STRING,
-// 	loan: DataTypes.BOOLEAN
-// })
-
 const User = sequelize.define("user", {
 	firebaseID: DataTypes.STRING,
 	idToken: DataTypes.STRING(1000),
@@ -32,6 +22,7 @@ const User = sequelize.define("user", {
 	number: DataTypes.STRING,
 	name: DataTypes.STRING,
 	surname: DataTypes.STRING,
+	town: DataTypes.STRING, // postal code
 	admin: DataTypes.BOOLEAN,
 	credit: DataTypes.INTEGER,
 })
@@ -41,14 +32,8 @@ const Service = sequelize.define("service", {
 	category: DataTypes.STRING,
 })
 
-Town.hasMany(User)
-User.belongsTo(Town)
-
 User.hasMany(Service, { onDelete: "CASCADE" })
 Service.belongsTo(User)
-
-//Category.hasMany(Service)
-//Service.belongsTo(Category)
 
 const init = async () => {
 	await sequelize.sync({ force: true });
@@ -57,40 +42,12 @@ const init = async () => {
 		{ type: "Permanences", text: "venez nois voir tel jour", date: new Date(), startHour: "14", startMinute: "15", endHour: "15", endMinute: "45" }
 	])
 
-	Town.bulkCreate([
-		{ name: "Raismes", code: "59590" },
-		{ name: "VA", code: "59300" },
-		{ name: "Anzin", code: "410" }
-	])
-
-	categories = [
-		{ name: "Autre", loan: false },
-		{ name: "Animaux", loan: false },
-		{ name: "Bricolage, travaux, tâches ménagères", loan: false },
-		{ name: "Cuisine", loan: false },
-		{ name: "Décoration, DIY, Couture", loan: false },
-		{ name: "Informatique", loan: false },
-		{ name: "Jardinage", loan: false },
-		{ name: "Loisirs, jeux, sport", loan: false },
-		{ name: "Mobilité", loan: false },
-		{ name: "Savoirs, connaissances", loan: false },
-		{ name: "Social (garde d'enfant...)", loan: false },
-		{ name: "Prêt/Don Biens culturels (livres, CD)", loan: true },
-		{ name: "Prêt/Don Électroménager/Informatique", loan: true },
-		{ name: "Prêt/Don Jeux, Loisirs", loan: true },
-		{ name: "Prêt/Don Meubles", loan: true },
-		{ name: "Prêt/Don Outillage", loan: true },
-		{ name: "Prêt/Don Petite décoration", loan: true },
-		{ name: "Prêt/Don Textile", loan: true },
-		{ name: "Prêt/Don Plantes/Potager", loan: true },
-		{ name: "Prêt/Don Autres biens", loan: true }
-	]
 	// User.bulkCreate([
-	// 	{ firebaseID: "f-1", mail: "e@e", number: "0766554490", name: "manu", surname: "ee", admin: true, credit: 33, townId: "1" },
-	// 	{ firebaseID: "f-2", mail: "a@a", number: "0766554490", name: "zak", surname: "aa", admin: true, credit: 55, townId: "2" },
-	// 	{ firebaseID: "f-3", mail: "b@b", number: "0766554490", name: "deph", surname: "dd", admin: false, credit: 66, townId: "3" },
-	// 	{ firebaseID: "f-4", mail: "c@c", number: "0766554490", name: "ler", surname: "ff", admin: false, credit: 444, townId: "2" },
-	// 	{ firebaseID: "f-5", mail: "i@i", number: "0766554490", name: "miko", surname: "vv", admin: false, credit: 3334, townId: "1" },
+	// 	{ firebaseID: "f-1", mail: "e@e", number: "0766554490", name: "manu", surname: "ee", admin: true, credit: 33, town: "1" },
+	// 	{ firebaseID: "f-2", mail: "a@a", number: "0766554490", name: "zak", surname: "aa", admin: true, credit: 55, town: "2" },
+	// 	{ firebaseID: "f-3", mail: "b@b", number: "0766554490", name: "deph", surname: "dd", admin: false, credit: 66, town: "3" },
+	// 	{ firebaseID: "f-4", mail: "c@c", number: "0766554490", name: "ler", surname: "ff", admin: false, credit: 444, town: "2" },
+	// 	{ firebaseID: "f-5", mail: "i@i", number: "0766554490", name: "miko", surname: "vv", admin: false, credit: 3334, town: "1" },
 	// ])
 
 	// Service.bulkCreate([
@@ -120,7 +77,6 @@ const init = async () => {
 
 module.exports = {
 	Event: Event,
-	Town: Town,
 	User: User,
 	Service: Service
 }
