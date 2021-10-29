@@ -1,5 +1,12 @@
 import axios from "axios"
 import { saveUser, getUserByFirebaseId, deleteUser } from "./user"
+import { auth, authManager } from "./../firebaseConfig";
+
+/*
+ * Auth
+ */
+
+
 
 const API_KEY = "AIzaSyAlJTkalKBtBVpjsj_DlEmXaXVIv24og0g"
 const FIREBASE_SIGN_UP_API = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${API_KEY}`
@@ -45,7 +52,7 @@ async function firebaseUpdateUserMail(user) {
 async function saveAuthUser(user) {
     let firebaseUser = null
     // let pgUser = {}
-    
+
     if (user.id) {
         firebaseUser = await firebaseUpdateUserMail(user)
         console.log("create firebaesUser", firebaseUser)
@@ -73,7 +80,7 @@ async function deleteAuthUser(user) {
     try {
         await firebaseDeleteUser(user.firebaseID)
         return await deleteUser(user.firebaseID)
-    } catch(err) {
+    } catch (err) {
         console.log("err", err)
     }
 }
@@ -82,19 +89,22 @@ async function updateAuthUser(user) {
     console.log("updating", user)
 }
 
-// async function isConnected() {
-//     return false
-// }
+function isConnected() {
+    let user = auth.currentUser
+    console.log("service.isConnected user", user)
+    return user
+    // set to store
+}
 
-// async function isAdmin() {
-//     return false
-// }
+async function isAdmin() {
+    // set to store
+}
 
 export {
-    signInAuthUser, 
+    signInAuthUser,
     saveAuthUser,
     deleteAuthUser,
     updateAuthUser,
-    //isConnected,
-    //isAdmin
+    isConnected,
+    isAdmin
 }
