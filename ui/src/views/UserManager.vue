@@ -24,7 +24,7 @@
       >
         <!-- town column -->
         <template v-slot:[`item.town`]="{ item }">
-          <span>{{ item.town.name }}, {{ item.town.code }}</span>
+          <span>{{ item.town }}, {{ getTownName(item.town) }} </span>
         </template>
 
         <template v-slot:top>
@@ -47,8 +47,9 @@
                         v-model="editedItem.surname"
                         label="Nom"
                         prepend-icon="mdi-account"
-                        :rules="[(v) => !!v || 'Le nom est obligatoire']"
+                        :rules="nameRules"
                         required
+                        outlined dense
                       ></v-text-field>
                     </v-col>
                     <v-col>
@@ -56,22 +57,24 @@
                         v-model="editedItem.name"
                         label="Prénom"
                         prepend-icon="mdi-account"
-                        :rules="[(v) => !!v || 'Le prénom est obligatoire']"
+                        :rules="nameRules"
                         required
+                        outlined dense
                       ></v-text-field>
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-col>
                       <v-autocomplete
-                        v-model="editedItem.townId"
+                        v-model="editedItem.town"
                         :items="towns"
                         label="Ville - Code Postal"
                         prepend-icon="mdi-home-city"
                         :item-text="(item) => item.name + ', ' + item.value"
-                        item-value="id"
-                        :rules="[(v) => !!v || 'La ville est obligatoire']"
+                        item-value="value"
+                        :rules="townRules"
                         required
+                        outlined dense
                       ></v-autocomplete>
                     </v-col>
                   </v-row>
@@ -82,6 +85,7 @@
                         label="E-mail"
                         prepend-icon="mdi-email"
                         :rules="emailRules"
+                        outlined dense
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -92,6 +96,7 @@
                         label="Mot de passe"
                         prepend-icon="mdi-lock"
                         :rules="passwordRules"
+                        outlined dense
                       ></v-text-field>
                     </v-col>
                     <v-col cols="3">
@@ -104,6 +109,7 @@
                         item-text="text"
                         item-value="value"
                         label="Admin"
+                        outlined dense
                       ></v-select>
                     </v-col>
                   </v-row>
@@ -113,17 +119,18 @@
                         v-model="editedItem.number"
                         label="Numéro"
                         prepend-icon="mdi-phone"
-                        :rules="numberRules"
                         required
+                        outlined dense
                       ></v-text-field>
                     </v-col>
                   </v-row>
                   <v-row>
-                    <v-col cols="3">
+                    <v-col cols="4">
                       <v-text-field
                         v-model="editedItem.credit"
                         label="Solde"
                         prepend-icon="mdi-phone"
+                        outlined dense
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -175,14 +182,7 @@
 
 <script>
 import { getUsers } from "../services/user";
-import {
-  emailRules,
-  numberRules,
-  passwordRules,
-  onlyNumbersRules,
-} from "../store/globals";
 import { saveAuthUser, deleteAuthUser } from "../services/auth";
-import { towns } from "./../common/towns"
 
 export default {
   name: "UserManager",
@@ -190,12 +190,8 @@ export default {
     return {
       EDIT_MODE: false,
       CREATE_MODE: false,
-      emailRules: emailRules,
-      numberRules: numberRules,
-      passwordRules: passwordRules,
-      onlyNumbersRules: onlyNumbersRules,
       users: [],
-      towns: towns,
+      //towns: towns, is from mixins
       search: "",
       headers: [
         { text: "Nom", value: "surname" },
@@ -214,7 +210,7 @@ export default {
         name: "",
         surname: "",
         //adresse: "",
-        townId: null,
+        town: null,
         number: "",
         mail: "",
         password: "",
@@ -228,7 +224,7 @@ export default {
         name: "",
         surname: "",
         //adresse: "",
-        townId: null,
+        town: null,
         number: "",
         mail: "",
         password: "",
@@ -310,6 +306,7 @@ export default {
     },
   },
   async mounted() {
+    console.log("UserManager.towns", this.towns)
     await this.loadUsers()
   },
 };

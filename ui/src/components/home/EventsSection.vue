@@ -171,14 +171,11 @@ import {
   saveEvent,
   deleteEvent,
 } from "./../../services/event";
-import { formatISOonlydate, formatISOdateToHours } from "./../../store/globals";
 
 export default {
   name: "EventsSection",
   data() {
     return {
-      formatISOdateToHours: formatISOdateToHours,
-      formatISOonlydate: formatISOonlydate,
       timelineColors: ["pink lighten-1", "blue lighten-1", "success"],
       events: [],
       // form

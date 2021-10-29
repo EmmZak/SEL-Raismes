@@ -19,12 +19,14 @@ const User = sequelize.define("user", {
 	firebaseID: DataTypes.STRING,
 	idToken: DataTypes.STRING(1000),
 	mail: DataTypes.STRING,
+	mailVerified: DataTypes.BOOLEAN,
 	number: DataTypes.STRING,
 	name: DataTypes.STRING,
 	surname: DataTypes.STRING,
 	town: DataTypes.STRING, // postal code
 	admin: DataTypes.BOOLEAN,
 	credit: DataTypes.INTEGER,
+	verified: DataTypes.BOOLEAN
 })
 
 const Service = sequelize.define("service", {

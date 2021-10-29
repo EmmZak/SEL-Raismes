@@ -17,48 +17,6 @@ const subjectRules = [(v) => !!v || "Veuillez choisir un sujét"]
 const requiredRules = [(v) => !!v || "Champ obligatoire"]
 const passwordRules = [(v) => v.length > 5 || "Au moins 6 caractères"]
 const onlyNumbersRules = [(v) => !!v || "Saisir le solde", (v) => !isNaN(v) || "Seuls les chiffres sont autorisés",]
-/**
- * Towns
- */
-const towns = [
-	{ name: "Valenciennes", code: "59300" },
-	{ name: "Raismes", code: "59590" },
-	{ name: "Bruay-sur-l'Escaut", code: "59860" },
-	{ name: "Beuvrages", code: "59192" },
-	{ name: "Anzin", code: "59410" },
-	{ name: "Petite Forêt", code: "59494" },
-	{ name: "Escaupont", code: "59278" },
-	{ name: "Fresnes-sur-l'Escaut", code: "59970" },
-];
-
-/**
- * Categories
- */
-const categories = [
-	//"Autre",
-	"Animaux",
-	"Bricolage, travaux, tâches ménagères",
-	"Cuisine",
-	"Décoration, DIY, Couture",
-	"Informatique",
-	"Jardinage",
-	"Loisirs, jeux, sport",
-	"Mobilité",
-	"Savoirs, connaissances",
-	"Social (garde d'enfant...)"
-];
-
-const loanCategories = [
-	"Prết/Don Biens culturels (livres, CD, DVD, magazine...)",
-	"Prết/Don Électroménager/Informatique",
-	"Prết/Don Jeux, Loisirs",
-	"Prết/Don Meubles",
-	"Prết/Don Outillage",
-	"Prết/Don Petite décoration",
-	"Prết/Don Textile",
-	"Prết/Don Plantes/Potager",
-	"Prết/Don Autres biens",
-];
 
 function formatISOonlydate(iso) {
 	return iso.split("-").reverse().join('/')
@@ -79,9 +37,7 @@ function formatISOdateToHours(iso) {
  */
 const sortOptions = [
 	{ title: "Le plus récent", value: "desc" },
-	{ title: "Le plus ancien", value: "asc" },
-	/* No default order for now
-	  { title: "Par défaut", value: "" } */
+	{ title: "Le plus ancien", value: "asc" }
 ];
 
 export {
@@ -97,8 +53,5 @@ export {
 	messageRules,
 	subjectRules,
 	// lists
-	towns,
-	categories,
-	loanCategories,
 	sortOptions,
 };

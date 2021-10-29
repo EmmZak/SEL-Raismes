@@ -106,7 +106,6 @@
 //import Header from "./components/Header.vue"
 import HeaderApp from "./components/HeaderApp.vue";
 import Footer from "./components/Footer.vue";
-import { emailRules, passwordRules } from "./store/globals";
 import { mapActions } from "vuex";
 
 export default {
@@ -130,10 +129,7 @@ export default {
     authData: {
       mail: "", //"aymeric@robin.fr",
       password: "", //raismes",
-    },
-    // form
-    emailRules: emailRules,
-    passwordRules,
+    }
   }),
   async created() {
     console.log("APP CREATED");

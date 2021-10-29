@@ -27,7 +27,7 @@
                 </v-col>
                 <!-- by-date col=12 -->
                 <v-col cols="" class="">
-                  <v-row class="no-gutters ">
+                  <v-row class="no-gutters">
                     <!-- by -->
                     <v-col cols="8" class="">
                       <div class="card_by_user_class">
@@ -41,7 +41,7 @@
                           item.createdAt.toDate().toLocaleString().split(",")[0]
                         }}
                       </div> -->
-					</v-col>
+                    </v-col>
                   </v-row>
                 </v-col>
                 <v-col></v-col>
@@ -83,7 +83,7 @@
             <v-img
               :src="
                 require(`@/assets/images/categories/${
-                  categToImage[item.category]
+                  getCategoryImageByValue(item.category)
                 }`)
               "
             ></v-img>
@@ -102,29 +102,6 @@ export default {
   props: ["item", "visit"],
   data() {
     return {
-      categToImage: {
-		"Autre": "animal.jpg",
-        "Animaux": "animal.jpg",
-        "Bricolage, travaux, tâches ménagères": "home.jpg",
-        "Cuisine": "kitchen.jpg",
-        "Décoration, DIY, Couture": "diy.jpeg",
-        "Informatique": "computer.jpeg",
-        "Jardinage": "garden.jpg",
-        "Loisirs, jeux, sport": "hobby.png",
-        "Mobilité": "transport.jpeg",
-        "Savoirs, connaissances": "teaching.jpeg",
-        "Social (garde d'enfant...)": "social.jpeg",
-        "Prêt/Don Biens culturels (livres, CD)": "cultural",
-        "Prêt/Don Électroménager/Informatique": "hardware",
-        "Prêt/Don Jeux, Loisirs": "game",
-        "Prêt/Don Meubles": "furniture",
-        "Prêt/Don Outillage": "tools",
-        "Prêt/Don Petite décoration": "deco",
-        "Prêt/Don Textile": "textil",
-        "Prêt/Don Plantes/Potager": "plants",
-        "Prêt/Don Autres biens": "other",
-      },
-      //avatarSize: 0,
       dialog: false,
     };
   },

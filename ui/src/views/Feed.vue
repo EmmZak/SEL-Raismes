@@ -99,6 +99,7 @@
                             v-model="editedItem.category"
                             prepend-icon="mdi-shape"
                             :rules="requiredRules"
+                            outlined dense
                           ></v-select>
                         </v-col>
                         <v-col>
@@ -106,6 +107,7 @@
                             v-model="editedItem.description"
                             label="Description ..."
                             prepend-icon="mdi-info"
+                            outlined dense
                           ></v-textarea>
                         </v-col>
                       </v-row>
@@ -128,10 +130,11 @@
                           prepend-icon="mdi-account"
                           :item-text="
                             (user) =>
-                              `${user.name}, ${user.surname}, ${user.mail}, ${user.number}, ${user.town.name}, ${user.town.code}`
+                              `${user.name}, ${user.surname}, ${user.mail}, ${user.number}, ${user.town}, ${getTownName(user.town)}`
                           "
                           item-value="id"
                           :rules="requiredRules"
+                          outlined dense
                         ></v-autocomplete>
                       </v-col>
                     </v-col>
@@ -250,12 +253,6 @@
 <script>
 //import { mapActions } from "vuex";
 import PublicationCard from "./../components/PublicationCard.vue";
-import {
-  requiredRules,
-  emailRules,
-  numberRules,
-  sortOptions,
-} from "./../store/globals";
 
 //import { getCategories } from "./../services/category";
 import {
@@ -265,21 +262,12 @@ import {
   deleteService,
 } from "./../services/service";
 import { getUsers } from "./../services/user";
-import { categories } from "./../common/categories"
-import { towns } from "./../common/towns"
 
 export default {
   name: "Feed",
 
   data() {
     return {
-      // Form
-      requiredRules: requiredRules,
-      emailRules: emailRules,
-      numberRules: numberRules,
-      // common
-      categories: categories,
-      towns: towns,
       // Form dialog
       dialog: false,
       deleteDialog: false,
@@ -313,7 +301,6 @@ export default {
         categories: [],
       },
       visit: false,
-      sortOptions: sortOptions,
       inDev: false,
       page: 1,
       townList: [],
@@ -413,7 +400,7 @@ export default {
       this.$refs.categSelect.blur();
       this.pagination.categories =
         this.selectedCategories.length == 0
-          ? this.categories.map((e) => e.name)
+          ? this.categories.map((e) => e.value)
           : this.selectedCategories;
 
       let items = await getServices(this.pagination);
@@ -433,7 +420,7 @@ export default {
   },
   async mounted() {
     //this.categories = this.$store.getters.categories;
-    console.log("FEED.categories", this.categories);
+    //console.log("FEED.categories", this.categories);
 
     await this.loadServices();
     await this.loadUsers();
