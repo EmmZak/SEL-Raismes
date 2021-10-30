@@ -58,6 +58,7 @@ router.get("/firebase/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
 	try {
+		const credit = req.body.credit == "" ? 0: req.body.credit
 		let user = await User.create({
 			firebaseID: req.body.firebaseID,
 			idToken: req.body.idToken,
@@ -67,7 +68,7 @@ router.post("/", async (req, res) => {
 			surname: req.body.surname,
 			town: req.body.town,
 			admin: req.body.admin,
-			credit: req.body.credit
+			credit: credit
 		})
 		user = await user.save()
 

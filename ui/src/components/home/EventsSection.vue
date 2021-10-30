@@ -7,14 +7,14 @@
     </v-col>
     <v-col md="8">
       <!-- new event button -->
-      <v-btn class="primary" @click="dialog = true">
+      <v-btn v-if="admin" class="primary" @click="dialog = true">
         <v-icon>mdi-plus</v-icon>
         <span>Nouvel evénement</span>
       </v-btn>
       <v-timeline width="50%">
         <v-timeline-item v-for="(event, i) in events" :key="i" fill-dot>
           <!-- crud actions -->
-          <v-card elevation="0" class="pb-1">
+          <v-card v-if="admin" elevation="0" class="pb-1">
             <v-row>
               <v-col>
                 <v-btn class="primary" @click="editItem(event)">
@@ -269,5 +269,11 @@ export default {
   async mounted() {
     await this.loadEvents();
   },
+  computed: {
+    admin() {
+      const user = this.$store.getters.user
+      return user ? user.admin: false
+    }
+  }
 };
 </script>

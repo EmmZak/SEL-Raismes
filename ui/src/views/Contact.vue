@@ -205,8 +205,9 @@ export default {
     };
   },
   mounted() {
-    let subjectName = this.$route.query.subject;
-    this.subject = this.subjectsMap[subjectName];
+    // console.log("CONCTACT.route", this.$route.query)
+    // let subjectName = this.$route.query.subject;
+    // this.subject = this.subjectsMap[subjectName];
   },
   methods: {
     async send() {

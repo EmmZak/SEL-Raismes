@@ -7,6 +7,9 @@ import vuetify from './plugins/vuetify'
 import {
   formatISOonlydate,
   formatISOdateToHours,
+  // path
+  getCurrentPath,
+  goToPath,
   // rules
   requiredRules,
   passwordRules,
@@ -52,6 +55,8 @@ const mixin = {
     }
   },
   methods: {
+    goToPath,
+    getCurrentPath,
     // town
     getTownName,
     // categories

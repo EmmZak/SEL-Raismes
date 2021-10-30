@@ -1,5 +1,6 @@
 <template>
   <v-container class="" fluid>
+    <v-btn @click="test()" > test</v-btn>
     <v-card class="pa-5">
       <!-- title -->
       <v-card-title>
@@ -130,7 +131,10 @@
                         v-model="editedItem.credit"
                         label="Solde"
                         prepend-icon="mdi-phone"
+                        :rules="onlyNumbersRules"
+                        required
                         outlined dense
+                        type="number"
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -182,7 +186,7 @@
 
 <script>
 import { getUsers } from "../services/user";
-import { saveAuthUser, deleteAuthUser } from "../services/auth";
+import { saveAuthUser, deleteAuthUser,getCurrentAuthManagerUser } from "../services/auth";
 
 export default {
   name: "UserManager",
@@ -200,6 +204,8 @@ export default {
         { text: "Numéro", value: "number" },
         { text: "Ville", value: "town" },
         { text: "Inscription", value: "updatedAt" },
+        { text: "Création OK", value: "created"},
+        { text: "Mail validé", value: "mailVerified"},
         { text: "Crédit", value: "credit" },
         { text: "Actions", value: "actions", sortable: false },
       ],
@@ -231,6 +237,7 @@ export default {
         credit: "",
         admin: false,
       },
+      backupItem: {},
       itemToDelete: {},
       dialog: false,
       deleteDialog: false,
@@ -250,7 +257,8 @@ export default {
       console.log("this.editedItem", this.editedItem);
 
       try {
-        await saveAuthUser(this.editedItem);
+        // pass backup to compare mail changes for updating
+        await saveAuthUser(this.editedItem, this.backupItem);
       } catch (err) {
         console.log("UserManager.save err", err);
       }
@@ -264,7 +272,7 @@ export default {
     // UPDATE
     editItem(item) {
       // backup
-      this.actualItemBackup = { ...item };
+      this.backupItem = { ...item };
       console.log("editItem.item", item);
       //console.log("backup.item", this.actualItemBackup);
 
@@ -304,6 +312,10 @@ export default {
       this.deleteDialog = false;
       this.close();
     },
+    test() {
+      let user = getCurrentAuthManagerUser()
+      console.log("AuthManager.currentUser", user)
+    }
   },
   async mounted() {
     console.log("UserManager.towns", this.towns)

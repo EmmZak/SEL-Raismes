@@ -73,15 +73,19 @@ function getTownName(value) {
     const town = towns.find(t => t.value == value)
     if (town) {
         return town.name
-    } 
+    }
     return null
 }
 
 /**
  * Form validators
  */
+const notEmptyRule = v => v && !!v.trim() || 'Le champ ne peut être vide'
 const townRules = [(v) => !!v || "Veuillez choisir la ville"];
-const nameRules = [(v) => !!v || "Veuillez saisir un nom/prénom"];
+const nameRules = [
+    (v) => !!v || "Veuillez saisir un nom/prénom", 
+    notEmptyRule
+];
 const emailRules = [
     (v) => !!v || "Veuillez saisir un mail",
     (v) => /.+@.+\..+/.test(v) || "Le mail n'est pas correct",
@@ -94,8 +98,13 @@ const numberRules = [
 const messageRules = [(v) => v.length < 100 || "Le message est très long"];
 const subjectRules = [(v) => !!v || "Veuillez choisir un sujét"]
 const requiredRules = [(v) => !!v || "Champ obligatoire"]
-const passwordRules = [(v) => v.length > 5 || "Au moins 6 caractères"]
-const onlyNumbersRules = [(v) => !!v || "Saisir le solde", (v) => !isNaN(v) || "Seuls les chiffres sont autorisés",]
+const passwordRules = [
+    (v) => v.length > 5 || "Au moins 6 caractères", 
+    notEmptyRule
+]
+const onlyNumbersRules = [
+    (v) => !!v || "Saisir le solde", (v) => !isNaN(v) || "Seuls les chiffres sont autorisés",
+]
 
 function formatISOonlydate(iso) {
     return iso.split("-").reverse().join('/')
@@ -111,6 +120,17 @@ function formatISOdateToHours(iso) {
     return hour + "h" + min
 }
 
+function goToPath(path) {
+    let route = this.$route.fullPath
+    if (route != path) {
+        this.$router.push(path)
+    }
+}
+
+function getCurrentPath() {
+    return this.$route.fullPath
+}
+
 /**
  * Sort options
  */
@@ -120,6 +140,10 @@ const sortOptions = [
 ];
 
 export {
+    //  router
+    goToPath,
+    getCurrentPath,
+    // date time
     formatISOonlydate,
     formatISOdateToHours,
     // rules

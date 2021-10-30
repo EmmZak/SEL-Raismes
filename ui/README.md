@@ -1,24 +1,11 @@
-# ui
+# Users
 
-## Project setup
-```
-npm install
-```
+## Admin
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+mail: em@zak.fr
+pass: azerty
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## User
 
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+mail: user@user.fr
+pass: azerty

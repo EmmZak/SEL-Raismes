@@ -17,7 +17,7 @@ const Event = sequelize.define("event", {
 
 const User = sequelize.define("user", {
 	firebaseID: DataTypes.STRING,
-	idToken: DataTypes.STRING(1000),
+	//idToken: DataTypes.STRING(1000),
 	mail: DataTypes.STRING,
 	mailVerified: DataTypes.BOOLEAN,
 	number: DataTypes.STRING,
@@ -26,7 +26,7 @@ const User = sequelize.define("user", {
 	town: DataTypes.STRING, // postal code
 	admin: DataTypes.BOOLEAN,
 	credit: DataTypes.INTEGER,
-	verified: DataTypes.BOOLEAN
+	created: DataTypes.BOOLEAN // successfully created in firebase and here
 })
 
 const Service = sequelize.define("service", {

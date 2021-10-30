@@ -17,12 +17,19 @@
       </v-card>
     </v-dialog>
 
-    <v-btn v-if="admin" @click="toAdminPage()" class="success">
-      Interface ADMIN
-    </v-btn>
+    <v-row justify="space-between" class="pa-5">
+      <v-btn v-if="admin" @click="toAdminPage()" class="success">
+        Gérer les utilisateurs
+      </v-btn>
+      <v-btn @click="signOut()" class="error">
+        Déconnexion
+      </v-btn>
+    </v-row>
+
+    <Account :user="{ name: 'manu' }" />
 
     <!-- sort options -->
-    <v-row class="" justify="space-around">
+    <v-row class="pt-5" justify="space-around">
       <v-col cols="12" lg="3">
         <v-text-field
           v-model="search"
@@ -66,7 +73,7 @@
           </div>
         </div>
 
-        <v-row>
+        <v-row v-if="admin">
           <v-col>
             <v-btn class="primary" @click="dialog = true">
               <v-icon>mdi-plus</v-icon>
@@ -99,7 +106,8 @@
                             v-model="editedItem.category"
                             prepend-icon="mdi-shape"
                             :rules="requiredRules"
-                            outlined dense
+                            outlined
+                            dense
                           ></v-select>
                         </v-col>
                         <v-col>
@@ -107,7 +115,8 @@
                             v-model="editedItem.description"
                             label="Description ..."
                             prepend-icon="mdi-info"
-                            outlined dense
+                            outlined
+                            dense
                           ></v-textarea>
                         </v-col>
                       </v-row>
@@ -130,11 +139,14 @@
                           prepend-icon="mdi-account"
                           :item-text="
                             (user) =>
-                              `${user.name}, ${user.surname}, ${user.mail}, ${user.number}, ${user.town}, ${getTownName(user.town)}`
+                              `${user.name}, ${user.surname}, ${user.mail}, ${
+                                user.number
+                              }, ${user.town}, ${getTownName(user.town)}`
                           "
                           item-value="id"
                           :rules="requiredRules"
-                          outlined dense
+                          outlined
+                          dense
                         ></v-autocomplete>
                       </v-col>
                     </v-col>
@@ -219,7 +231,7 @@
             :key="i"
           >
             <!-- crud actions -->
-            <v-card elevation="0" class="pb-1">
+            <v-card elevation="0" class="pb-1" v-if="admin">
               <v-row>
                 <v-col>
                   <v-btn class="primary" @click="editItem(service)">
@@ -253,7 +265,7 @@
 <script>
 //import { mapActions } from "vuex";
 import PublicationCard from "./../components/PublicationCard.vue";
-
+import Account from "./../components/Account.vue";
 //import { getCategories } from "./../services/category";
 import {
   getServices,
@@ -308,7 +320,6 @@ export default {
       selectedCategories: [],
       itemsPerPage: 10,
       search: "",
-      admin: false,
       //items: [],
       users: [],
       services: [],
@@ -317,14 +328,18 @@ export default {
   },
   components: {
     PublicationCard,
+    Account,
   },
   methods: {
     test() {
       console.log("this.editedItem", this.editedItem);
     },
-    //...mapActions(["fetchUser", "fetchPublications", "fetchCategories"]),
+    async signOut() {
+      await this.$store.dispatch("signOutStore");
+      this.goToPath('/')
+    },
     toAdminPage() {
-      this.$router.push("/admin");
+      this.goToPath("/users");
     },
     filterItems() {
       console.log("search ", this.search);
@@ -340,9 +355,9 @@ export default {
       console.log("this.editedItem", this.editedItem);
 
       try {
-        await saveService(this.editedItem)
-      } catch(err) {
-        console.log("Feed.save.err", err)
+        await saveService(this.editedItem);
+      } catch (err) {
+        console.log("Feed.save.err", err);
       }
 
       await this.loadServices();
@@ -394,7 +409,6 @@ export default {
       this.deleteDialog = false;
       this.close();
     },
-
     // load services
     async loadServices() {
       this.$refs.categSelect.blur();
@@ -419,9 +433,7 @@ export default {
     },
   },
   async mounted() {
-    //this.categories = this.$store.getters.categories;
-    //console.log("FEED.categories", this.categories);
-
+    console.log("MOUNTED: Feed");
     await this.loadServices();
     await this.loadUsers();
 
@@ -430,6 +442,10 @@ export default {
     this.count = res.data;
   },
   computed: {
+    admin() {
+      const user = this.$store.getters.user;
+      return user ? user.admin : false;
+    },
     nbPages() {
       if (this.services.length <= this.pagination.limit) {
         return 1;

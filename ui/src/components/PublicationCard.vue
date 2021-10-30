@@ -13,7 +13,7 @@
                   <v-row class="no-gutters" align="center">
                     <v-col cols="12" class="">
                       <div class="card_categ_class">
-                        {{ item.category }}
+                        {{ getCategoryNameByValue(item.category) }}
                       </div>
                     </v-col>
                     <!-- <v-col cols="4" class="" align="right">
@@ -82,9 +82,9 @@
           <v-col class="pa-1" cols="4" lg="4">
             <v-img
               :src="
-                require(`@/assets/images/categories/${
-                  getCategoryImageByValue(item.category)
-                }`)
+                require(`@/assets/images/categories/${getCategoryImageByValue(
+                  item.category
+                )}`)
               "
             ></v-img>
           </v-col>
@@ -146,6 +146,10 @@ export default {
     window.addEventListener("resize", this.fitText);
   },
   computed: {
+    admin() {
+      const user = this.$store.getters.user;
+      return user ? user.admin : false;
+    },
     categTitleSize() {
       console.log("this refs", this.$refs);
       return this.$refs.categ.clientWidth;

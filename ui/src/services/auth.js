@@ -1,29 +1,43 @@
 import axios from "axios"
 import { saveUser, getUserByFirebaseId, deleteUser } from "./user"
-import { auth, authManager } from "./../firebaseConfig";
+
+import { initializeApp } from "firebase/app";
+import {
+    getAuth,
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword, 
+    updateEmail,
+    signOut
+} from "firebase/auth";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAlJTkalKBtBVpjsj_DlEmXaXVIv24og0g",
+    authDomain: "troc-raismois.firebaseapp.com",
+    projectId: "troc-raismois",
+    storageBucket: "troc-raismois.appspot.com",
+    messagingSenderId: "295238619212",
+    appId: "1:295238619212:web:109bcd65e38095bc57e4e9",
+    measurementId: "G-12ZPY5CJ6W",
+};
+
+const app = initializeApp(firebaseConfig);
+const app2 = initializeApp(firebaseConfig, "authManager");
+
+//const auth = getAuth();
+const authManager = getAuth(app2);
+
 
 /*
  * Auth
  */
-
-
-
 const API_KEY = "AIzaSyAlJTkalKBtBVpjsj_DlEmXaXVIv24og0g"
-const FIREBASE_SIGN_UP_API = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${API_KEY}`
 const FIREBASE_SIGN_IN_API = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${API_KEY}`
-const FIREBASE_DELETE_API = `https://identitytoolkit.googleapis.com/v1/accounts:delete?key=${API_KEY}`
-const FIREBASE_UPDATE_MAIL_API = `https://identitytoolkit.googleapis.com/v1/accounts:update?key=${API_KEY}`
-//const FIREBASE_UPDATE_PASSWORD_API = `https://identitytoolkit.googleapis.com/v1/accounts:update?key=${API_KEY}`
 
 //const API = "http://localhost:5000/users/"
 
 // NOT TO EXPORT
 async function firebaseSignUpUser(user) {
-    return axios.post(FIREBASE_SIGN_UP_API, {
-        email: user.mail,
-        password: user.password,
-        returnSecureToken: true
-    })
+    return createUserWithEmailAndPassword(authManager, user.mail, user.password)
 }
 // NOT TO EXPORT
 async function firebaseSignInUser(user) {
@@ -34,35 +48,54 @@ async function firebaseSignInUser(user) {
     })
 }
 // NOT TO EXPORT
-async function firebaseDeleteUser(user) {
-    return axios.post(FIREBASE_DELETE_API, {
-        idToken: user.idToken
-    })
-}
-
-async function firebaseUpdateUserMail(user) {
-    return axios.post(FIREBASE_UPDATE_MAIL_API, {
-        idToken: user.idToken,
-        email: user.mail,
-        returnSecureToken: true
-    })
-}
+// async function firebaseDeleteUser(user) {
+//     return axios.post(FIREBASE_DELETE_API, {
+//         idToken: user.idToken
+//     })
+// }
 
 // EXPORT
-async function saveAuthUser(user) {
+async function saveAuthUser(user, userOld) {
     let firebaseUser = null
     // let pgUser = {}
 
     if (user.id) {
-        firebaseUser = await firebaseUpdateUserMail(user)
-        console.log("create firebaesUser", firebaseUser)
+        console.log("UPDATING USER ...")
+        if (user.mail != userOld.mail) {
+            console.log("auth.saveAuthUser.signIn.userOld.mail", userOld.mail, user.password)
+            await signInWithEmailAndPassword(authManager, userOld.mail, user.password)
+                .then((res) => {
+                    console.log("saveAuthUser.signIn.res", res)
+                })
+                .catch((err) => {
+                    console.log("saveAuthUser.signIn.err", err)
+                    throw err
+                })
+
+            await updateEmail(authManager.currentUser, user.mail)
+                .then((res) => {
+                    console.log("saveAuthUser.updateMail.res", res)
+                })
+                .catch((err) => {
+                    console.log("saveAuthUser.updateMail.err", err)
+                    throw err
+                })
+        }
     } else {
-        firebaseUser = await firebaseSignUpUser(user)
-        console.log("update firebaesUser", firebaseUser)
+        console.log("CREATING USER ...")
+        await firebaseSignUpUser(user)
+            .then((userCreds) => {
+                firebaseUser = userCreds.user
+                console.log("auth.firebaseSignUp.firebaseUser", firebaseUser)
+                user['firebaseID'] = firebaseUser.uid
+            })
+            .catch((err) => {
+                console.log("auth.firebaseSignUp.err", err)
+                throw err
+            })
+        console.log("created ... signing Out")
+        await signOut(authManager)
     }
-    console.log("user", user)
-    user['firebaseID'] = firebaseUser.data.localId
-    user['idToken'] = firebaseUser.data.idToken
 
     return await saveUser(user)
 }
@@ -78,7 +111,7 @@ async function signInAuthUser(user) {
 
 async function deleteAuthUser(user) {
     try {
-        await firebaseDeleteUser(user.firebaseID)
+        //await firebaseDeleteUser(user.firebaseID)
         return await deleteUser(user.firebaseID)
     } catch (err) {
         console.log("err", err)
@@ -89,22 +122,28 @@ async function updateAuthUser(user) {
     console.log("updating", user)
 }
 
-function isConnected() {
-    let user = auth.currentUser
-    console.log("service.isConnected user", user)
-    return user
-    // set to store
-}
+// function isConnected() {
+//     let user = auth.currentUser
+//     console.log("service.isConnected user", user)
+//     return user
+//     // set to store
+// }
 
 async function isAdmin() {
     // set to store
 }
 
+function getCurrentAuthManagerUser() {
+    return authManager.currentUser
+}
+
 export {
+    app,
+    //auth,
     signInAuthUser,
     saveAuthUser,
     deleteAuthUser,
     updateAuthUser,
-    isConnected,
-    isAdmin
+    isAdmin,
+    getCurrentAuthManagerUser
 }

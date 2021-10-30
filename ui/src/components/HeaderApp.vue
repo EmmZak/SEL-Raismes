@@ -67,10 +67,7 @@
       <v-btn text to="/about"> à propos </v-btn>
       <v-btn text @click="emitAuthEvent" class="success">
         <v-icon left dark>mdi-lock</v-icon>
-        <div 
-          v-text="this.$route.name == 'Feed' 
-            && !this.$store.getters.visitor ? 'Déconnexion': 'Se Connecter'">
-        </div>
+        <div> Espace Personnel </div>
       </v-btn>
       <!-- <v-btn @click="user()">user</v-btn> -->
     </v-toolbar-items>

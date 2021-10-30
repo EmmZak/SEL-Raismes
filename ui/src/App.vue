@@ -103,10 +103,9 @@
 </template>
 
 <script>
-//import Header from "./components/Header.vue"
 import HeaderApp from "./components/HeaderApp.vue";
 import Footer from "./components/Footer.vue";
-import { mapActions } from "vuex";
+// import { getUserFirebase } from "./services/account"
 
 export default {
   name: "App",
@@ -129,36 +128,45 @@ export default {
     authData: {
       mail: "", //"aymeric@robin.fr",
       password: "", //raismes",
-    }
+    },
   }),
   async created() {
     console.log("APP CREATED");
     document.title = "Troc D'Heures Raismois";
-	//await this.fetchCategories()
+
+    // let authUser = getUserFirebase()
+    // console.log("App.authUser", authUser)
+    console.log("APP setup user/authUser");
+    await this.$store.dispatch("setup");
+    console.log("APP setup done");
+
+    if (this.$store.getters.user == null) {
+      const currentPath = this.getCurrentPath()
+      if (currentPath == '/feed') {
+        this.goToPath('/')
+      }
+    }
   },
   async mounted() {
-    console.log("MOUNTED: init, fetching categories");
-	//await this.fetchCategories()
+    console.log("MOUNTED: App");
   },
   methods: {
-	...mapActions(["fetchCategories"]),
     async openAuthDialog() {
       console.log("opening auth dialog");
       let route = this.$route.name;
-      if (route == "Feed"  /*&& signedIn*/) {
-        console.log("sign out");
-        await this.signOut();
+      if (route == "Feed" /*&& signedIn*/) {
+        console.log("App sign out");
+        await this.$store.dispatch("signOutStore");
         console.log("signed out");
+        this.goToPath('/')
         return;
       }
       console.log("checking if connected");
-      let authUser = null//isConnected();
+      let authUser = this.$store.getters.user; //isConnected();
       console.log("isConnected authUser", authUser);
       if (authUser) {
         console.log("already logged");
-        if (route != "Feed") {
-          this.$router.push("/feed");
-        }
+        this.goToPath("/feed");
       } else {
         //this.authData.mail = "";
         //this.authData.password = "";
@@ -186,13 +194,13 @@ export default {
       }
       this.authLoading = false;
 
-      await this.$store.dispatch("setVisitor", false);
+      //await this.$store.dispatch("setVisitor", false);
       console.log("APPvue after signIN");
     },
     async signOut() {
       try {
-        await this.$store.dispatch("signOut");
-        this.$router.push("/");
+        await this.$store.dispatch("signOutStore");
+        this.goToPath("/");
       } catch (error) {
         console.log("signout error", error);
       }
@@ -200,15 +208,14 @@ export default {
     // if no account, go to contact page with create accoutn header
     createAccountRequest() {
       this.authDialog = false;
-      this.$router.push({ path: "/contact", query: { subject: "creation" } });
+      this.goToPath("/contact");
+      //this.$router.push({ path: "/contact", query: { subject: "creation" } });
     },
     // continue without sign in and up
     async visit() {
-      await this.$store.dispatch("setVisitor", true);
+      //await this.$store.dispatch("setVisitor", true);
       this.authDialog = false;
-      if (this.$route.name != "Feed") {
-        this.$router.push({ path: "/feed" });
-      }
+      this.goToPath("/feed");
     },
     test() {
       let storeUser = this.$store.getters.actualUser;
