@@ -36,8 +36,8 @@
             </v-row>
             <!-- error -->
             <v-row v-if="authError != ''" class="pa-2">
-              <v-col align="center" class="pa-2 red lighten-4 rounded">
-                <div class="text-h6 red--text font-weight-bold">
+              <v-col align="center" class="pa-2 red rounded">
+                <div class="text-h6 white--text font-weight-bold">
                   <div class="title-font">{{ authError }}</div>
                 </div>
               </v-col>
@@ -142,7 +142,7 @@ export default {
 
     if (this.$store.getters.user == null) {
       const currentPath = this.getCurrentPath()
-      if (currentPath == '/feed') {
+      if (['/feed', '/users'].includes(currentPath)) {
         this.goToPath('/')
       }
     }
@@ -181,7 +181,9 @@ export default {
       this.authLoading = true;
 
       try {
+        console.log("APP.singing IN")
         let user = await this.$store.dispatch("signIn", this.authData);
+        console.log("APP.singing IN")
         console.log("auth user", user);
         this.authDialog = false;
         // if (this.$route.name != "Feed") {

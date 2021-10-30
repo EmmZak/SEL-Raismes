@@ -2,7 +2,6 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue"
 import Feed from "../views/Feed.vue";
-import Admin from "../views/Admin.vue";
 import Contact from "../views/Contact.vue";
 import About from "../views/About.vue";
 import UserManager from "../views/UserManager.vue"
@@ -31,7 +30,7 @@ const routes = [
     name: "Feed",
     component: Feed,
     meta: {
-      authRequired: false,
+      authRequired: true,
     },
   },
   {
@@ -39,17 +38,9 @@ const routes = [
     name: "UserManager",
     component: UserManager,
     meta: {
-      authRequired: false,
+      authRequired: true,
     },
-  },
-  {
-    path: "/admin",
-    name: "Admin",
-    component: Admin,
-    meta: {
-      authRequired: false,
-    },
-  },
+  }
 ];
 
 const router = new VueRouter({
@@ -62,9 +53,10 @@ router.beforeEach((to, from, next) => {
     // if guest/visitor
     //let visitor = store.getters.visitor
     //console.log("router visitor", visitor);
-    let user = null
-    console.log("ROUTER.user", user)
-    if (user.id) {
+    //let user = this.$store.getters.user
+    let user = {}
+    if (user) {
+      console.log("ROUTER next")
       next();
     } else {
       console.log("You must be logged in to see this page");

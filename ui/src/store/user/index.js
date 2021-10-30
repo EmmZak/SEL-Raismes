@@ -30,15 +30,19 @@ export default {
             console.log("state.setup done")
         },
         async signIn({ commit, getters }, paylod) {
-            await signInWithEmailAndPassword(auth, paylod.mail, paylod.password)
-                .then((userCredential) => {
-                    const authUser = userCredential.user;
-                    console.log("state.signIn.authUser", authUser)
-                    commit('setAuthUser', authUser)
-                })
-                .catch((err) => {
-                    console.log("state.signIn.err", err)
-                });
+            let userCredential = await signInWithEmailAndPassword(auth, paylod.mail, paylod.password)
+            // .then((userCredential) => {
+            //     const authUser = userCredential.user;
+            //     console.log("state.signIn.authUser", authUser)
+            //     commit('setAuthUser', authUser)
+            // })
+            // .catch((err) => {
+            //     console.log("state.signIn.err", err)
+            // });
+            const authUser = userCredential.user;
+            console.log("state.signIn.authUser", authUser)
+            commit('setAuthUser', authUser)
+
             let user = {}
             if (getters.authUser) {
                 console.log("getters.authUser ", getters.authUser)
