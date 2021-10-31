@@ -3,6 +3,8 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
+import { auth } from './firebaseConfig'
+
 // mixins.js
 import {
   formatISOonlydate,
@@ -71,9 +73,29 @@ const mixin = {
 
 Vue.mixin(mixin)
 
-new Vue({
-  router,
-  store,
-  vuetify,
-  render: h => h(App)
-}).$mount('#app')
+// new Vue({
+//   router,
+//   store,
+//   vuetify,
+//   render: h => h(App)
+// }).$mount('#app')
+let app
+auth.onAuthStateChanged((authUser) => {
+  if (!app) {
+    app = new Vue({
+      router,
+      store,
+      vuetify,
+      render: h => h(App)
+    }).$mount('#app')
+  }
+
+  if (authUser) {
+    console.log("Main.js, found authUser", authUser)
+    store.dispatch('setup', authUser)
+  } else {
+    console.log("Main.js, NO User found")
+  }
+})
+
+

@@ -137,18 +137,18 @@ export default {
     // let authUser = getUserFirebase()
     // console.log("App.authUser", authUser)
     console.log("APP setup user/authUser");
-    await this.$store.dispatch("setup");
+    //await this.$store.dispatch("setup");
     console.log("APP setup done");
 
     if (this.$store.getters.user == null) {
-      const currentPath = this.getCurrentPath()
-      if (['/feed', '/users'].includes(currentPath)) {
-        this.goToPath('/')
+      const currentPath = this.getCurrentPath();
+      if (["/feed", "/users"].includes(currentPath)) {
+        this.goToPath("/");
       }
     }
   },
   async mounted() {
-    console.log("MOUNTED: App");
+    //console.log("MOUNTED: App");
   },
   methods: {
     async openAuthDialog() {
@@ -158,7 +158,7 @@ export default {
         console.log("App sign out");
         await this.$store.dispatch("signOutStore");
         console.log("signed out");
-        this.goToPath('/')
+        this.goToPath("/");
         return;
       }
       console.log("checking if connected");
@@ -181,15 +181,15 @@ export default {
       this.authLoading = true;
 
       try {
-        console.log("APP.singing IN")
+        console.log("APP.singing IN");
         let user = await this.$store.dispatch("signIn", this.authData);
-        console.log("APP.singing IN")
+        console.log("APP.singing IN");
         console.log("auth user", user);
         this.authDialog = false;
         // if (this.$route.name != "Feed") {
         //   this.$router.push("/feed");
         // }
-        this.$router.push("/feed");
+        this.goToPath('/feed')
       } catch (error) {
         console.log("App.vue.signIn.error", error);
         this.authError = this.authErrorMap[error.code];
@@ -231,7 +231,7 @@ export default {
       return this.$store.getters.actualUser;
     },
     isAdminView() {
-      console.log("actualRoute", this.$route.name);
+      //console.log("actualRoute", this.$route.name);
       return this.$route.name == "Admin";
     },
   },

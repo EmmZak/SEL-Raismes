@@ -23,17 +23,14 @@ export default {
         }
     },
     actions: {
-        async setup({ commit }) {
-            const authUser = auth.currentUser
-            console.log("authUser", authUser)
+        async setup({ commit }, authUser) {
             commit('setAuthUser', authUser)
             let user = null
             if (authUser) {
                 user = await getUserByFirebaseId(authUser.uid)
-                console.log("user", user)
+                console.log("user", user.data)
             }
-            commit('setUser', user)
-            console.log("state.setup done")
+            commit('setUser', user.data)
         },
         async signIn({ commit, getters }, paylod) {
             console.log("BEFORE SignIN")
@@ -51,6 +48,7 @@ export default {
                         })
                         .catch((err) => {
                             console.log("state.signIn.err", err)
+                            throw err
                         });
                 })
                 .catch((err) => {
