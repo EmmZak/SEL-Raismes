@@ -1,5 +1,11 @@
 import { getUserByFirebaseId } from "./../../services/user"
-import { auth, signInWithEmailAndPassword, signOut } from "../../firebaseConfig"
+import {
+    auth,
+    signInWithEmailAndPassword,
+    signOut,
+    setPersistence,
+    browserLocalPersistence
+} from "../../firebaseConfig"
 
 export default {
     state: {
@@ -30,25 +36,26 @@ export default {
             console.log("state.setup done")
         },
         async signIn({ commit, getters }, paylod) {
-            let userCredential = await signInWithEmailAndPassword(auth, paylod.mail, paylod.password)
-            // .then((userCredential) => {
-            //     const authUser = userCredential.user;
-            //     console.log("state.signIn.authUser", authUser)
-            //     commit('setAuthUser', authUser)
-            // })
-            // .catch((err) => {
-            //     console.log("state.signIn.err", err)
-            // });
-            const authUser = userCredential.user;
-            console.log("state.signIn.authUser", authUser)
-            commit('setAuthUser', authUser)
+            console.log("BEFORE SignIN")
+            await setPersistence(auth, browserLocalPersistence)
+                .then(async () => {
+                    await signInWithEmailAndPassword(auth, paylod.mail, paylod.password)
+                        .then(async (userCredential) => {
+                            const authUser = userCredential.user;
+                            console.log("state.signIn.authUser", authUser)
+                            commit('setAuthUser', authUser)
 
-            let user = {}
-            if (getters.authUser) {
-                console.log("getters.authUser ", getters.authUser)
-                user = await getUserByFirebaseId(getters.authUser.uid)
-                commit('setUser', user.data)
-            }
+                            console.log("getters.authUser ", getters.authUser)
+                            let user = await getUserByFirebaseId(getters.authUser.uid)
+                            commit('setUser', user.data)
+                        })
+                        .catch((err) => {
+                            console.log("state.signIn.err", err)
+                        });
+                })
+                .catch((err) => {
+                    throw err
+                })
         },
         async signOutStore({ commit }) {
             console.log("Store.signOut")

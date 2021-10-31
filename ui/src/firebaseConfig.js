@@ -2,7 +2,9 @@ import { initializeApp } from "firebase/app";
 import {
     getAuth,
     signInWithEmailAndPassword,
-    signOut
+    signOut,
+    setPersistence,
+    browserLocalPersistence
 } from "firebase/auth";
 
 const firebaseConfig = {
@@ -21,4 +23,4 @@ const app2 = initializeApp(firebaseConfig, "authManager");
 const auth = getAuth();
 const authManager = getAuth(app2);
 
-export { app, authManager, auth, signInWithEmailAndPassword, signOut }
+export { app, authManager, auth, signInWithEmailAndPassword, signOut, setPersistence, browserLocalPersistence }
