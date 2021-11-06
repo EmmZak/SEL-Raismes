@@ -1,10 +1,10 @@
 <template>
   <v-app>
     <!-- HeaderApp -->
-    <HeaderApp v-if="!isAdminView" @auth-event="openAuthDialog" />
-
+    <!-- <HeaderApp v-if="!isAdminView" @auth-event="openAuthDialog" /> -->
+    <HeaderApp v-if="!isAdminView" @auth-event="startAuthEvent" />
     <!-- <v-btn @click="test">test </v-btn> -->
-    <!-- auth dialog -->
+    <!-- auth dialog
     <v-dialog v-model="authDialog" max-width="500px">
       <v-card>
         <v-card-title class="text-lg-h3 text-md-h3 text-sm-h3 text-h5">
@@ -12,7 +12,6 @@
         </v-card-title>
 
         <v-card-text>
-          <!-- form -->
           <v-form ref="loginForm">
             <v-row class="">
               <v-col class="">
@@ -34,7 +33,6 @@
                 ></v-text-field>
               </v-col>
             </v-row>
-            <!-- error -->
             <v-row v-if="authError != ''" class="pa-2">
               <v-col align="center" class="pa-2 red rounded">
                 <div class="text-h6 white--text font-weight-bold">
@@ -42,7 +40,6 @@
                 </div>
               </v-col>
             </v-row>
-            <!-- buttons -->
             <v-row justify="space-around" class="">
               <v-col
                 class=""
@@ -90,10 +87,12 @@
           </v-form>
         </v-card-text>
       </v-card>
-    </v-dialog>
+    </v-dialog> -->
+    <Login :show="authDialog" @auth-event="endAuthEvent" />
 
     <!-- router -->
     <v-main>
+      authDialog {{ authDialog }}
       <router-view />
     </v-main>
 
@@ -105,14 +104,15 @@
 <script>
 import HeaderApp from "./components/HeaderApp.vue";
 import Footer from "./components/Footer.vue";
+import Login from "./components/dialog/Login.vue";
 // import { getUserFirebase } from "./services/account"
 
 export default {
   name: "App",
   components: {
     Footer,
-    //Header,
     HeaderApp,
+    Login,
   },
   data: () => ({
     admin: false,
@@ -151,6 +151,22 @@ export default {
     //console.log("MOUNTED: App");
   },
   methods: {
+    endAuthEvent() {
+      this.authDialog = false
+    },
+    async startAuthEvent() {
+      console.log("checking if connected");
+      let authUser = this.$store.getters.user; //isConnected();
+      console.log("isConnected authUser", authUser);
+      if (authUser) {
+        console.log("already logged");
+        this.goToPath("/feed");
+      } else {
+        //this.authData.mail = "";
+        //this.authData.password = "";
+        this.authDialog = true;
+      }
+    },
     async openAuthDialog() {
       console.log("opening auth dialog");
       let route = this.$route.name;
@@ -189,7 +205,7 @@ export default {
         // if (this.$route.name != "Feed") {
         //   this.$router.push("/feed");
         // }
-        this.goToPath('/feed')
+        this.goToPath("/feed");
       } catch (error) {
         console.log("App.vue.signIn.error", error);
         this.authError = this.authErrorMap[error.code];
