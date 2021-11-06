@@ -21,12 +21,10 @@
       <v-btn v-if="admin" @click="toAdminPage()" class="success">
         Gérer les utilisateurs
       </v-btn>
-      <v-btn @click="signOut()" class="error">
-        Déconnexion
-      </v-btn>
+      <v-btn @click="signOut()" class="error"> Déconnexion </v-btn>
     </v-row>
 
-    <Account :user="{ name: 'manu' }" />
+    <Account v-if="false" :user="{ name: 'manu' }" />
 
     <!-- sort options -->
     <v-row class="pt-5" justify="space-around">
@@ -65,6 +63,14 @@
     </v-row>
 
     <!-- items rendering -->
+    <ServiceDialog
+      ref="crudDialog"
+      :show="crudDialog"
+      :users="users"
+      :service="service"
+      @crud-event="endCrudEvent"
+    />
+
     <v-row justify="center">
       <v-col lg="11">
         <div class="text-lg-h4 text-md-h5 text-sm-h6">
@@ -75,7 +81,8 @@
 
         <v-row v-if="admin">
           <v-col>
-            <v-btn class="primary" @click="dialog = true">
+            <!-- <v-btn class="primary" @click="crudDialog = true"> -->
+            <v-btn class="primary" @click="startCrudEvent(null)">
               <v-icon>mdi-plus</v-icon>
               <span>Nouvelle Publication</span>
             </v-btn>
@@ -83,140 +90,6 @@
         </v-row>
 
         <v-row class="">
-          <!-- crud dialog -->
-          <v-dialog v-model="dialog" max-width="800px">
-            <v-card>
-              <!-- form -->
-              <v-card-text>
-                <v-form ref="publicationFormFeed">
-                  <v-row class="pa-0">
-                    <v-col>
-                      <v-row>
-                        <v-col class="">
-                          <v-card-title class="pl-0">
-                            <span class="text-h4">Création Publication</span>
-                          </v-card-title>
-                        </v-col> </v-row
-                      ><v-row>
-                        <v-col>
-                          <v-select
-                            :items="categories"
-                            item-text="name"
-                            label="Catégorie"
-                            v-model="editedItem.category"
-                            prepend-icon="mdi-shape"
-                            :rules="requiredRules"
-                            outlined
-                            dense
-                          ></v-select>
-                        </v-col>
-                        <v-col>
-                          <v-textarea
-                            v-model="editedItem.description"
-                            label="Description ..."
-                            prepend-icon="mdi-info"
-                            outlined
-                            dense
-                          ></v-textarea>
-                        </v-col>
-                      </v-row>
-                    </v-col>
-                  </v-row>
-                  <v-row class="pt-0 pb-0">
-                    <v-col class="pt-0">
-                      <v-card-title class="pa-0">
-                        <span class="text-h4">Séliste</span>
-                      </v-card-title>
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col>
-                      <v-col>
-                        <v-autocomplete
-                          :items="users"
-                          v-model="editedItem.userId"
-                          label="Séliste"
-                          prepend-icon="mdi-account"
-                          :item-text="
-                            (user) =>
-                              `${user.name}, ${user.surname}, ${user.mail}, ${
-                                user.number
-                              }, ${user.town}, ${getTownName(user.town)}`
-                          "
-                          item-value="id"
-                          :rules="requiredRules"
-                          outlined
-                          dense
-                        ></v-autocomplete>
-                      </v-col>
-                    </v-col>
-                  </v-row>
-                  <!-- Field notation
-                  <v-row>
-                    <v-col>
-                      <v-text-field
-                        v-model="editedItem.user.name"
-                        label="Prénom"
-                        prepend-icon="mdi-account"
-                        :rules="requiredRules"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col>
-                      <v-text-field
-                        v-model="editedItem.user.surname"
-                        label="Nom"
-                        prepend-icon="mdi-account"
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col>
-                      <v-text-field
-                        v-model="editedItem.user.mail"
-                        label="E-mail"
-                        prepend-icon="mdi-email"
-                        :rules="emailRules"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col>
-                      <v-text-field
-                        v-model="editedItem.user.number"
-                        label="Numéro"
-                        prepend-icon="mdi-phone"
-                      ></v-text-field>
-                    </v-col>
-                  </v-row> -->
-                </v-form>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="close">
-                  Annuler
-                </v-btn>
-                <v-btn color="blue darken-1" text @click="save">
-                  Enregistrer
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-          <!-- delete dialog -->
-          <v-dialog v-model="deleteDialog" max-width="500px">
-            <v-card>
-              <v-card-title class="text-h10"
-                >Vous êtes sûr de vouloir supprimer l'annonce ?</v-card-title
-              >
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="closeDelete"
-                  >Annuler</v-btn
-                >
-                <v-btn color="blue darken-1" text @click="deleteItemConfirm"
-                  >OUI</v-btn
-                >
-                <v-spacer></v-spacer>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
           <v-col
             cols="12"
             lg="6"
@@ -234,10 +107,11 @@
             <v-card elevation="0" class="pb-1" v-if="admin">
               <v-row>
                 <v-col>
-                  <v-btn class="primary" @click="editItem(service)">
+                  <!-- <v-btn class="primary" @click="editItem(service)"> -->
+                  <v-btn class="primary" @click="startCrudEvent(service)">
                     <v-icon>mdi-pencil</v-icon>
                     <span>Modifier</span> </v-btn
-                  ><v-btn class="error" @click="deleteItem(service)">
+                  ><v-btn class="error" @click="deleteCrudEvent(service)">
                     <v-icon>mdi-delete</v-icon>
                     <span>Supprimer</span>
                   </v-btn></v-col
@@ -245,7 +119,7 @@
               </v-row>
             </v-card>
             <!-- item -->
-            <publication-card :item="service" :visit="visit" />
+            <PublicationCard :item="service" :visit="visit" />
           </v-col>
         </v-row>
       </v-col>
@@ -264,46 +138,42 @@
 
 <script>
 //import { mapActions } from "vuex";
+import ServiceDialog from "./../components/dialog/ServiceDialog.vue";
 import PublicationCard from "./../components/PublicationCard.vue";
 import Account from "./../components/Account.vue";
 //import { getCategories } from "./../services/category";
 import {
   getServices,
-  getCount,
-  saveService,
-  deleteService,
+  getCount
 } from "./../services/service";
 import { getUsers } from "./../services/user";
 
 export default {
   name: "Feed",
-
+  components: {
+    PublicationCard,
+    Account,
+    ServiceDialog,
+  },
   data() {
     return {
       // Form dialog
-      dialog: false,
+      crudDialog: false,
       deleteDialog: false,
       // crud objects
-      editedIndex: -1,
-      editedItem: {
+      // service to pass as prop to dialog
+      service: {
         id: null,
         category: "",
         description: "",
         userId: "",
       },
-      actualItemBackup: {
+      defaultService: {
         id: null,
         category: "",
         description: "",
         userId: "",
       },
-      defaultItem: {
-        id: null,
-        category: "",
-        description: "",
-        userId: "",
-      },
-      itemToDelete: {},
       // other
       pagination: {
         page: 1,
@@ -326,88 +196,35 @@ export default {
       count: 0,
     };
   },
-  components: {
-    PublicationCard,
-    Account,
-  },
   methods: {
+    startCrudEvent(service) {
+      if (service != null) {
+        this.service = { ...service };
+      } else {
+        this.service = { ...this.defaultService };
+      }
+      this.crudDialog = true;
+    },
+    async endCrudEvent() {
+      await this.loadServices();
+      this.service = { ...this.defaultService };
+      this.crudDialog = false;
+    },
+    async deleteCrudEvent(service) {
+      await this.$refs.crudDialog.deleteItem(service)
+    },
     test() {
       console.log("this.editedItem", this.editedItem);
     },
     async signOut() {
       await this.$store.dispatch("signOutStore");
-      this.goToPath('/')
+      this.goToPath("/");
     },
     toAdminPage() {
       this.goToPath("/users");
     },
     filterItems() {
       console.log("search ", this.search);
-    },
-    // crud
-    async save() {
-      console.log("this refs", this.$refs);
-      if (!this.$refs.publicationFormFeed.validate()) {
-        return;
-      }
-      this.processing = true;
-
-      console.log("this.editedItem", this.editedItem);
-
-      try {
-        await saveService(this.editedItem);
-      } catch (err) {
-        console.log("Feed.save.err", err);
-      }
-
-      await this.loadServices();
-
-      this.processing = false;
-      this.close();
-    },
-    async editItem(item) {
-      // backup
-      this.actualItemBackup = { ...item };
-      console.log("editItem.item", item);
-      console.log("backup.item", this.actualItemBackup);
-
-      this.editedIndex = this.services.indexOf(item);
-      //this.editedItem = Object.assign({}, item);
-      this.editedItem = { ...item, user: { ...item.user } };
-      this.dialog = true;
-    },
-    deleteItem(item) {
-      console.log("deleteItem.item", item);
-      this.itemToDelete = item;
-      this.editedIndex = this.services.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.deleteDialog = true;
-    },
-    async deleteItemConfirm() {
-      try {
-        console.log("this.itemToDelete", this.itemToDelete);
-        await deleteService(this.itemToDelete.id);
-        //await this.$store.dispatch("deletePublication", this.itemToDelete);
-      } catch (err) {
-        console.log(err);
-      }
-      //reload
-      await this.loadServices();
-
-      this.itemToDelete = {};
-      this.closeDelete();
-    },
-    close() {
-      this.dialog = false;
-      //this.editedItem = {}
-      this.editedItem = Object.assign({}, this.defaultItem);
-      this.editedIndex = -1;
-    },
-    closeDelete() {
-      // cancel deleting
-      //console.log("closeDelete")
-      this.deleteDialog = false;
-      this.close();
     },
     // load services
     async loadServices() {
@@ -433,12 +250,10 @@ export default {
     },
   },
   async mounted() {
-    console.log("MOUNTED: Feed");
     await this.loadServices();
     await this.loadUsers();
 
     let res = await getCount();
-    console.log("feed.count", res);
     this.count = res.data;
   },
   computed: {
@@ -456,16 +271,7 @@ export default {
       }
       console.log("n -> ", n);
       return n;
-    },
-    items() {
-      let a = this.$store.getters.publications;
-      //console.log("returning publivations", a)
-      // return [...a, ...a, ...a, ...a, ...a, ...a, ...a, ...a, ...a, ...a];
-      return a;
-    },
-    isVisitor() {
-      return this.$store.getters.visitor;
-    },
+    }
   },
 };
 </script>

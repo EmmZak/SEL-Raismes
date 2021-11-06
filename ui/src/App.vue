@@ -4,95 +4,11 @@
     <!-- <HeaderApp v-if="!isAdminView" @auth-event="openAuthDialog" /> -->
     <HeaderApp v-if="!isAdminView" @auth-event="startAuthEvent" />
     <!-- <v-btn @click="test">test </v-btn> -->
-    <!-- auth dialog
-    <v-dialog v-model="authDialog" max-width="500px">
-      <v-card>
-        <v-card-title class="text-lg-h3 text-md-h3 text-sm-h3 text-h5">
-          <div class="title-font pa-0">Identification</div>
-        </v-card-title>
 
-        <v-card-text>
-          <v-form ref="loginForm">
-            <v-row class="">
-              <v-col class="">
-                <v-text-field
-                  v-model="authData.mail"
-                  :rules="emailRules"
-                  label="E-mail"
-                  prepend-icon="mdi-email"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col>
-                <v-text-field
-                  v-model="authData.password"
-                  :rules="passwordRules"
-                  label="Mot de passe"
-                  prepend-icon="mdi-lock"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-            <v-row v-if="authError != ''" class="pa-2">
-              <v-col align="center" class="pa-2 red rounded">
-                <div class="text-h6 white--text font-weight-bold">
-                  <div class="title-font">{{ authError }}</div>
-                </div>
-              </v-col>
-            </v-row>
-            <v-row justify="space-around" class="">
-              <v-col
-                class=""
-                align="center"
-                xl="6"
-                lg="6"
-                md="6"
-                sm="6"
-                cols="12"
-              >
-                <v-btn
-                  class="success"
-                  @click="signIn"
-                  :loading="authLoading"
-                  x-large
-                  block
-                >
-                  Se Connecter
-                </v-btn>
-              </v-col>
-              <v-col
-                class=""
-                align="center"
-                xl="6"
-                lg="6"
-                md="6"
-                sm="6"
-                cols="12"
-              >
-                <v-btn
-                  class="primary"
-                  @click="createAccountRequest"
-                  x-large
-                  block
-                >
-                  Pas de compte ?
-                </v-btn></v-col
-              >
-            </v-row>
-            <v-row class="pa-2" justify="center">
-              <v-btn class="warning" x-large @click="visit" block>
-                Visiter l'espace
-              </v-btn>
-            </v-row>
-          </v-form>
-        </v-card-text>
-      </v-card>
-    </v-dialog> -->
     <Login :show="authDialog" @auth-event="endAuthEvent" />
 
     <!-- router -->
     <v-main>
-      authDialog {{ authDialog }}
       <router-view />
     </v-main>
 
@@ -116,44 +32,32 @@ export default {
   },
   data: () => ({
     admin: false,
-    authLoading: false,
     authDialog: false,
-    authError: "",
-    authErrorMap: {
-      "auth/invalid-email": "Le mail saisi n'est pas valide",
-      "auth/wrong-password": "Mot de passe incorrect",
-      "auth/user-not-found": "Le mail saisi n'existe pas",
-      "auth/too-many-requests": "Veuillez essayer plus tard",
-    },
-    authData: {
-      mail: "", //"aymeric@robin.fr",
-      password: "", //raismes",
-    },
   }),
   async created() {
     console.log("APP CREATED");
     document.title = "Troc D'Heures Raismois";
 
-    // let authUser = getUserFirebase()
-    // console.log("App.authUser", authUser)
-    console.log("APP setup user/authUser");
-    //await this.$store.dispatch("setup");
-    console.log("APP setup done");
-
-    if (this.$store.getters.user == null) {
+    // let user = this.$store.getters.user
+    // if (user == null) {
+    //   console.log("APP: user=", user)
+    //   const currentPath = this.getCurrentPath();
+    //   if (["/feed", "/users"].includes(currentPath)) {
+    //     this.goToPath("/");
+    //   }
+    // }
+  },
+  async mounted() {
+    let user = this.$store.getters.user;
+    if (user == null) {
+      console.log("APP: user=", user);
       const currentPath = this.getCurrentPath();
       if (["/feed", "/users"].includes(currentPath)) {
-        this.goToPath("/");
+        //this.goToPath("/");
       }
     }
   },
-  async mounted() {
-    //console.log("MOUNTED: App");
-  },
   methods: {
-    endAuthEvent() {
-      this.authDialog = false
-    },
     async startAuthEvent() {
       console.log("checking if connected");
       let authUser = this.$store.getters.user; //isConnected();
@@ -167,77 +71,11 @@ export default {
         this.authDialog = true;
       }
     },
-    async openAuthDialog() {
-      console.log("opening auth dialog");
-      let route = this.$route.name;
-      if (route == "Feed" /*&& signedIn*/) {
-        console.log("App sign out");
-        await this.$store.dispatch("signOutStore");
-        console.log("signed out");
-        this.goToPath("/");
-        return;
-      }
-      console.log("checking if connected");
-      let authUser = this.$store.getters.user; //isConnected();
-      console.log("isConnected authUser", authUser);
-      if (authUser) {
-        console.log("already logged");
-        this.goToPath("/feed");
-      } else {
-        //this.authData.mail = "";
-        //this.authData.password = "";
-        this.authDialog = true;
-      }
-    },
-    async signIn() {
-      if (!this.$refs.loginForm.validate()) {
-        return;
-      }
-      console.log("APPvue before signIN ");
-      this.authLoading = true;
-
-      try {
-        console.log("APP.singing IN");
-        let user = await this.$store.dispatch("signIn", this.authData);
-        console.log("APP.singing IN");
-        console.log("auth user", user);
-        this.authDialog = false;
-        // if (this.$route.name != "Feed") {
-        //   this.$router.push("/feed");
-        // }
-        this.goToPath("/feed");
-      } catch (error) {
-        console.log("App.vue.signIn.error", error);
-        this.authError = this.authErrorMap[error.code];
-      }
-      this.authLoading = false;
-
-      //await this.$store.dispatch("setVisitor", false);
-      console.log("APPvue after signIN");
-    },
-    async signOut() {
-      try {
-        await this.$store.dispatch("signOutStore");
-        this.goToPath("/");
-      } catch (error) {
-        console.log("signout error", error);
-      }
-    },
-    // if no account, go to contact page with create accoutn header
-    createAccountRequest() {
+    endAuthEvent() {
       this.authDialog = false;
-      this.goToPath("/contact");
-      //this.$router.push({ path: "/contact", query: { subject: "creation" } });
-    },
-    // continue without sign in and up
-    async visit() {
-      //await this.$store.dispatch("setVisitor", true);
-      this.authDialog = false;
-      this.goToPath("/feed");
     },
     test() {
       let storeUser = this.$store.getters.actualUser;
-      //console.log("user", user)
       console.log("storeUser", storeUser);
     },
   },

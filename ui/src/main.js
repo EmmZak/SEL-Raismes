@@ -80,7 +80,7 @@ Vue.mixin(mixin)
 //   render: h => h(App)
 // }).$mount('#app')
 let app
-auth.onAuthStateChanged((authUser) => {
+auth.onAuthStateChanged(async (authUser) => {
   if (!app) {
     app = new Vue({
       router,
@@ -92,7 +92,7 @@ auth.onAuthStateChanged((authUser) => {
 
   if (authUser) {
     console.log("Main.js, found authUser", authUser)
-    store.dispatch('setup', authUser)
+    await store.dispatch('setup', authUser)
   } else {
     console.log("Main.js, NO User found")
   }

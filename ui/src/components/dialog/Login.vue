@@ -2,9 +2,8 @@
   <!-- auth dialog -->
   <v-dialog
     v-model="authDialog"
-    persistent
-    max-width="500px"
     @click:outside="endAuthEvent"
+    max-width="500px"
   >
     <v-card>
       <v-card-title class="text-lg-h3 text-md-h3 text-sm-h3 text-h5">
@@ -119,17 +118,43 @@ export default {
       get() {
         return this.show;
       },
-      set() {},
+      set() {
+        console.log("AUTHDIALOG SET")
+      },
     },
   },
   methods: {
-    visit() {},
+    visit() {
+      this.endAuthEvent();
+      this.goToPath("/feed");
+    },
     createAccountRequest() {
-      this.authDialog = false;
+      this.endAuthEvent();
       this.goToPath("/contact");
       //this.$router.push({ path: "/contact", query: { subject: "creation" } });
     },
-    signIn() {},
+    async signIn() {
+      if (!this.$refs.loginForm.validate()) {
+        return;
+      }
+      console.log("APPvue before signIN ");
+      this.authLoading = true;
+
+      try {
+        console.log("APP.singing IN");
+        let user = await this.$store.dispatch("signIn", this.authData);
+        console.log("auth user", user);
+        this.endAuthEvent();
+        this.goToPath("/feed");
+      } catch (error) {
+        console.log("App.vue.signIn.error", error);
+        this.authError = this.authErrorMap[error.code];
+      }
+      this.authLoading = false;
+
+      //await this.$store.dispatch("setVisitor", false);
+      console.log("APPvue after signIN");
+    },
     endAuthEvent() {
       // set authDialog to false in parent component
       this.$emit("auth-event");
