@@ -15,7 +15,7 @@
                 <v-row>
                   <v-col class="">
                     <v-card-title class="pl-0">
-                      <span class="text-h4">Création Publication dialog</span>
+                      <span class="text-h4">Création Publication</span>
                     </v-card-title>
                   </v-col> </v-row
                 ><v-row>

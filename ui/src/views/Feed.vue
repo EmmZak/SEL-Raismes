@@ -17,25 +17,15 @@
       </v-card>
     </v-dialog>
 
-    <v-row justify="space-between" class="pa-5">
-      <v-btn v-if="admin" @click="toAdminPage()" class="success">
-        Gérer les utilisateurs
-      </v-btn>
-      <v-btn @click="signOut()" class="error"> Déconnexion </v-btn>
+    <v-row justify="space-between" class="pr-5 pl-5 ">
+      <v-btn text @click="signOut()" width="100%" class="error"> Déconnexion </v-btn>
     </v-row>
 
     <Account v-if="false" :user="{ name: 'manu' }" />
 
     <!-- sort options -->
     <v-row class="pt-5" justify="space-around">
-      <v-col cols="12" lg="3">
-        <v-text-field
-          v-model="search"
-          label="Recherche"
-          @input="filterItems()"
-        ></v-text-field>
-      </v-col>
-      <v-col lg="3">
+      <v-col lg="4">
         <v-select
           v-model="pagination.order"
           :items="sortOptions"
@@ -46,7 +36,7 @@
           @change="loadServices()"
         ></v-select>
       </v-col>
-      <v-col lg="3">
+      <v-col lg="6">
         <v-select
           ref="categSelect"
           chips
@@ -79,14 +69,14 @@
           </div>
         </div>
 
-        <v-row v-if="admin">
-          <v-col>
-            <!-- <v-btn class="primary" @click="crudDialog = true"> -->
-            <v-btn class="primary" @click="startCrudEvent(null)">
-              <v-icon>mdi-plus</v-icon>
-              <span>Nouvelle Publication</span>
-            </v-btn>
-          </v-col>
+        <v-row v-if="admin" justify="space-between">
+          <v-btn class="primary" @click="startCrudEvent(null)">
+            <v-icon>mdi-plus</v-icon>
+            <span>Nouvelle Publication</span>
+          </v-btn>
+          <v-btn v-if="admin" @click="toAdminPage()" class="success">
+            Gérer les utilisateurs
+          </v-btn>
         </v-row>
 
         <v-row class="">
@@ -142,10 +132,7 @@ import ServiceDialog from "./../components/dialog/ServiceDialog.vue";
 import PublicationCard from "./../components/PublicationCard.vue";
 import Account from "./../components/Account.vue";
 //import { getCategories } from "./../services/category";
-import {
-  getServices,
-  getCount
-} from "./../services/service";
+import { getServices, getCount } from "./../services/service";
 import { getUsers } from "./../services/user";
 
 export default {
@@ -159,8 +146,6 @@ export default {
     return {
       // Form dialog
       crudDialog: false,
-      deleteDialog: false,
-      // crud objects
       // service to pass as prop to dialog
       service: {
         id: null,
@@ -211,7 +196,7 @@ export default {
       this.crudDialog = false;
     },
     async deleteCrudEvent(service) {
-      await this.$refs.crudDialog.deleteItem(service)
+      await this.$refs.crudDialog.deleteItem(service);
     },
     test() {
       console.log("this.editedItem", this.editedItem);
@@ -271,7 +256,7 @@ export default {
       }
       console.log("n -> ", n);
       return n;
-    }
+    },
   },
 };
 </script>

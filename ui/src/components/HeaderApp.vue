@@ -65,17 +65,29 @@
       </v-btn>
       <v-btn text to="/contact"> Contact </v-btn>
       <v-btn text to="/about"> à propos </v-btn>
-      <v-btn text @click="emitAuthEvent" class="success">
+      <v-btn v-if="true" text @click="emitAuthEvent" class="success">
         <v-icon left dark>mdi-lock</v-icon>
-        <div> Espace Personnel </div>
+        <div>Espace Personnel</div>
       </v-btn>
+      <v-menu v-if="false" offset-y open-on-hover>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn color="success" dark v-bind="attrs" v-on="on">
+            <v-icon left dark>mdi-lock</v-icon>
+            Espace Personnel
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item v-for="(item, index) in items" :key="index">
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
       <!-- <v-btn @click="user()">user</v-btn> -->
     </v-toolbar-items>
   </v-app-bar>
 </template>
 
 <script>
-
 export default {
   name: "HeaderApp",
   data() {
@@ -101,9 +113,7 @@ export default {
     };
   },
   methods: {
-    user() {
-      
-    },
+    user() {},
     // trigers event to parent component for auth dialog
     emitAuthEvent() {
       console.log("emitting with route ", this.$route.name);
@@ -124,7 +134,7 @@ export default {
   computed: {
     isVisitor() {
       //return this.$store.getters.visitor
-      return false
+      return false;
       //return isConnected()==null
     },
     signInOutButtonText() {
@@ -155,8 +165,7 @@ export default {
       return size;
     },
   },
-  watch: {
-  },
+  watch: {},
 };
 </script>
 

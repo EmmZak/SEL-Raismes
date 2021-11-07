@@ -29,22 +29,17 @@ router.get("/all", async (req, res) => {
 router.get("/", async (req, res) => {
 	print("INTO get services")
 	try {
-		const offset = req.query.offset
-		const limit = req.query.limit
-		const order = req.query.order
-		const categories = req.query.categories
-		print(req.query)
-		//const loan = req.query.loan
+		const { offset, limit, order, categories } = req.query
 
 		const items = await Service.findAll(
 			{
-				offset: req.query.offset,
-				limit: req.query.limit,
+				offset: offset,
+				limit: limit,
 				where: {
 					category: categories
 				},
 				order: [
-					['updatedAt', req.query.order]
+					['updatedAt', order]
 				],
 				include: [User]
 			}
@@ -58,8 +53,8 @@ router.get("/", async (req, res) => {
 
 // find services by user
 router.get("/user/:id", async (req, res) => {
-	const userId = req.params.id
 	try {
+		const userId = req.params.id
 		const items = await Service.findAll(
 			{
 				where: {
@@ -105,11 +100,13 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
 	try {
-		let user = await User.findByPk(req.body.userId)
+		const { description, userId, category } = req.body
+
+		let user = await User.findByPk(userId)
 
 		let service = await Service.create({
-			description: req.body.description,
-			category: req.body.category,
+			description: description,
+			category: category,
 		})
 		service.setUser(user)
 
@@ -122,16 +119,17 @@ router.post("/", async (req, res) => {
 
 router.put("/", async (req, res) => {
 	try {
+		const { id, description, userId, category } = req.body
 		let service = await Service.update(
 			{
-				description: req.body.description,
-				userId: req.body.userId,
-				category: req.body.category,
+				description: description,
+				userId: userId,
+				category: category,
 			},
 			{
 				returning: true,
 				where: {
-					id: req.body.id
+					id: id
 				}
 			})
 		res.send(service)
@@ -155,6 +153,5 @@ router.delete("/:id", async (req, res) => {
 		res.send(err)
 	}
 })
-
 
 module.exports = router

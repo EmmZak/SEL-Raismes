@@ -4,7 +4,6 @@ const cors = require("cors")
 const print = console.log
 
 router.get("/", async (req, res) => {
-	print("events get request")
 	try {
 		const e = await Event.findAll()
 		res.status(200).send(e)
@@ -15,14 +14,7 @@ router.get("/", async (req, res) => {
 
 router.put("/", async (req, res) => {
 	try {
-		const id = req.body.id
-		const type = req.body.type
-		const text = req.body.text
-		const date = req.body.date
-		const startHour = req.body.startHour
-		const startMinute = req.body.startMinute
-		const endHour = req.body.endHour
-		const endMinute = req.body.endMinute
+		const { id, type, text, date, startHour, startMinute, endHour, endMinute } = req.body
 
 		let e = await Event.update(
 			{
@@ -41,22 +33,16 @@ router.put("/", async (req, res) => {
 				}
 			}
 		)
-		res.send(e)
+		res.status(200).send(e)
 	} catch (err) {
-		res.send(err)
+		res.status(400).send(err)
 	}
 })
 
 router.post("/", async (req, res) => {
 	console.log("post request events req.body", req.body)
 	try {
-		const type = req.body.type
-		const text = req.body.text
-		const date = req.body.date
-		const startHour = req.body.startHour
-		const startMinute = req.body.startMinute
-		const endHour = req.body.endHour
-		const endMinute = req.body.endMinute
+		const { type, text, date, startHour, startMinute, endHour, endMinute } = req.body
 
 		e = await Event.create(
 			{

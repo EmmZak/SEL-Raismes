@@ -9,26 +9,12 @@ router.get("/count", async (req, res) => {
 
 // pagination, offset, limit, order ASC or DESC
 router.get("/", async (req, res) => {
-
 	try {
-		// const offset = req.query.offset
-		// const limit = req.query.limit
-		// const order = req.query.order
-
-		const users = await User.findAll(
-			{
-				// offset: offset,
-				// limit: limit,
-				// order: [
-				// 	['createdAt', order]
-				// ]
-			}
-		)
+		const users = await User.findAll()
 		res.send(users)
 	} catch(err) {
 		res.send(err)
 	}
-
 })
 
 router.get("/:id", async (req, res) => {
@@ -58,16 +44,18 @@ router.get("/firebase/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
 	try {
-		const credit = req.body.credit == "" ? 0: req.body.credit
+		const { firebaseID, idToken,mail, number, name, surname, town, admin, credit } = req.body
+		credit = credit == "" ? 0: credit
+
 		let user = await User.create({
-			firebaseID: req.body.firebaseID,
-			idToken: req.body.idToken,
-			mail: req.body.mail,
-			number: req.body.number,
-			name: req.body.name,
-			surname: req.body.surname,
-			town: req.body.town,
-			admin: req.body.admin,
+			firebaseID: firebaseID,
+			idToken: idToken,
+			mail: mail,
+			number: number,
+			name: name,
+			surname: surname,
+			town: town,
+			admin: admin,
 			credit: credit
 		})
 		user = await user.save()
@@ -81,22 +69,24 @@ router.post("/", async (req, res) => {
 
 router.put("/", async (req, res) => {
 	try {
+		const { id, firebaseID, idToken,mail, number, name, surname, town, admin, credit } = req.body
+
 		let user = await User.update(
 			{
-				firebaseID: req.body.firebaseID,
-				idToken: req.body.idToken,
-				mail: req.body.mail,
-				number: req.body.number,
-				name: req.body.name,
-				surname: req.body.surname,
-				admin: req.body.admin,
-				credit: req.body.credit,
-				town: req.body.town
+				firebaseID: firebaseID,
+				idToken: idToken,
+				mail: mail,
+				number: number,
+				name: name,
+				surname: surname,
+				admin: admin,
+				credit: credit,
+				town: town
 			},
 			{
 				returning: true,
 				where: {
-					id: req.body.id
+					id: id
 				}
 			})
 		res.send(user)
@@ -115,12 +105,10 @@ router.delete("/firebase/:id", async (req, res) => {
 				firebaseID: firebaseID
 			}
 		})
-
 		res.status(200).send({ done: deleteUser == 1 ? true : false })
 	} catch (err) {
 		res.status(400).send(err)
 	}
-
 })
 
 module.exports = router
